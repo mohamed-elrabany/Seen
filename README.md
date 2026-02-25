@@ -1,16 +1,60 @@
-# React + Vite
+# 🩺 Seen – Diabetes Management System (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Overview
 
-Currently, two official plugins are available:
+**Seen** is a full-stack Diabetes Management Web Application developed as a Graduation Project.  
+This repository contains the **Frontend Application**, built using React.js.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The system helps diabetic patients monitor their health, track blood glucose readings, manage meals and medications, and gain insights into their daily health patterns through a structured and user-friendly platform.
 
-## React Compiler
+The goal of Seen is to simplify diabetes self-management and make health tracking more organized, accessible, and efficient.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+---
 
-## Expanding the ESLint configuration
+## 🎯 Problem Statement
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Managing diabetes requires:
+
+- Frequent blood glucose monitoring  
+- Tracking meals and carbohydrate intake  
+- Recording medications and insulin doses  
+- Identifying patterns and fluctuations  
+
+Many patients struggle with inconsistent tracking and lack of proper data organization.
+
+**Seen provides a centralized digital solution that makes daily diabetes management easier and more structured.**
+
+---
+
+## 🚀 Key Features (Frontend)
+
+- 📊 Blood Glucose Logging Interface
+- 🍽️ Meal Tracking UI (carbohydrate estimation + impact evaluation)
+- 💊 Medication & Insulin Recording Forms
+- 📝 Personal Notes System
+- 📈 Interactive Dashboard
+- 🔔 Notification Components
+- 🌙 Dark Mode Support
+- 👤 Authentication Pages (Login / Register)
+- 🧑‍💼 Admin Interface (UI)
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js  
+- Tailwind CSS  
+- React Router  
+- Axios  
+
+### Backend (Developed Separately)
+- Laravel (RESTful API)
+- MySQL Database
+
+---
+
+## 📂 Project Structure
+
+This repository contains the **Frontend Application only**.  
+The backend API is maintained in a separate repository.
