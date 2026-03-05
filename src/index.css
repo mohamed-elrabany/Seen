@@ -5,3 +5,19 @@ html {
   direction: rtl;
 }
 
+@theme {
+  --color-primary: #6976EB;
+  --color-secondary: #ADB4F3;
+  --color-title: #3B3D53;
+  --color-lightGray: #B7B7B7;
+  --color-red: #FF0404;
+
+  --color-glucose-high: #EAA1A1;
+  --color-glucose-low: #EFD99A;
+  --color-glucose-normal: #97D799;
+
+  --color-blue: #2B3695;
+  --color-navy: #1F1A5F;
+  --color-blueBlack: #161A41;
+}
+
