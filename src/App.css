@@ -48,8 +48,8 @@
     @apply flex flex-col items-center justify-between;
   }
 
-  .section {
-    @apply py-12 px-4;
+  section {
+    @apply py-12 px-8 md:px-10 lg:px-12;
   }     
  
   /* modals - loaders - popups */

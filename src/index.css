@@ -1,23 +1,43 @@
 @import "tailwindcss";
 
+/* Global Styles */
 html {
   font-family: 'Cairo', sans-serif;
   direction: rtl;
+  scroll-behavior: smooth
 }
 
-@theme {
-  --color-primary: #6976EB;
-  --color-secondary: #ADB4F3;
-  --color-title: #3B3D53;
-  --color-lightGray: #B7B7B7;
-  --color-red: #FF0404;
+/* Utilities */
+@layer utilities {
 
-  --color-glucose-high: #EAA1A1;
-  --color-glucose-low: #EFD99A;
-  --color-glucose-normal: #97D799;
+  /* Row Flex */
+  .flex-center   { @apply flex items-center justify-center; }
+  .flex-start    { @apply flex items-center justify-start; }
+  .flex-end      { @apply flex items-center justify-end; }
+  .flex-between  { @apply flex items-center justify-between; }
+  .flex-around   { @apply flex items-center justify-around; }
+  .flex-evenly   { @apply flex items-center justify-evenly; }
 
-  --color-blue: #2B3695;
-  --color-navy: #1F1A5F;
-  --color-blueBlack: #161A41;
+  /* Column Flex */
+  .flex-col-center   { @apply flex flex-col items-center justify-center; }
+  .flex-col-start    { @apply flex flex-col items-start justify-start; }
+  .flex-col-end      { @apply flex flex-col items-end justify-end; }
+  .flex-col-between  { @apply flex flex-col items-center justify-between; }
+
+  .section { @apply py-12 px-4; }
+
+  /* Modals / loaders / popups */
+  .center-absolute { @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
+
+  /* Colors Custom (Tailwind v4 requires custom classes for @theme colors) */
+  .text-primary      { color: #6976EB; }
+  .bg-primary        { background-color: #6976EB; }
+  .bg-secondary      { background-color: #ADB4F3; }
+  .text-title        { color: #3B3D53; }
+  .text-lightGray    { color: #B7B7B7; }
+  .text-red          { color: #FF0404; }
+  .bg-glucose-high   { background-color: #EAA1A1; }
+  .bg-glucose-low    { background-color: #EFD99A; }
+  .bg-glucose-normal { background-color: #97D799; }
+
 }
-
