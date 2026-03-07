@@ -1,6 +1,3 @@
-import Navbar from "../components/layout/Navbar";
-import Button from "../components/ui/Button";
-import SecondaryButton from "../components/ui/SecondaryButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import heroImg from "../assets/heroSectionImg.jpg";
 import analysisReport from "../assets/analysis-report.svg";
@@ -14,6 +11,10 @@ import { FaRegHeart } from "react-icons/fa";
 import { BiDollar } from "react-icons/bi";
 import { FaStar } from "react-icons/fa";
 
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
+import Button from "../components/ui/Button";
+import SecondaryButton from "../components/ui/SecondaryButton";
 import { motion } from "framer-motion";
 import { HiHeart } from "react-icons/hi";
 import { features, testimonials } from "../util/content";
@@ -22,7 +23,7 @@ export default function LandingPage() {
   return (
     <div>
       <Navbar />
-      <main className="pt-32 pb-20 bg-gradient-to-br from-[#F8F9FF] to-white">
+      <main className="pt-32 bg-gradient-to-br from-[#F8F9FF] to-white">
         <section className="grid lg:grid-cols-2 gap-12 items-start">
           <motion.div
             initial={{ opacity: 0, x: 50 }}
@@ -42,7 +43,9 @@ export default function LandingPage() {
                 <p>ابدأ الآن</p>
                 <IoIosArrowRoundBack size={32} />
               </Button>
-              <SecondaryButton>تعرف أكثر</SecondaryButton>
+              <SecondaryButton>
+                <a href="#features">تعرف أكثر</a>
+              </SecondaryButton>
             </div>
           </motion.div>
           {/* Image section */}
@@ -390,6 +393,8 @@ export default function LandingPage() {
           </Button>
         </section>
       </main>
+      
+      <Footer />
     </div>
   );
 }
