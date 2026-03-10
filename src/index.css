@@ -3,7 +3,7 @@
 /* Global Styles */
 html {
   font-family: 'Cairo', sans-serif;
-  direction: rtl;
+  /* direction: rtl; */
   scroll-behavior: smooth
 }
 

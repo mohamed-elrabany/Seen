@@ -23,7 +23,7 @@ export default function LandingPage() {
   return (
     <div>
       <Navbar />
-      <main className="pt-32 bg-gradient-to-br from-[#F8F9FF] to-white">
+      <main className="pt-32 bg-gradient-to-br from-[#F8F9FF] to-white overflow-hidden">
         <section className="grid lg:grid-cols-2 gap-12 items-start">
           <motion.div
             initial={{ opacity: 0, x: 50 }}
