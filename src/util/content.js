@@ -8,55 +8,53 @@ import { IoBarChart } from "react-icons/io5";
 export const features = [
   {
     icon: PiPulseBold,
-    title: "متابعة مستوى السكر",
-    description:
-      "سجل قراءاتك بسهولة وتابع التغييرات على مدار الوقت مع رسوم بيانية واضحة",
+    title: "landingPage.features.tracking.title",
+    description: "landingPage.features.tracking.description",
   },
   {
     icon: IoBarChart,
-    title: "التحاليل والتقارير",
-    description: "احصل على تقارير مفصلة وتحليل A1C تقديري وفهم أعمق لبياناتك",
+    title: "landingPage.features.analytics.title",
+    description: "landingPage.features.analytics.description",
   },
   {
     icon: RxPeople,
-    title: "المجتمع والدعم",
-    description:
-      "تواصل مع آخرين يشاركونك نفس التحديات واحصل على نصائح من أطباء موثقين",
+    title: "landingPage.features.community.title",
+    description: "landingPage.features.community.description",
   },
   {
     icon: FiBell,
-    title: "التذكيرات",
-    description: "لا تنسى قياساتك أو أدويتك مع نظام تذكيرات ذكي ومرن",
+    title: "landingPage.features.reminders.title",
+    description: "landingPage.features.reminders.description",
   },
   {
     icon: LuTrophy,
-    title: "التحديات",
-    description: "شارك في تحديات صحية وحقق إنجازات مع مجتمع داعم",
+    title: "landingPage.features.challenges.title",
+    description: "landingPage.features.challenges.description",
   },
   {
     icon: BiDollar,
-    title: "التبرعات",
-    description: "ساهم في دعم من يحتاج وكن جزءاً من مجتمع يهتم",
+    title: "landingPage.features.donations.title",
+    description: "landingPage.features.donations.description",
   },
 ];
 
 export const testimonials = [
   {
-    name: "أحمد محمد",
-    type: "النوع الأول",
-    text: "المنصة غيرت حياتي تماماً. أصبحت أتابع قراءاتي بسهولة وأفهم أكثر كيف يتأثر جسمي بالأكل والنشاط.",
+    name: "landingPage.testimonials.items.ahmed.name",
+    type: "landingPage.testimonials.items.ahmed.type",
+    text: "landingPage.testimonials.items.ahmed.text",
     rating: 5,
   },
   {
-    name: "سارة علي",
-    type: "النوع الثاني",
-    text: "المجتمع هنا رائع، الناس بتساعد بعضها وبنتشارك التجارب. حسيت إني مش لوحدي في الموضوع ده.",
+    name: "landingPage.testimonials.items.sara.name",
+    type: "landingPage.testimonials.items.sara.type",
+    text: "landingPage.testimonials.items.sara.text",
     rating: 5,
   },
   {
-    name: "محمود حسن",
-    type: "النوع الأول",
-    text: "التقارير والتحليلات ساعدتني أفهم جسمي أكثر وأظبط العلاج بشكل أفضل مع الدكتور.",
+    name: "landingPage.testimonials.items.mahmoud.name",
+    type: "landingPage.testimonials.items.mahmoud.type",
+    text: "landingPage.testimonials.items.mahmoud.text",
     rating: 5,
   },
 ];

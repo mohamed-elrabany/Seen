@@ -1,6 +1,7 @@
 import { Form, Link, redirect, useActionData, useNavigation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
@@ -12,6 +13,8 @@ import toast from "react-hot-toast";
 export default function Login() {
     const navigation= useNavigation();
     const actionData= useActionData();
+    const { t, i18n }= useTranslation();
+    const isLtr= i18n.language === "en";
 
     const isSubmitting= navigation.state === "submitting";
 
@@ -36,13 +39,13 @@ export default function Login() {
         className="flex flex-col gap-6 w-full max-w-md">
           <Link to={'/'}><img src="/logo.svg" alt="Seen Logo" className="w-48 h-48" /></Link>
           
-          <h1 className="text-4xl font-bold text-[#161A41] mb-3">أهلاً بعودتك</h1>
-          <p className="text-[#808080] mb-8">سجل دخولك للمتابعة</p>
+          <h1 className="text-4xl font-bold text-[#161A41] mb-3">{t("common.welcome")}</h1>
+          <p className="text-[#808080] mb-8">{t("loginPage.loginToContinue")}</p>
 
           <Form action="/login" method="post" className="space-y-4">
             {/* Inputs */}
-            <Input id='email' label="البريد الإلكتروني" type="email" name="email" placeholder="example@email.com" />
-            <Input id='password' label="كلمة المرور" type="password" name="password" placeholder="********" />
+            <Input id='email' label={t("loginPage.email")} type="email" name="email" placeholder="example@email.com" />
+            <Input id='password' label={t("loginPage.password")} type="password" name="password" placeholder="********" />
 
             {/* Remember + Forget Password */}
             <div className="flex justify-between items-center">
@@ -51,14 +54,14 @@ export default function Login() {
                   type="checkbox"
                   className="w-4 h-4 rounded border-2 border-[#D9D9D9] focus:ring-[#6976EB]"
                 />
-                تذكرني
+                  {t("loginPage.remember")}
               </label>
 
               <Link
                 to="/forget-password"
                 className="text-[#6976EB] hover:text-[#2B3695]"
               >
-                نسيت كلمة المرور؟
+                {t("loginPage.forgotPassword")}
               </Link>
             </div>
 
@@ -71,9 +74,9 @@ export default function Login() {
               className="bg-[#6976EB] hover:bg-[#2B3695] w-full px-6 py-3 transition-all flex-center gap-2"
             >
               {isSubmitting 
-              ? <p className="text-white">تسجيل الدخول</p>
-            :<p className="text-white">تسجيل الدخول</p>}
-              <IoIosArrowRoundBack className="text-white w-8 h-8" />
+              ? <p className="text-white">{t("common.login")}...</p>
+            :<p className="text-white">{t("common.login")}</p>}
+              <IoIosArrowRoundBack className={`text-white w-8 h-8 ${isLtr && "rotate-180"}`} />
             </Button>
 
             {/* Divider */}
@@ -81,8 +84,8 @@ export default function Login() {
               <div className="absolute inset-0 flex-center">
                 <div className="w-full border-t border-[#D9D9D9]"></div>
               </div>
-              <div className="relative flex-center text-sm bg-white px-4 text-[#808080]">
-                أو
+              <div className="relative flex-center text-md bg-white px-4 text-[#808080]">
+                {t("loginPage.or")}
               </div>
             </div>
 
@@ -92,17 +95,17 @@ export default function Login() {
               className="bg-white hover:bg-[#6976EB]/10 border-2 border-[#808080]/40 w-full px-6 py-3 transition-all flex-center gap-2"
             >
               <FcGoogle className="w-8 h-8" />
-              <p className="text-[#161A41]">تسجيل الدخول بواسطة Google</p>
+              <p className="text-[#161A41]">{t("loginPage.google")}</p>
             </Button>
 
             {/* Signup Link */}
             <p className="text-[#808080] text-center mt-4">
-              ليس لديك حساب؟{" "}
+             {t("loginPage.noAccount")}{" "}
               <Link
                 to="/signup"
                 className="text-[#6976EB] font-bold hover:text-[#2B3695] transition-colors"
               >
-                إنشاء حساب
+                 {t("loginPage.createAccount")}
               </Link>
             </p>
           </Form>
@@ -120,18 +123,18 @@ export default function Login() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative z-10 text-white text-center max-w-lg"
+          className="relative z-10 text-white text-center max-w-xl"
         >
-          <h2 className="text-5xl font-bold mb-6">ابدأ رحلتك الصحية</h2>
+          <h2 className="text-5xl font-bold mb-6">{t("loginPage.start")}</h2>
           <p className="text-xl text-white/90 leading-relaxed">
-            تابع مستوى السكر، احصل على تقارير مفصلة، وتواصل مع مجتمع داعم
+            {t("loginPage.sentence")}
           </p>
 
           <div className="mt-12 grid grid-cols-3 gap-6">
             {[
-              { number: "50K+", label: "مستخدم" },
-              { number: "1M+", label: "قياس" },
-              { number: "10K+", label: "منشور" },
+              { number: "50K+", label: t("loginPage.user") },
+              { number: "1M+", label: t("loginPage.log") },
+              { number: "10K+", label: t("loginPage.post") },
             ].map((stat, index) => (
               <motion.div
                 key={index}

@@ -18,8 +18,13 @@ import SecondaryButton from "../components/ui/SecondaryButton";
 import { motion } from "framer-motion";
 import { HiHeart } from "react-icons/hi";
 import { features, testimonials } from "../util/content";
+import { useTranslation } from "react-i18next";
 
 export default function LandingPage() {
+  const { t, i18n }= useTranslation();
+  const categories = t("landingPage.community.categories", { returnObjects: true });
+  const isLtr= i18n.language === "en";
+
   return (
     <div>
       <Navbar />
@@ -32,19 +37,18 @@ export default function LandingPage() {
             viewport={{ once: true }}
           >
             <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
-              أدِر سكر دمك بذكاء وثقة
+              {t("landingPage.hero.title")}
             </h1>
             <p className="text-xl text-[#808080] mb-8">
-              منصة متكاملة لمتابعة مستوى السكر، تحليل البيانات، والحصول على
-              الدعم من مجتمع يفهمك
+             {t("landingPage.hero.description")}
             </p>
             <div className="flex-start gap-4">
               <Button className="bg-primary hover:bg-[#1F1A5F] px-6 py-3 text-white">
-                <p>ابدأ الآن</p>
-                <IoIosArrowRoundBack size={32} />
+                <p>{t("landingPage.hero.start")}</p>
+                <IoIosArrowRoundBack className={`${isLtr && "rotate-180"}`} size={32} />
               </Button>
               <SecondaryButton>
-                <a href="#features">تعرف أكثر</a>
+                <a href="#features">{t("landingPage.hero.learnMore")}</a>
               </SecondaryButton>
             </div>
           </motion.div>
@@ -73,7 +77,7 @@ export default function LandingPage() {
                 <PiPulseBold className="w-4 h-4 text-[#6976EB]" />
               </div>
               <div className="flex-col-start">
-                <p className="text-sm text-[#808080]">متوسط السكر</p>
+                <p className="text-sm text-[#808080]">{t("landingPage.hero.avgSugar")}</p>
                 <p className="text-2xl font-bold text-[#161A41]">128 mg/dL</p>
               </div>
             </div>
@@ -83,10 +87,10 @@ export default function LandingPage() {
         <section id="features">
           <div className="flex-col-center">
             <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
-              مميزات المنصة
+              {t("landingPage.featuresSection.title")}
             </h1>
             <p className="text-xl text-[#808080] mb-8">
-              كل ما تحتاجه لإدارة صحتك في مكان واحد
+              {t("landingPage.featuresSection.description")}
             </p>
           </div>
           <div
@@ -109,9 +113,9 @@ export default function LandingPage() {
                     <Icon className="w-8 h-8 text-[#6976EB]" />
                   </div>
                   <h3 className="text-2xl font-bold text-[#3B3D53] mb-3">
-                    {feature.title}
+                    {t(feature.title)}
                   </h3>
-                  <p className="text-[#808080]">{feature.description}</p>
+                  <p className="text-[#808080]">{t(feature.description)}</p>
                 </motion.div>
               );
             })}
@@ -121,11 +125,10 @@ export default function LandingPage() {
         <section className="grid lg:grid-cols-2 gap-12 items-center bg-gradient-to-br from-[#F8F9FF] to-white">
           <div>
             <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
-              تحليلات متقدمة وتقارير مفصلة
+              {t("landingPage.analytics.title")}
             </h1>
             <p className="text-xl text-[#808080] mb-8">
-              احصل على رؤية شاملة لحالتك الصحية مع رسوم بيانية تفاعلية وتحليل
-              A1C تقديري
+              {t("landingPage.analytics.description")}
             </p>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -140,10 +143,10 @@ export default function LandingPage() {
                 </div>
                 <div className="flex-col-start">
                   <h4 className="text-xl font-bold text-[#3B3D53] mb-3">
-                    إنشاء A1C تقديري
+                     {t("landingPage.analytics.a1cTitle")} 
                   </h4>
                   <p className="text-md text-[#808080]">
-                    احسب متوسط السكر التراكمي بناءً على قراءاتك
+                    {t("landingPage.analytics.a1cDesc")}
                   </p>
                 </div>
               </div>
@@ -153,10 +156,10 @@ export default function LandingPage() {
                 </div>
                 <div className="flex-col-start">
                   <h4 className="text-xl font-bold text-[#3B3D53] mb-3">
-                    فلترة التقارير حسب المدة
+                    {t("landingPage.analytics.filterTitle")}
                   </h4>
                   <p className="text-md text-[#808080]">
-                    اختر أي فترة زمنية وشاهد تقاريرك المخصصة
+                    {t("landingPage.analytics.filterDesc")}
                   </p>
                 </div>
               </div>
@@ -178,11 +181,11 @@ export default function LandingPage() {
             </div>
             <div className="grid grid-cols-2 gap-8">
               <div className="bg-[#F8F9FF] rounded-xl p-4">
-                <p className="text-[#808080] mb-1 font-medium">Time in Range</p>
+                <p className="text-[#808080] mb-1 font-medium">{t("landingPage.analytics.timeRange")}</p>
                 <p className="text-xl font-bold text-[#6976EB] ">85%</p>
               </div>
               <div className="bg-[#F8F9FF] rounded-xl p-4">
-                <p className="text-[#808080] mb-1 font-medium">متوسط السكر</p>
+                <p className="text-[#808080] mb-1 font-medium">{t("landingPage.analytics.avgSugar")}</p>
                 <p className="text-xl font-bold text-[#6976EB] ">142</p>
               </div>
             </div>
@@ -193,10 +196,10 @@ export default function LandingPage() {
         <section id="community" className="flex-col-center gap-8">
           <div className="flex-col-center">
             <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
-              مجتمع داعم ومتفاعل
+              {t("landingPage.community.title")}
             </h1>
             <p className="text-xl text-[#808080] mb-8">
-              شارك تجربتك واحصل على الدعم من مجتمع يفهمك
+              {t("landingPage.community.description")}
             </p>
           </div>
           <div className="grid lg:grid-cols-2 gap-8">
@@ -214,9 +217,9 @@ export default function LandingPage() {
 
                 <div className="flex-col-start">
                   <p className="text-[#161A41] text-md font-bold">
-                    منتصر إسماعيل
+                    {t("landingPage.community.post.name")}
                   </p>
-                  <p className="text-[#808080] text-sm">منذ يوم واحد</p>
+                  <p className="text-[#808080] text-sm">{t("landingPage.community.post.time")}</p>
                 </div>
               </div>
               <div className="flex-col-start gap-4">
@@ -229,12 +232,10 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-[#3B3D53] mb-3">
-                    يوم صعب مع ارتفاع السكر
+                    {t("landingPage.community.post.title")}
                   </h3>
                   <p className="text-[#3B3D53]">
-                    النهارده السكر كان عالي أكتر من المعتاد، وحسيت بتعب وصداع.
-                    حاولت أظبط أكلي وأشرب مية وأمشي شوية، وإن شاء الله الأرقام
-                    تتحسن. المهم إني مكمل ومش مستسلم.
+                    {t("landingPage.community.post.content")}
                   </p>
                 </div>
               </div>
@@ -259,20 +260,13 @@ export default function LandingPage() {
               className="bg-white p-8 rounded-2xl shadow-lg border border-[#D9D9D9]/30"
             >
               <h3 className="text-xl font-bold text-[#3B3D53] mb-6 font-['Cairo']">
-                تصنيف حسب النوع
+                {t("landingPage.community.categoriesTitle")}
               </h3>
               <div className="space-y-3">
-                {[
-                  "عام",
-                  "النوع الأول",
-                  "النوع الثاني",
-                  "السكري أحادي الجين",
-                  "السكري المناعي",
-                  "السكري الحملي",
-                ].map((type, index) => (
+                {categories.map((type, index) => (
                   <button
                     key={index}
-                    className={`w-full text-right px-4 py-3 rounded-xl transition-all font-['Cairo'] ${
+                    className={`w-full px-4 py-3 rounded-xl transition-all] ${
                       index === 2
                         ? "bg-[#6976EB] text-white font-bold"
                         : "bg-[#F8F9FF] text-[#808080] hover:bg-[#ADB4F3]/20"
@@ -293,10 +287,10 @@ export default function LandingPage() {
           >
             <div>
               <h2 className="text-white text-xl font-bold mb-2">
-                نصائح من أطباء موثقين
+                {t("landingPage.community.doctors.title")}
               </h2>
               <p className="text-white">
-                احصل على استشارات طبية موثوقة من متخصصين
+                 {t("landingPage.community.doctors.description")}
               </p>
             </div>
             <div className="w-20 h-20 bg-[#ffffff]/30 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -312,16 +306,15 @@ export default function LandingPage() {
           </div>
           <div className="flex-col-center">
             <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
-              كن جزءاً من التغيير
+              {t("landingPage.donation.title")}
             </h1>
             <p className="text-xl text-[#808080] mb-8">
-              ساعد من يحتاج إلى الأجهزة والأدوية. كل تبرع، مهما كان صغيراً، يصنع
-              فرقاً في حياة شخص
+              {t("landingPage.donation.description")}
             </p>
           </div>
           <Button className="bg-primary hover:bg-[#1F1A5F] px-12 py-3 text-white">
             <BiDollar className="text-white w-6 h-6" />
-            <p>تبرع الآن</p>
+            <p>{t("landingPage.donation.button")}</p>
           </Button>
         </section>
 
@@ -329,10 +322,10 @@ export default function LandingPage() {
         <section id="testimonials" className="bg-white flex-col-center gap-8">
           <div className="flex-col-center">
             <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
-              ماذا يقول مستخدمونا
+                {t("landingPage.testimonials.title")}
             </h1>
             <p className="text-xl text-[#808080] mb-8">
-              تجارب حقيقية من مجتمعنا
+              {t("landingPage.testimonials.description")}
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -354,7 +347,7 @@ export default function LandingPage() {
                   </div>
 
                   {/* text */}
-                  <p className="text-[#808080] flex-grow">{testimonial.text}</p>
+                  <p className="text-[#808080] flex-grow">{t(testimonial.text)}</p>
 
                   {/* profile */}
                   <div className="flex items-center gap-4 mt-6">
@@ -364,10 +357,10 @@ export default function LandingPage() {
 
                     <div>
                       <h4 className="text-[#161A41] text-md font-bold">
-                        {testimonial.name}
+                        {t(testimonial.name)}
                       </h4>
                       <p className="text-[#808080] text-sm">
-                        {testimonial.type}
+                        {t(testimonial.type)}
                       </p>
                     </div>
                   </div>
@@ -381,15 +374,15 @@ export default function LandingPage() {
         <section className="flex-col-center bg-gradient-to-r from-[#6976EB] to-[#2B3695]">
           <div className="flex-col-center">
             <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-              ابدأ رحلتك الصحية اليوم
+              {t("landingPage.cta.title")}
             </h1>
             <p className="text-xl text-white mb-8">
-              انضم لآلاف المستخدمين الذين يديرون صحتهم بثقة وذكاء
+              {t("landingPage.cta.description")}
             </p>
           </div>
           <Button className="bg-white px-6 py-3 hover:shadow-xl hover:gap-6 transition-all">
-            <p className="text-[#6976EB]">إنشاء حساب مجاني</p>
-            <IoIosArrowRoundBack className="text-[#6976EB] w-8 h-8" />
+            <p className="text-[#6976EB]">{t("landingPage.cta.button")}</p>
+            <IoIosArrowRoundBack className={`text-[#6976EB] w-8 h-8 ${isLtr && "rotate-180"}`} />
           </Button>
         </section>
       </main>

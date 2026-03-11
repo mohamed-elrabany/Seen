@@ -1,9 +1,177 @@
 {
-  "features": "Features",
-  "community": "Community",
-  "testimonials": "Testimonials",
-  "login": "Login",
-  "signup": "Get Started",
-  "more": "Know More",
-  "logout": "Logout"
+  "common": {
+    "welcome": "Welcome back",
+    "login": "Login",
+    "signup": "Get Started",
+    "logout": "Logout",
+    "more": "Know More"
+  },
+
+  "navbar": {
+    "features": "Features",
+    "community": "Community",
+    "testimonials": "Testimonials"
+  },
+
+  "footer": {
+    "description": "An integrated platform for smart diabetes management",
+
+    "quickLinks": {
+      "title": "Quick Links",
+      "features": "Features",
+      "community": "Community",
+      "donations": "Donations"
+    },
+
+    "account": {
+      "title": "Account",
+      "login": "Login",
+      "signup": "Create Account"
+    },
+
+    "legal": {
+      "title": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "contact": "Contact Us"
+    },
+
+    "copyright": "© 2026 Seen. All rights reserved."
+  },
+
+  "landingPage": {
+    "hero": {
+      "title": "Manage Your Blood Sugar with Confidence",
+      "description": "An integrated platform to track glucose levels, analyze your health data, and connect with a supportive community.",
+      "start": "Get Started",
+      "learnMore": "Learn More",
+      "avgSugar": "Average Glucose"
+    },
+
+    "featuresSection": {
+      "title": "Platform Features",
+      "description": "Everything you need to manage your health in one place"
+    },
+
+    "features": {
+      "tracking": {
+        "title": "Glucose Tracking",
+        "description": "Log your glucose readings easily and monitor changes over time with clear charts"
+      },
+      "analytics": {
+        "title": "Analytics and Reports",
+        "description": "Get detailed reports and estimated A1C analysis to better understand your health data"
+      },
+      "community": {
+        "title": "Community Support",
+        "description": "Connect with others facing the same challenges and get advice from verified doctors"
+      },
+      "reminders": {
+        "title": "Smart Reminders",
+        "description": "Never miss your measurements or medications with a flexible reminder system"
+      },
+      "challenges": {
+        "title": "Health Challenges",
+        "description": "Join health challenges and achieve milestones with a supportive community"
+      },
+      "donations": {
+        "title": "Donations",
+        "description": "Support people in need and be part of a caring community"
+      }
+    },
+
+    "analytics": {
+      "title": "Advanced Analytics and Detailed Reports",
+      "description": "Get a complete view of your health with interactive charts and estimated A1C analysis",
+
+      "a1cTitle": "Estimated A1C Calculation",
+      "a1cDesc": "Calculate your estimated A1C based on your glucose readings",
+
+      "filterTitle": "Filter Reports by Time",
+      "filterDesc": "Choose any time period and view your personalized reports",
+
+      "timeRange": "Time in Range",
+      "avgSugar": "Average Glucose"
+    },
+
+    "community": {
+      "title": "A Supportive and Active Community",
+      "description": "Share your experience and receive support from people who understand you",
+
+      "post": {
+        "name": "Montaser Ismail",
+        "time": "1 day ago",
+        "title": "A Difficult Day with High Glucose",
+        "content": "Today my glucose level was higher than usual, and I felt tired with a headache. I tried adjusting my meals, drinking more water, and taking a short walk. Hopefully the numbers will improve. The important thing is that I'm continuing and not giving up."
+      },
+
+      "categoriesTitle": "Filter by Type",
+
+      "categories": [
+        "General",
+        "Type 1",
+        "Type 2",
+        "Monogenic Diabetes",
+        "Autoimmune Diabetes",
+        "Gestational Diabetes"
+      ],
+
+      "doctors": {
+        "title": "Advice from Verified Doctors",
+        "description": "Get trusted medical advice from specialists"
+      }
+    },
+
+    "donation": {
+      "title": "Be Part of the Change",
+      "description": "Help those who need medical devices and medication. Every donation, no matter how small, makes a difference in someone's life.",
+      "button": "Donate Now"
+    },
+
+    "testimonials": {
+      "title": "What Our Users Say",
+      "description": "Real experiences from our community",
+
+      "items": {
+        "ahmed": {
+          "name": "Ahmed Mohamed",
+          "type": "Type 1",
+          "text": "This platform completely changed my life. I can now track my readings easily and better understand how food and activity affect my body."
+        },
+        "sara": {
+          "name": "Sara Ali",
+          "type": "Type 2",
+          "text": "The community here is amazing. People support each other and share experiences. I finally feel like I'm not alone in this."
+        },
+        "mahmoud": {
+          "name": "Mahmoud Hassan",
+          "type": "Type 1",
+          "text": "The reports and analytics helped me understand my body better and adjust my treatment more effectively with my doctor."
+        }
+      }
+    },
+
+    "cta": {
+      "title": "Start Your Health Journey Today",
+      "description": "Join thousands of users who manage their health with confidence and intelligence",
+      "button": "Create Free Account"
+    }
+  },
+
+  "loginPage": {
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "remember": "Remember me",
+    "google": "Sign in with Google",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create account",
+    "user": "User",
+    "post": "Post",
+    "log": "Sugar Measurement",
+    "start": "Start Your Healthy Journey",
+    "sentence": "Track your sugar levels, get detailed reports, and connect with a supportive community",
+    "or": "or",
+    "loginToContinue": "Sign in to continue"
+  }
 }
