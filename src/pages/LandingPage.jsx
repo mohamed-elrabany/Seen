@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 import { HiHeart } from "react-icons/hi";
 import { features, testimonials } from "../util/content";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   const { t, i18n }= useTranslation();
@@ -44,7 +45,7 @@ export default function LandingPage() {
             </p>
             <div className="flex-start gap-4">
               <Button className="bg-primary hover:bg-[#1F1A5F] px-6 py-3 text-white">
-                <p>{t("landingPage.hero.start")}</p>
+                <Link to={'/register'}>{t("landingPage.hero.start")}</Link>
                 <IoIosArrowRoundBack className={`${isLtr && "rotate-180"}`} size={32} />
               </Button>
               <SecondaryButton>
@@ -381,7 +382,7 @@ export default function LandingPage() {
             </p>
           </div>
           <Button className="bg-white px-6 py-3 hover:shadow-xl hover:gap-6 transition-all">
-            <p className="text-[#6976EB]">{t("landingPage.cta.button")}</p>
+            <Link to={'/register'} className="text-[#6976EB]">{t("landingPage.cta.button")}</Link>
             <IoIosArrowRoundBack className={`text-[#6976EB] w-8 h-8 ${isLtr && "rotate-180"}`} />
           </Button>
         </section>

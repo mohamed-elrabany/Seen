@@ -7,6 +7,7 @@ import {action as loginAction} from '../pages/auth/Login';
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Login = lazy(() => import("../pages/auth/Login"));
+const Register = lazy(() => import("../pages/auth/Register"));
 import RootLayout from "./RootLayout";
 import Loading from "../components/ui/Loading";
 import ErrorPage from "../pages/ErrorPage";
@@ -33,6 +34,15 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         action: loginAction
+      },
+      {
+        path: "register",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Register />
+          </Suspense>
+        ),
+        // action: loginAction
       },
       {
         path: "dashboard",

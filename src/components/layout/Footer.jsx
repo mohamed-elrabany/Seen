@@ -70,7 +70,7 @@ export default function Footer() {
 
             <li>
               <Link
-                to="/signup"
+                to="/register"
                 className="text-white/70 hover:text-white transition-colors"
               >
                 {t("footer.account.signup")}

@@ -39,7 +39,7 @@ export default function Navbar() {
 
         <li>
           <Link
-            to="/signup"
+            to="/register"
             className="bg-[#6976EB] hover:bg-[#1F1A5F] transition-all text-white rounded-full px-6 py-3 cursor-pointer font-bold shadow-lg"
           >
             {t("common.signup")}

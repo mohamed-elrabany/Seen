@@ -2,6 +2,7 @@ import { Form, Link, redirect, useActionData, useNavigation } from "react-router
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { login } from "../../services/authService";
 
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
@@ -102,7 +103,7 @@ export default function Login() {
             <p className="text-[#808080] text-center mt-4">
              {t("loginPage.noAccount")}{" "}
               <Link
-                to="/signup"
+                to="/register"
                 className="text-[#6976EB] font-bold hover:text-[#2B3695] transition-colors"
               >
                  {t("loginPage.createAccount")}
@@ -154,22 +155,26 @@ export default function Login() {
   );
 }
 
-export async function action({request}){
-    const formData= await request.formData();
-    const response= await fetch('https://dummyjson.com/auth/login',{
-        method: 'POST',
-        headers:{
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: formData.get("email"),
-            password: formData.get("password")
-        })
-    });
+export async function action({ request }) {
+  const formData = await request.formData();
+  console.log(formData.get('email'))
+  console.log(formData.get('password'))
 
-    if(!response.ok){
-        return {error: 'بيانات خاطئة'}
-    }
+  try {
+    const result = await login(
+      formData.get("email"),
+      formData.get("password")
+    );
 
-    return redirect("/?login=success");
+    return redirect("/dashboard?login=success");
+
+  } catch (err) {
+    console.error(err);
+
+    return {
+      error:
+        err.response?.data?.message ||
+        "حدث خطأ أثناء تسجيل الدخول",
+    };
+  }
 }
