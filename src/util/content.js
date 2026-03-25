@@ -4,6 +4,8 @@ import { FiBell } from "react-icons/fi";
 import { BiDollar } from "react-icons/bi";
 import { LuTrophy } from "react-icons/lu";
 import { IoBarChart } from "react-icons/io5";
+import { FaRegHeart } from "react-icons/fa";
+import { SlEnergy } from "react-icons/sl";
 
 export const features = [
   {
@@ -58,3 +60,26 @@ export const testimonials = [
     rating: 5,
   },
 ];
+
+export const headerCardsContent=[
+  {
+    icon: PiPulseBold,
+    value: 128,
+    label: 'القراءة الحالية',
+  },
+  {
+    icon: IoBarChart,
+    value: 132,
+    label: 'متوسط الأسبوع',
+  },
+  {
+    icon: SlEnergy,
+    value: 12,
+    label: 'سلسلة متصلة',
+  },
+  {
+    icon: FaRegHeart,
+    value: "85%",
+    label: 'Time in Range',
+  },
+]

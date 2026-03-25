@@ -1,6 +1,12 @@
-import { Form, Link, redirect, useActionData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  Link,
+  redirect,
+  useActionData,
+  useNavigation,
+} from "react-router-dom";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { login } from "../../services/authService";
 
@@ -10,43 +16,68 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import toast from "react-hot-toast";
 
-
 export default function Login() {
-    const navigation= useNavigation();
-    const actionData= useActionData();
-    const { t, i18n }= useTranslation();
-    const isLtr= i18n.language === "en";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const navigation = useNavigation();
+  const actionData = useActionData();
+  const { t, i18n } = useTranslation();
+  const isLtr = i18n.language === "en";
 
-    const isSubmitting= navigation.state === "submitting";
+  const isSubmitting = navigation.state === "submitting";
 
-    useEffect(()=>{
-        if(!actionData) return;
+  useEffect(() => {
+    if (!actionData) return;
 
-        if(actionData?.error){
-            toast.error("بيانات خاطئة");
-        }
-    },[actionData])
+    if (actionData?.error) {
+      toast.error("بيانات خاطئة");
+    }
+  }, [actionData]);
 
   return (
     <div className="min-h-screen flex">
-        
       {/* Left Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8 bg-white">
-        <motion.div 
-        initial={{opacity: 0, y: 30}}
-        whileInView={{opacity: 1, y: 0}}
-        transition={{duration: 0.5}}
-        viewport={{ once: true }}
-        className="flex flex-col gap-6 w-full max-w-md">
-          <Link to={'/'}><img src="/logo.svg" alt="Seen Logo" className="w-48 h-48" /></Link>
-          
-          <h1 className="text-4xl font-bold text-[#161A41] mb-3">{t("common.welcome")}</h1>
-          <p className="text-[#808080] mb-8">{t("loginPage.loginToContinue")}</p>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="flex flex-col gap-6 w-full max-w-md"
+        >
+          <Link to={"/"}>
+            <img src="/logo.svg" alt="Seen Logo" className="w-48 h-48" />
+          </Link>
+
+          <h1 className="text-4xl font-bold text-[#161A41] mb-3">
+            {t("common.welcome")}
+          </h1>
+          <p className="text-[#808080] mb-8">
+            {t("loginPage.loginToContinue")}
+          </p>
 
           <Form action="/login" method="post" className="space-y-4">
             {/* Inputs */}
-            <Input id='email' label={t("loginPage.email")} type="email" name="email" placeholder="example@email.com" />
-            <Input id='password' label={t("loginPage.password")} type="password" name="password" placeholder="********" />
+            <Input
+              id="email"
+              label={t("loginPage.email")}
+              type="email"
+              name="email"
+              placeholder="example@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              error={email && !(email.includes("@") && email.includes("."))}
+            />
+            <Input
+              id="password"
+              label={t("loginPage.password")}
+              type="password"
+              name="password"
+              placeholder="********"
+              onChange={(e) => setPassword(e.target.value)}
+              error={password && password.length < 8}
+            />
 
             {/* Remember + Forget Password */}
             <div className="flex justify-between items-center">
@@ -55,7 +86,7 @@ export default function Login() {
                   type="checkbox"
                   className="w-4 h-4 rounded border-2 border-[#D9D9D9] focus:ring-[#6976EB]"
                 />
-                  {t("loginPage.remember")}
+                {t("loginPage.remember")}
               </label>
 
               <Link
@@ -66,7 +97,11 @@ export default function Login() {
               </Link>
             </div>
 
-            {actionData && <p className="text-red text-center font-medium">{actionData.error}</p>}
+            {actionData && (
+              <p className="text-red text-center font-medium">
+                {actionData.error}
+              </p>
+            )}
 
             {/* Submit Button */}
             <Button
@@ -74,10 +109,14 @@ export default function Login() {
               type="submit"
               className="bg-[#6976EB] hover:bg-[#2B3695] w-full px-6 py-3 transition-all flex-center gap-2"
             >
-              {isSubmitting 
-              ? <p className="text-white">{t("common.login")}...</p>
-            :<p className="text-white">{t("common.login")}</p>}
-              <IoIosArrowRoundBack className={`text-white w-8 h-8 ${isLtr && "rotate-180"}`} />
+              {isSubmitting ? (
+                <p className="text-white">{t("common.login")}...</p>
+              ) : (
+                <p className="text-white">{t("common.login")}</p>
+              )}
+              <IoIosArrowRoundBack
+                className={`text-white w-8 h-8 ${isLtr && "rotate-180"}`}
+              />
             </Button>
 
             {/* Divider */}
@@ -101,12 +140,12 @@ export default function Login() {
 
             {/* Signup Link */}
             <p className="text-[#808080] text-center mt-4">
-             {t("loginPage.noAccount")}{" "}
+              {t("loginPage.noAccount")}{" "}
               <Link
                 to="/register"
                 className="text-[#6976EB] font-bold hover:text-[#2B3695] transition-colors"
               >
-                 {t("loginPage.createAccount")}
+                {t("loginPage.createAccount")}
               </Link>
             </p>
           </Form>
@@ -157,24 +196,17 @@ export default function Login() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  console.log(formData.get('email'))
-  console.log(formData.get('password'))
 
   try {
-    const result = await login(
-      formData.get("email"),
-      formData.get("password")
-    );
+    const result = await login(formData.get("email"), formData.get("password"));
+    localStorage.setItem("token", result.token);
 
-    return redirect("/dashboard?login=success");
-
+    return redirect("/home?login=success");
   } catch (err) {
     console.error(err);
 
     return {
-      error:
-        err.response?.data?.message ||
-        "حدث خطأ أثناء تسجيل الدخول",
+      error: err.response?.data?.message || "حدث خطأ أثناء تسجيل الدخول",
     };
   }
 }

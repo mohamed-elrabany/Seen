@@ -173,5 +173,88 @@
     "sentence": "Track your sugar levels, get detailed reports, and connect with a supportive community",
     "or": "or",
     "loginToContinue": "Sign in to continue"
+  },
+  
+  "registerPage": {
+    "buttons": {
+      "prev": "Previous",
+      "next": "Next",
+      "submit": "Finish"
+    },
+
+    "step1": {
+      "title": "Account Information",
+      "inputs": {
+        "firstName": {
+          "label": "First Name",
+          "placeholder": "Enter your first name"
+        },
+        "lastName": {
+          "label": "Last Name",
+          "placeholder": "Enter your last name"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "example@test.com"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Enter your phone number"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "********"
+        },
+        "confirmPassword": {
+          "label": "Confirm Password",
+          "placeholder": "********"
+        }
+      }
+    },
+
+    "step2": {
+      "title": "Personal Information",
+      "inputs": {
+        "gender": {
+          "label": "Gender",
+          "male": "Male",
+          "female": "Female"
+        },
+        "birthDate": {
+          "label": "Birth Date",
+          "placeholder": "mm/dd/yyyy"
+        },
+        "weight": {
+          "label": "Weight",
+          "placeholder": "Weight (kg)"
+        },
+        "height": {
+          "label": "Height",
+          "placeholder": "Height (cm)"
+        }
+      }
+    },
+
+    "step3": {
+      "title": "What type of diabetes do you have?",
+      "options": {
+        "type1": "Type 1",
+        "type2": "Type 2",
+        "lada": "LADA",
+        "mody": "MODY",
+        "gestational": "Gestational Diabetes",
+        "other": "Other"
+      }
+    },
+
+    "step4": {
+      "title": "How do you usually take your insulin?",
+      "options": {
+        "injection": "Injection Pen",
+        "pump": "Insulin Pump",
+        "noInsulin": "I do not use insulin"
+      }
+    }
   }
+
 }

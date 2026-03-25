@@ -1,9 +1,11 @@
 
 
-export default function Button({className, children}){
+export default function Button({className, children, ...props}){
     return(
-        <button className={`
-        w-auto flex-center gap-2 cursor-pointer text-lg font-bold rounded-xl transition-all
+        <button 
+        {...props}
+        className={`
+        w-auto flex-center gap-2 text-lg font-bold rounded-xl transition-all
         ${className}
         `}>
             {children}

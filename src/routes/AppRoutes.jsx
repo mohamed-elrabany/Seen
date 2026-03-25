@@ -5,7 +5,7 @@ import { Suspense, lazy } from "react";
 import {action as loginAction} from '../pages/auth/Login';
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
-const Dashboard = lazy(() => import("../pages/Dashboard"));
+const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 import RootLayout from "./RootLayout";
@@ -45,10 +45,10 @@ const router = createBrowserRouter([
         // action: loginAction
       },
       {
-        path: "dashboard",
+        path: "home",
         element: (
           <Suspense fallback={<Loading />}>
-            <Dashboard />
+            <Home />
           </Suspense>
         ),
       },

@@ -17,7 +17,12 @@ export default function RootLayout() {
           },
         }}
       />
-      <main className="">
+      <main
+        className="min-h-screen
+                  bg-gradient-to-b
+                  from-[#F8F9FF] via-[#FAFAFF] to-[#F0F2FF]
+                  dark:bg-[#0A0A0A] dark:from-[#0A0E27] dark:via-[#161A41] dark:to-[#1F1A5F]"
+      >
         <Outlet />
       </main>
     </>

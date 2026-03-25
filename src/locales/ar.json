@@ -173,5 +173,87 @@
     "sentence": "تابع مستويات السكر لديك، احصل على تقارير دقيقة، وتواصل مع مجتمع داعم لصحتك",
     "or": "أو",
     "loginToContinue": "سجل الدخول للمتابعة"
+  },
+
+  "registerPage": {
+    "buttons": {
+      "prev": "السابق",
+      "next": "التالي",
+      "submit": "إنهاء"
+    },
+
+    "step1": {
+      "title": "معلومات الحساب",
+      "inputs": {
+        "firstName": {
+          "label": "الاسم الأول",
+          "placeholder": "اكتب الاسم"
+        },
+        "lastName": {
+          "label": "الاسم الأخير",
+          "placeholder": "اكتب الاسم"
+        },
+        "email": {
+          "label": "البريد الإلكتروني",
+          "placeholder": "example@test.com"
+        },
+        "phone": {
+          "label": "رقم الهاتف",
+          "placeholder": "01000010101"
+        },
+        "password": {
+          "label": "كلمة المرور",
+          "placeholder": "********"
+        },
+        "confirmPassword": {
+          "label": "تأكيد كلمة المرور",
+          "placeholder": "********"
+        }
+      }
+    },
+
+    "step2": {
+      "title": "المعلومات الشخصية",
+      "inputs": {
+        "gender": {
+          "label": "النوع",
+          "male": "ذكر",
+          "female": "أنثى"
+        },
+        "birthDate": {
+          "label": "تاريخ الميلاد",
+          "placeholder": "mm/dd/yy"
+        },
+        "weight": {
+          "label": "الوزن",
+          "placeholder": "الوزن (kg)"
+        },
+        "height": {
+          "label": "الطول",
+          "placeholder": "الطول (cm)"
+        }
+      }
+    },
+
+    "step3": {
+      "title": "ما نوع السكّري الذي لديك؟",
+      "options": {
+        "type1": "النوع الأول",
+        "type2": "النوع الثاني",
+        "lada": "السكر المناعي",
+        "mody": "السكري أحادي الجين",
+        "gestational": "السكري الحملي",
+        "other": "أخرى"
+      }
+    },
+
+    "step4": {
+      "title": "كيف تفضل أخذ جرعتك من الإنسولين؟",
+      "options": {
+        "injection": "أقلام حقن",
+        "pump": "مضخة",
+        "noInsulin": "لا أستخدم الإنسولين"
+      }
+    }
   }
 }
