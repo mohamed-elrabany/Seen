@@ -5,9 +5,11 @@ import Navbar from "../components/layout/Navbar";
 
 export default function RootLayout() {
   const location = useLocation();
+  const { pathname } = location;
 
-  // Determine if we are on the landing page
-  const isLandingPage = location.pathname === "/";
+  const isLandingPage = pathname === "/";
+  const isAuthPage = pathname === "/login" || pathname === "/register";
+  const isAppPage = !isLandingPage && !isAuthPage; // /home and future pages
 
   return (
     <>
@@ -25,23 +27,24 @@ export default function RootLayout() {
         }}
       />
 
-<div
-  className={`min-h-screen ${
-    !isLandingPage ? "flex md:flex-row flex-col" : "flex flex-col"
-  }`}
->
-  {!isLandingPage && <Sidebar />}
-  {isLandingPage && <Navbar />}
-  <main
-    className={`w-full p-8 ${
-      isLandingPage ? "pt-40" : "pt-40 lg:pt-8"
-    } bg-gradient-to-b
-        from-[#F8F9FF] via-[#FAFAFF] to-[#F0F2FF]
-        dark:bg-[#0A0A0A] dark:from-[#0A0E27] dark:via-[#161A41] dark:to-[#1F1A5F]`}
-  >
+      {/* LANDING PAGE — Navbar + full width, no extra padding */}
+      {isLandingPage && (
+  <div className="flex flex-col min-h-screen">
+    <Navbar />
     <Outlet />
-  </main>
-</div>
+  </div>
+)}
+
+{isAuthPage && <Outlet />}
+
+{isAppPage && (
+  <div className="flex min-h-screen bg-gradient-to-b from-[#F8F9FF] via-[#FAFAFF] to-[#F0F2FF] dark:from-[#0A0E27] dark:via-[#161A41] dark:to-[#1F1A5F]">
+    <Sidebar />
+    <main className="flex-1 p-8 overflow-auto">
+      <Outlet />
+    </main>
+  </div>
+)}
     </>
   );
 }
