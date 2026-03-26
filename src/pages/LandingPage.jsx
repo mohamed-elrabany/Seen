@@ -11,7 +11,6 @@ import { FaRegHeart } from "react-icons/fa";
 import { BiDollar } from "react-icons/bi";
 import { FaStar } from "react-icons/fa";
 
-import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import Button from "../components/ui/Button";
 import SecondaryButton from "../components/ui/SecondaryButton";
@@ -28,7 +27,6 @@ export default function LandingPage() {
 
   return (
     <div>
-      <Navbar />
       <main className="pt-32 bg-gradient-to-br from-[#F8F9FF] to-white overflow-hidden">
         <section className="grid lg:grid-cols-2 gap-12 items-start">
           <motion.div

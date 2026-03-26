@@ -12,12 +12,12 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLanguage}
-      className="p-4 bg-[#6976EB] text-white hover:bg-[#1F1A5F] shadow-lg flex-center gap-2 w-auto cursor-pointer text-lg font-bold rounded-xl transition-all"
+      className="p-4 border-2 border-[#6976EB] hover:bg-[#6976EB] text-[#6976EB] hover:text-white shadow-lg flex-center gap-2 w-auto cursor-pointer text-lg font-bold rounded-xl transition-all"
     >
       <p className="font-bold uppercase">
         {i18n.language === "ar" ? "EN" : "AR"}
       </p>
-      <MdOutlineLanguage className="w-6 h-6 text-white" />
+      <MdOutlineLanguage className="w-6 h-6" />
     </button>
   );
 }
