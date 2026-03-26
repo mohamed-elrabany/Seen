@@ -17,7 +17,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <main>
       <Header className="flex-col-between">
         <div className="w-full flex-col-start gap-4 mb-6">
           <h1 className="text-3xl lg:text-4xl font-bold text-white">
@@ -55,6 +55,6 @@ export default function Home() {
           ))}
         </motion.div>
       </Header>
-    </>
+    </main>
   );
 }

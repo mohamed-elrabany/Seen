@@ -58,7 +58,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link
             to="/login"
-            className="w-auto h-full border-2 border-[#6976EB] bg-[#6976EB] hover:bg-[#1F1A5F] text-white rounded-xl p-4 cursor-pointer text-lg font-bold shadow-lg transition-all"
+            className="w-auto h-full border-2 border-[#6976EB] bg-[#6976EB] hover:bg-[#1F1A5F] hover:border-[#1F1A5F] text-white rounded-xl p-4 cursor-pointer text-lg font-bold shadow-lg transition-all"
           >
             {t("common.login")}
           </Link>

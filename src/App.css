@@ -57,4 +57,27 @@
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
 
+  h1{
+    @apply text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#161A41] mb-6
+  }
+  h2{
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold text-[#161A41] mb-4
+  }
+  h3{
+    @apply text-xl sm:text-2xl font-bold text-[#3B3D53] mb-3
+  }
+  h4{
+    @apply text-base sm:text-lg font-semibold text-[#3B3D53] mb-2
+  }
+
+  .description-text{
+    @apply text-base sm:text-lg lg:text-xl text-[#808080] mb-8
+  }
+  .card-text{
+    @apply text-sm sm:text-base text-[#808080] leading-relaxed
+  }
+  .meta-text{
+    @apply text-xs sm:text-sm text-[#808080]
+  }
+
 }

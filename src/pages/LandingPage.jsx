@@ -26,7 +26,6 @@ export default function LandingPage() {
   const isLtr= i18n.language === "en";
 
   return (
-    <div>
       <main className="pt-32 bg-gradient-to-br from-[#F8F9FF] to-white overflow-hidden">
         <section className="grid lg:grid-cols-2 gap-12 items-start">
           <motion.div
@@ -35,10 +34,10 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
+            <h1>
               {t("landingPage.hero.title")}
             </h1>
-            <p className="text-xl text-[#808080] mb-8">
+            <p className="description-text">
              {t("landingPage.hero.description")}
             </p>
             <div className="flex-start gap-4">
@@ -76,7 +75,7 @@ export default function LandingPage() {
                 <PiPulseBold className="w-4 h-4 text-[#6976EB]" />
               </div>
               <div className="flex-col-start">
-                <p className="text-sm text-[#808080]">{t("landingPage.hero.avgSugar")}</p>
+                <p className="meta-text">{t("landingPage.hero.avgSugar")}</p>
                 <p className="text-2xl font-bold text-[#161A41]">128 mg/dL</p>
               </div>
             </div>
@@ -85,10 +84,10 @@ export default function LandingPage() {
         {/* Features Section */}
         <section id="features">
           <div className="flex-col-center">
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
+            <h1>
               {t("landingPage.featuresSection.title")}
             </h1>
-            <p className="text-xl text-[#808080] mb-8">
+            <p className="description-text">
               {t("landingPage.featuresSection.description")}
             </p>
           </div>
@@ -111,10 +110,10 @@ export default function LandingPage() {
                   <div className="w-16 h-16 bg-[#ADB4F3]/60 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <Icon className="w-8 h-8 text-[#6976EB]" />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#3B3D53] mb-3">
+                  <h3>
                     {t(feature.title)}
                   </h3>
-                  <p className="text-[#808080]">{t(feature.description)}</p>
+                  <p className="card-text">{t(feature.description)}</p>
                 </motion.div>
               );
             })}
@@ -123,10 +122,10 @@ export default function LandingPage() {
 
         <section className="grid lg:grid-cols-2 gap-12 items-center bg-gradient-to-br from-[#F8F9FF] to-white">
           <div>
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
+            <h1>
               {t("landingPage.analytics.title")}
             </h1>
-            <p className="text-xl text-[#808080] mb-8">
+            <p className="description-text">
               {t("landingPage.analytics.description")}
             </p>
             <motion.div
@@ -144,7 +143,7 @@ export default function LandingPage() {
                   <h4 className="text-xl font-bold text-[#3B3D53] mb-3">
                      {t("landingPage.analytics.a1cTitle")} 
                   </h4>
-                  <p className="text-md text-[#808080]">
+                  <p className="card-text">
                     {t("landingPage.analytics.a1cDesc")}
                   </p>
                 </div>
@@ -157,7 +156,7 @@ export default function LandingPage() {
                   <h4 className="text-xl font-bold text-[#3B3D53] mb-3">
                     {t("landingPage.analytics.filterTitle")}
                   </h4>
-                  <p className="text-md text-[#808080]">
+                  <p className="card-text">
                     {t("landingPage.analytics.filterDesc")}
                   </p>
                 </div>
@@ -194,10 +193,10 @@ export default function LandingPage() {
         {/* Community Section */}
         <section id="community" className="flex-col-center gap-8">
           <div className="flex-col-center">
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
+            <h1>
               {t("landingPage.community.title")}
             </h1>
-            <p className="text-xl text-[#808080] mb-8">
+            <p className="description-text">
               {t("landingPage.community.description")}
             </p>
           </div>
@@ -230,10 +229,10 @@ export default function LandingPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-[#3B3D53] mb-3">
+                  <h3>
                     {t("landingPage.community.post.title")}
                   </h3>
-                  <p className="text-[#3B3D53]">
+                  <p className="text-[#3B3D53] text-sm md:text-base">
                     {t("landingPage.community.post.content")}
                   </p>
                 </div>
@@ -258,7 +257,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               className="bg-white p-8 rounded-2xl shadow-lg border border-[#D9D9D9]/30"
             >
-              <h3 className="text-xl font-bold text-[#3B3D53] mb-6 font-['Cairo']">
+              <h3>
                 {t("landingPage.community.categoriesTitle")}
               </h3>
               <div className="space-y-3">
@@ -304,10 +303,10 @@ export default function LandingPage() {
             <HiHeart className="w-10 h-10 text-white" />
           </div>
           <div className="flex-col-center">
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
+            <h1>
               {t("landingPage.donation.title")}
             </h1>
-            <p className="text-xl text-[#808080] mb-8">
+            <p className="description-text">
               {t("landingPage.donation.description")}
             </p>
           </div>
@@ -320,10 +319,10 @@ export default function LandingPage() {
         {/* Testimonials Section  */}
         <section id="testimonials" className="bg-white flex-col-center gap-8">
           <div className="flex-col-center">
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#161A41] mb-6">
+            <h1>
                 {t("landingPage.testimonials.title")}
             </h1>
-            <p className="text-xl text-[#808080] mb-8">
+            <p className="description-text">
               {t("landingPage.testimonials.description")}
             </p>
           </div>
@@ -346,7 +345,7 @@ export default function LandingPage() {
                   </div>
 
                   {/* text */}
-                  <p className="text-[#808080] flex-grow">{t(testimonial.text)}</p>
+                  <p className="card-text">{t(testimonial.text)}</p>
 
                   {/* profile */}
                   <div className="flex items-center gap-4 mt-6">
@@ -355,7 +354,7 @@ export default function LandingPage() {
                     </div>
 
                     <div>
-                      <h4 className="text-[#161A41] text-md font-bold">
+                      <h4 className="font-bold">
                         {t(testimonial.name)}
                       </h4>
                       <p className="text-[#808080] text-sm">
@@ -372,10 +371,10 @@ export default function LandingPage() {
         {/* Sign up Section  */}
         <section className="flex-col-center bg-gradient-to-r from-[#6976EB] to-[#2B3695]">
           <div className="flex-col-center">
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h1 className="text-white">
               {t("landingPage.cta.title")}
             </h1>
-            <p className="text-xl text-white mb-8">
+            <p className="text-base sm:text-lg lg:text-xl text-white mb-8">
               {t("landingPage.cta.description")}
             </p>
           </div>
@@ -385,8 +384,5 @@ export default function LandingPage() {
           </Button>
         </section>
       </main>
-      
-      <Footer />
-    </div>
   );
 }
