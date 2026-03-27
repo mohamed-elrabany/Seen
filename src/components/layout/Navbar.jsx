@@ -7,9 +7,9 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Desktop Navbar */}
-      <nav className="hidden lg:flex justify-between items-center fixed top-0 z-50 w-full bg-white p-8 shadow-md">
-        <img src="/logo.svg" alt="Seen logo" className="h-12 w-auto" />
+      {/* Desktop */}
+      <nav className="hidden lg:flex justify-between items-center fixed top-0 z-50 w-full bg-white px-8 py-4 shadow-md">
+        <img src="/logo.svg" alt="Seen logo" className="h-10 w-auto" />
 
         <ul className="flex items-center gap-8 text-lightGray">
           <a
@@ -41,7 +41,7 @@ export default function Navbar() {
           <li>
             <Link
               to="/register"
-              className="bg-[#6976EB] hover:bg-[#1F1A5F] transition-all text-white rounded-full px-6 py-3 cursor-pointer font-bold shadow-lg"
+              className="bg-[#6976EB] hover:bg-[#1F1A5F] transition-all text-white rounded-full px-6 py-2.5 font-bold shadow-lg"
             >
               {t("common.signup")}
             </Link>
@@ -51,18 +51,20 @@ export default function Navbar() {
         <LanguageSwitcher />
       </nav>
 
-      {/* Mobile Navbar */}
-      <nav className="flex lg:hidden justify-between items-center fixed top-0 z-50 w-full bg-white p-8 shadow-md">
-        <img src="/logo.svg" alt="Seen logo" className="h-12 w-auto" />
+      {/* Mobile */}
+      <nav className="flex lg:hidden justify-between items-center fixed top-0 z-50 w-full bg-white px-4 py-3 shadow-md">
+        <img src="/logo.svg" alt="Seen logo" className="h-8 w-auto" />
 
-        <div className="flex items-center gap-4">
+        {/* Mobile Navbar */}
+        <div className="flex items-center gap-2">
           <Link
             to="/login"
-            className="w-auto h-full border-2 border-[#6976EB] bg-[#6976EB] hover:bg-[#1F1A5F] hover:border-[#1F1A5F] text-white rounded-xl p-4 cursor-pointer text-lg font-bold shadow-lg transition-all"
+            className="border-2 border-[#6976EB] bg-[#6976EB] hover:bg-[#1F1A5F] 
+    hover:border-[#1F1A5F] text-white rounded-xl px-4 py-2 text-sm font-bold 
+    shadow-lg transition-all"
           >
             {t("common.login")}
           </Link>
-
           <LanguageSwitcher />
         </div>
       </nav>

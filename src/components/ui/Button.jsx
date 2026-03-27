@@ -5,7 +5,7 @@ export default function Button({className, children, ...props}){
         <button 
         {...props}
         className={`
-        w-auto flex-center gap-2 text-lg font-bold rounded-xl transition-all
+        w-auto flex-center gap-2 text-sm sm:text-base font-bold rounded-xl transition-all
         ${className}
         `}>
             {children}

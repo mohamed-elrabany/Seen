@@ -10,14 +10,17 @@ export default function LanguageSwitcher() {
   };
 
   return (
+    // LanguageSwitcher — match the same py-2 px-4 text-sm
     <button
       onClick={toggleLanguage}
-      className="p-4 border-2 border-[#6976EB] hover:bg-[#6976EB] text-[#6976EB] hover:text-white shadow-lg flex-center gap-2 w-auto cursor-pointer text-lg font-bold rounded-xl transition-all"
+      className="border-2 border-[#6976EB] hover:bg-[#6976EB] text-[#6976EB] 
+  hover:text-white shadow-lg flex-center gap-1 w-auto cursor-pointer 
+  text-sm font-bold rounded-xl transition-all px-4 py-2"
     >
       <p className="font-bold uppercase">
         {i18n.language === "ar" ? "EN" : "AR"}
       </p>
-      <MdOutlineLanguage className="w-6 h-6" />
+      <MdOutlineLanguage className="w-4 h-4" />
     </button>
   );
 }

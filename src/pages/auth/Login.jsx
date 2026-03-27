@@ -50,10 +50,10 @@ export default function Login() {
             <img src="/logo.svg" alt="Seen Logo" className="w-48 h-48" />
           </Link>
 
-          <h1 className="text-4xl font-bold text-[#161A41] mb-3">
+          <h1>
             {t("common.welcome")}
           </h1>
-          <p className="text-[#808080] mb-8">
+          <p className="description-text">
             {t("loginPage.loginToContinue")}
           </p>
 
@@ -165,8 +165,8 @@ export default function Login() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative z-10 text-white text-center max-w-xl"
         >
-          <h2 className="text-5xl font-bold mb-6">{t("loginPage.start")}</h2>
-          <p className="text-xl text-white/90 leading-relaxed">
+          <h1 className="text-white">{t("loginPage.start")}</h1>
+          <p className="text-base sm:text-lg lg:text-xl text-white mb-8">
             {t("loginPage.sentence")}
           </p>
 
