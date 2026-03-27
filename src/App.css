@@ -49,7 +49,7 @@
   }
 
   section {
-    @apply py-12 px-8 md:px-10 lg:px-12;
+    @apply py-12 px-6 sm:px-8 md:px-10 lg:px-12;
   }     
  
   /* modals - loaders - popups */
