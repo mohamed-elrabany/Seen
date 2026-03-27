@@ -27,8 +27,7 @@ export default function LandingPage() {
   const isLtr = i18n.language === "en";
 
   return (
-    <main className="pt-32 bg-gradient-to-br from-[#F8F9FF] to-white overflow-hidden">
-
+    <main className="pt-32 bg-gradient-to-br from-[#F8F9FF] to-white overflow-x-hidden">
       {/* Hero Section */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <motion.div
@@ -37,9 +36,7 @@ export default function LandingPage() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h1>
-            {t("landingPage.hero.title")}
-          </h1>
+          <h1>{t("landingPage.hero.title")}</h1>
           <p className="description-text">
             {t("landingPage.hero.description")}
           </p>
@@ -49,7 +46,9 @@ export default function LandingPage() {
               className="flex-center gap-2 bg-[#6976EB] hover:bg-[#1F1A5F] px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white font-bold rounded-xl transition-all"
             >
               {t("landingPage.hero.start")}
-              <IoIosArrowRoundBack className={`${isLtr && "rotate-180"} w-5 h-5 md:w-7 md:h-7`} />
+              <IoIosArrowRoundBack
+                className={`${isLtr && "rotate-180"} w-5 h-5 md:w-7 md:h-7`}
+              />
             </Link>
             <a
               href="#features"
@@ -66,7 +65,7 @@ export default function LandingPage() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true }}
-          className="relative"
+          className="relative overflow-visible"
         >
           <div className="relative w-full h-[260px] sm:h-[380px] lg:h-[500px] shadow-2xl rounded-3xl overflow-hidden">
             <img
@@ -76,14 +75,17 @@ export default function LandingPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#161A41]/60 to-transparent"></div>
           </div>
+
           {/* Floating badge */}
-          <div className="absolute -bottom-6 -right-6 bg-white flex-center p-4 gap-2 rounded-xl shadow-2xl">
-            <div className="w-8 h-8 bg-[#ADB4F3]/60 rounded-full flex items-center justify-center">
-              <PiPulseBold className="w-4 h-4 text-[#6976EB]" />
+          <div className="absolute -bottom-3 -right-3 lg:-bottom-6 lg:-right-6 bg-white flex-center p-3 md:p-4 gap-2 rounded-xl shadow-2xl">
+            <div className="w-7 h-7 md:w-8 md:h-8 bg-[#ADB4F3]/60 rounded-full flex items-center justify-center">
+              <PiPulseBold className="w-3 h-3 md:w-4 md:h-4 text-[#6976EB]" />
             </div>
             <div className="flex-col-start">
               <p className="meta-text">{t("landingPage.hero.avgSugar")}</p>
-              <p className="text-2xl font-bold text-[#161A41]">128 mg/dL</p>
+              <p className="text-lg md:text-2xl font-bold text-[#161A41]">
+                128 mg/dL
+              </p>
             </div>
           </div>
         </motion.div>
@@ -92,9 +94,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section id="features">
         <div className="flex-col-center">
-          <h2>
-            {t("landingPage.featuresSection.title")}
-          </h2>
+          <h2>{t("landingPage.featuresSection.title")}</h2>
           <p className="description-text">
             {t("landingPage.featuresSection.description")}
           </p>
@@ -114,9 +114,7 @@ export default function LandingPage() {
                 <div className="w-16 h-16 bg-[#ADB4F3]/60 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Icon className="w-8 h-8 text-[#6976EB]" />
                 </div>
-                <h3>
-                  {t(feature.title)}
-                </h3>
+                <h3>{t(feature.title)}</h3>
                 <p className="card-text">{t(feature.description)}</p>
               </motion.div>
             );
@@ -127,9 +125,7 @@ export default function LandingPage() {
       {/* Analytics Section */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-gradient-to-br from-[#F8F9FF] to-white">
         <div>
-          <h2>
-            {t("landingPage.analytics.title")}
-          </h2>
+          <h2>{t("landingPage.analytics.title")}</h2>
           <p className="description-text">
             {t("landingPage.analytics.description")}
           </p>
@@ -145,9 +141,7 @@ export default function LandingPage() {
                 <IoMdCheckmarkCircleOutline className="w-6 h-6 text-[#6976EB]" />
               </div>
               <div className="flex-col-start">
-                <h4>
-                  {t("landingPage.analytics.a1cTitle")}
-                </h4>
+                <h4>{t("landingPage.analytics.a1cTitle")}</h4>
                 <p className="card-text">
                   {t("landingPage.analytics.a1cDesc")}
                 </p>
@@ -158,9 +152,7 @@ export default function LandingPage() {
                 <IoBarChart className="w-6 h-6 text-[#6976EB]" />
               </div>
               <div className="flex-col-start">
-                <h4>
-                  {t("landingPage.analytics.filterTitle")}
-                </h4>
+                <h4>{t("landingPage.analytics.filterTitle")}</h4>
                 <p className="card-text">
                   {t("landingPage.analytics.filterDesc")}
                 </p>
@@ -187,13 +179,15 @@ export default function LandingPage() {
               <p className="card-text">
                 {t("landingPage.analytics.timeRange")}
               </p>
-              <p className="text-base md:text-xl font-bold text-[#6976EB]">85%</p>
+              <p className="text-base md:text-xl font-bold text-[#6976EB]">
+                85%
+              </p>
             </div>
             <div className="bg-[#F8F9FF] rounded-xl p-4">
-              <p className="card-text">
-                {t("landingPage.analytics.avgSugar")}
+              <p className="card-text">{t("landingPage.analytics.avgSugar")}</p>
+              <p className="text-base md:text-xl font-bold text-[#6976EB]">
+                142
               </p>
-              <p className="text-base md:text-xl font-bold text-[#6976EB]">142</p>
             </div>
           </div>
         </motion.div>
@@ -202,9 +196,7 @@ export default function LandingPage() {
       {/* Community Section */}
       <section id="community" className="flex-col-center gap-8">
         <div className="flex-col-center">
-          <h2>
-            {t("landingPage.community.title")}
-          </h2>
+          <h2>{t("landingPage.community.title")}</h2>
           <p className="description-text">
             {t("landingPage.community.description")}
           </p>
@@ -267,9 +259,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="bg-white p-8 rounded-2xl shadow-lg border border-[#D9D9D9]/30"
           >
-            <h3>
-              {t("landingPage.community.categoriesTitle")}
-            </h3>
+            <h3>{t("landingPage.community.categoriesTitle")}</h3>
             <div className="space-y-3">
               {categories.map((type, index) => (
                 <button
@@ -314,9 +304,7 @@ export default function LandingPage() {
           <HiHeart className="w-10 h-10 text-white" />
         </div>
         <div className="flex-col-center">
-          <h2>
-            {t("landingPage.donation.title")}
-          </h2>
+          <h2>{t("landingPage.donation.title")}</h2>
           <p className="description-text">
             {t("landingPage.donation.description")}
           </p>
@@ -330,9 +318,7 @@ export default function LandingPage() {
       {/* Testimonials Section */}
       <section id="testimonials" className="bg-white flex-col-center gap-8">
         <div className="flex-col-center">
-          <h2>
-            {t("landingPage.testimonials.title")}
-          </h2>
+          <h2>{t("landingPage.testimonials.title")}</h2>
           <p className="description-text">
             {t("landingPage.testimonials.description")}
           </p>
@@ -391,7 +377,9 @@ export default function LandingPage() {
           className="flex-center gap-2 hover:gap-6 bg-white hover:shadow-xl px-6 py-3 text-sm sm:text-base text-[#6976EB] font-bold rounded-xl transition-all"
         >
           {t("landingPage.cta.button")}
-          <IoIosArrowRoundBack className={`w-5 h-5 md:w-7 md:h-7 ${isLtr && "rotate-180"}`} />
+          <IoIosArrowRoundBack
+            className={`w-5 h-5 md:w-7 md:h-7 ${isLtr && "rotate-180"}`}
+          />
         </Link>
       </section>
     </main>
