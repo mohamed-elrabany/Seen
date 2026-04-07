@@ -6,6 +6,10 @@ import {action as loginAction} from '../pages/auth/Login';
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const Home = lazy(() => import("../pages/Home"));
+const Community = lazy(() => import("../pages/community/Community"));
+const CreatePost = lazy(() => import("../pages/community/CreatePost"));
+const PostDetails = lazy(() => import("../pages/community/PostDetails"));
+const EditPost = lazy(() => import("../pages/community/EditPost"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 import RootLayout from "./RootLayout";
@@ -49,6 +53,38 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <Home />
+          </Suspense>
+        ),
+      },
+      {
+        path: "community",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Community />
+          </Suspense>
+        ),
+      },
+      {
+        path: "community/create",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <CreatePost />
+          </Suspense>
+        ),
+      },
+      {
+        path: "community/edit/:postId",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <EditPost />
+          </Suspense>
+        ),
+      },
+      {
+        path: "community/:postId",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <PostDetails />
           </Suspense>
         ),
       },
