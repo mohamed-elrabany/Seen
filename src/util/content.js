@@ -84,6 +84,45 @@ export const headerCardsContent=[
   },
 ];
 
+const commentsData = [
+  {
+    id: 1,
+    content: "فعلاً الأكل الصحي بيفرق جدًا 🙌",
+    likesCount: 4,
+    isLiked: false,
+    dueDate: "2026-04-03",
+    user: {
+      name: "Ahmed Ali",
+      avatar: "https://i.pravatar.cc/150?img=5",
+      diabetesType: "type1"
+    },
+  },
+  {
+    id: 2,
+    content: "أنا جربت أقلل السكر وحسيت بتحسن كبير 👍",
+    likesCount: 6,
+    isLiked: true,
+    dueDate: "2026-04-03",
+    user: {
+      name: "Mona Hassan",
+      avatar: "https://i.pravatar.cc/150?img=6",
+      diabetesType: "type2"
+    },
+  },
+  {
+    id: 3,
+    content: "ممكن تشاركنا نظامك الغذائي؟",
+    likesCount: 2,
+    isLiked: false,
+    dueDate: "2026-04-03",
+    user: {
+      name: "Youssef Khaled",
+      avatar: "https://i.pravatar.cc/150?img=7",
+      diabetesType: "gestational"
+    },
+  },
+];
+
 export const posts = [
   {
     id: 1,
@@ -96,8 +135,10 @@ export const posts = [
     isLiked: false,
     commentsCount: 3,
     dueDate: "2026-04-01",
-    user: { name: "Ahmed Ali", avatar: "https://i.pravatar.cc/150?img=1" },
+    user: { name: "Ahmed Ali", avatar: "https://i.pravatar.cc/150?img=1", diabetesType: "type2" },
     hashtags: ["#health", "#صحة", "#fitness"],
+    comments: commentsData,
+    
   },
   {
     id: 2,
@@ -110,8 +151,10 @@ export const posts = [
     isLiked: true,
     commentsCount: 8,
     dueDate: "2026-04-02",
-    user: { name: "Mohamed Hassan", avatar: "https://i.pravatar.cc/150?img=2" },
+    user: { name: "Mohamed Hassan", avatar: "https://i.pravatar.cc/150?img=2", diabetesType: "type1" },
     hashtags: ["#Type1", "#تجربة", "#Control"],
+    comments: commentsData,
+    
   },
   {
     id: 3,
@@ -128,8 +171,10 @@ export const posts = [
     isLiked: false,
     commentsCount: 2,
     dueDate: "2026-04-03",
-    user: { name: "Sara Mohamed", avatar: "https://i.pravatar.cc/150?img=3" },
+    user: { name: "Sara Mohamed", avatar: "https://i.pravatar.cc/150?img=3", diabetesType: "type2" },
     hashtags: ["#Type2", "#أكل_صحي"],
+    comments: commentsData,
+    
   },
   {
     id: 4,
@@ -142,8 +187,10 @@ export const posts = [
     isLiked: true,
     commentsCount: 5,
     dueDate: "2026-04-04",
-    user: { name: "Omar Khaled", avatar: "https://i.pravatar.cc/150?img=4" },
+    user: { name: "Omar Khaled", avatar: "https://i.pravatar.cc/150?img=4", diabetesType: "lada" },
     hashtags: ["#LADA", "#Diabetes", "#تجربة"],
+    comments: commentsData,
+    
   },
   {
     id: 5,
@@ -156,8 +203,10 @@ export const posts = [
     isLiked: false,
     commentsCount: 1,
     dueDate: "2026-04-05",
-    user: { name: "Nour Ahmed", avatar: "https://i.pravatar.cc/150?img=5" },
+    user: { name: "Nour Ahmed", avatar: "https://i.pravatar.cc/150?img=5", diabetesType: "mody" },
     hashtags: ["#MODY", "#Rare", "#نادر"],
+    comments: commentsData,
+    
   },
   {
     id: 6,
@@ -175,8 +224,10 @@ export const posts = [
     isLiked: true,
     commentsCount: 6,
     dueDate: "2026-04-06",
-    user: { name: "Fatma Ali", avatar: "https://i.pravatar.cc/150?img=6" },
+    user: { name: "Fatma Ali", avatar: "https://i.pravatar.cc/150?img=6", diabetesType: "gestational" },
     hashtags: ["#Gestational", "#حملي", "#Pregnancy"],
+    comments: commentsData,
+    
   },
   {
     id: 7,
@@ -189,7 +240,9 @@ export const posts = [
     isLiked: true,
     commentsCount: 10,
     dueDate: "2026-04-07",
-    user: { name: "You", avatar: "https://i.pravatar.cc/150?img=7" },
+    user: { name: "You", avatar: "https://i.pravatar.cc/150?img=7", diabetesType: "type1" },
     hashtags: ["#Tips", "#نصائح", "#Health"],
+    comments: commentsData,
+    
   },
 ];

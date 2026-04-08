@@ -19,7 +19,7 @@ export default function Input({
 
       <input
         id={id}
-        className={`w-full text-[#161A41] font-bold rounded-lg px-4 py-2.5 sm:py-3 border-2
+        className={`w-full text-[#161A41] font-semibold rounded-lg px-4 py-2.5 sm:py-3 border-2
     ${error ? "border-red-700 focus:border-red-500" : "border-[#D9D9D9]/30 focus:border-[#6976EB]"}
     text-sm sm:text-base outline-none transition-all
     ${className}`}
