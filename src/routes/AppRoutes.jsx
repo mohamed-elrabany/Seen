@@ -3,6 +3,7 @@ import { Suspense, lazy } from "react";
 
 
 import {action as loginAction} from '../pages/auth/Login';
+import { action as registerAction } from "../pages/auth/Register";
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const Home = lazy(() => import("../pages/Home"));
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
             <Register />
           </Suspense>
         ),
-        // action: loginAction
+        action: registerAction
       },
       {
         path: "home",

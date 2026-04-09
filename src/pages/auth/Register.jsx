@@ -11,7 +11,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { register } from "../../services/authService";
-import { redirect } from "react-router-dom";
+import { redirect, Form } from "react-router-dom";
 
 export default function Register() {
   const { t } = useTranslation();
@@ -67,7 +67,7 @@ export default function Register() {
   const CurrentStep = steps[currentStep];
 
   return (
-    <div className="">
+    <Form className="">
       <StepProgressBar currentStep={currentStep} />
 
       <div className="max-w-3xl mx-auto px-6 py-12 mt-5">
@@ -125,7 +125,7 @@ export default function Register() {
           </motion.div>
         </AnimatePresence>
       </div>
-    </div>
+    </Form>
   );
 }
 
@@ -142,6 +142,7 @@ export async function action() {
 
     localStorage.removeItem("registerData");
     localStorage.removeItem("registerStep");
+    console.log('registered');
 
     return redirect("/login");
   } catch (err) {

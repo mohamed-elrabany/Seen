@@ -4,6 +4,8 @@ import { IoSend } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
 
 import { Link } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { getPostComments } from "../../services/communityServices";
 
 import i18next from "i18next";
 import PostCard from "../../components/community/PostCard";
@@ -16,7 +18,7 @@ export default function PostDetails() {
   const [comment, setComment] = useState("");
 
   return (
-    <div className="overflow-y-auto flex-col-center">
+    <div className="overflow-y-auto flex flex-col w-full min-h-screen">
       <Link
         to="/community"
         className="bg-white p-3 rounded-lg shadow-lg self-start mb-4"

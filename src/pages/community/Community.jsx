@@ -7,7 +7,7 @@ export default function Community(){
         <>
             <HeaderBar />
             {/* <CategorySidebar /> */}
-            <PostFeed />
+            <PostFeed category={''} />
         </>
     );
 }
