@@ -20,15 +20,14 @@ export default function Register() {
 
   const isSubmitted = useRef(false);
 
-  // ENHANCEMENT: Initial State Logic
   const [formData, setFormData] = useState(() => {
     const saved = sessionStorage.getItem("registerData");
     const parsed = saved ? JSON.parse(saved) : null;
 
     return (
       parsed || {
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         email: "",
         phone: "",
         password: "",
@@ -37,29 +36,26 @@ export default function Register() {
         birthDate: "",
         weight: "",
         height: "",
-        diabetesType: "",
-        insulin: "",
+        diabetes_type: "",
+        insulin_therapy: "",
       }
     );
   });
 
-  // ENHANCEMENT: Smart Step Initializer
-  // If password is missing (due to refresh), force user to Step 0 (Step 1)
   const [currentStep, setCurrentStep] = useState(() => {
     const step = sessionStorage.getItem("registerStep");
     const parsedStep = step ? JSON.parse(step) : 0;
 
-    // Logic: If we have saved data but NO password, reset to start
+    // SECURITY: If user is past Step 1 but password was cleared from storage
     if (parsedStep > 0 && !formData.password) {
       return 0;
     }
     return parsedStep;
   });
 
-  // ENHANCEMENT: Modified Sync Effect
-  // We exclude password and confirmPassword from sessionStorage for security
   useEffect(() => {
     const timer = setTimeout(() => {
+      // Stripping passwords for security in SessionStorage
       const { password, confirmPassword, ...safeData } = formData;
       sessionStorage.setItem("registerData", JSON.stringify(safeData));
     }, 500);
@@ -70,7 +66,6 @@ export default function Register() {
     sessionStorage.setItem("registerStep", JSON.stringify(currentStep));
   }, [currentStep]);
 
-  // ENHANCEMENT: Auto-Cleanup on Navigation
   useEffect(() => {
     return () => {
       if (!isSubmitted.current) {
@@ -95,19 +90,17 @@ export default function Register() {
 
   return (
     <Form
-      className=""
       method="post"
       onSubmit={() => (isSubmitted.current = true)}
     >
       <StepProgressBar currentStep={currentStep} />
 
-      {/* Hidden Input Bridge for React Router Action */}
+      {/* Hidden inputs ensure the password in memory is actually submitted */}
       {Object.keys(formData).map((key) => (
-        <input key={key} type="hidden" name={key} value={formData[key]} />
+        <input key={key} type="hidden" name={key} value={formData[key] || ""} />
       ))}
 
       <div className="max-w-3xl mx-auto px-6 py-12 mt-5">
-        {/* Backend Error Message Display */}
         {actionData?.error && (
           <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-center rounded">
             {actionData.error}
@@ -143,7 +136,7 @@ export default function Register() {
                   <p>{t("registerPage.buttons.prev")}</p>
                 </Button>
               )}
-              {currentStep !== 3 && (
+              {currentStep !== 3 ? (
                 <Button
                   type="button"
                   name="next"
@@ -156,8 +149,7 @@ export default function Register() {
                     className={`${i18next.language === "ar" && "rotate-180"}`}
                   />
                 </Button>
-              )}
-              {currentStep === 3 && (
+              ) : (
                 <Button
                   type="submit"
                   disabled={!isStepValid}
@@ -177,19 +169,19 @@ export default function Register() {
 export async function action({ request }) {
   const rawFormData = await request.formData();
   const userData = Object.fromEntries(rawFormData);
+  
+  delete userData.confirmPassword;
+  if (userData.weight) userData.weight = Number(userData.weight);
+  if (userData.height) userData.height = Number(userData.height);
 
   try {
     await register(userData);
-
     sessionStorage.removeItem("registerData");
     sessionStorage.removeItem("registerStep");
-
-    return redirect("/home");
+    return redirect("/login");
   } catch (err) {
     return {
-      error:
-        err.response?.data?.message ||
-        "Please check that all steps are filled correctly.",
+      error: err.response?.data?.message || "Registration failed.",
     };
   }
 }

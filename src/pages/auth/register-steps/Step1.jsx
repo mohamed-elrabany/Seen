@@ -1,6 +1,6 @@
 import Input from "../../../components/ui/Input";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { userExists } from "../../../services/authService";
 
 export default function Step1({ data, setData, isStepValid }) {
@@ -18,12 +18,8 @@ export default function Step1({ data, setData, isStepValid }) {
     setTouched(prev => ({ ...prev, [fieldName]: true }));
   }
 
-  async function checkEmailExists(email) {
-    if (!emailRegex.test(email)) {
-      setEmailError('Invalid email format');
-      setIsEmailVerified(false);
-      return;
-    }
+  const checkEmailExists = useCallback(async (email) => {
+    if (!emailRegex.test(email)) return;
 
     setEmailStatus('loading');
     setEmailError('');
@@ -35,6 +31,7 @@ export default function Step1({ data, setData, isStepValid }) {
         setIsEmailVerified(false);
       } else {
         setIsEmailVerified(true);
+        setEmailError('');
       }
     } catch (error) {
       setEmailError('Failed to check email');
@@ -42,11 +39,19 @@ export default function Step1({ data, setData, isStepValid }) {
     } finally {
       setEmailStatus('idle');
     }
-  }
+  }, []);
+
+  // Effect to re-verify email on refresh/navigation without loop
+  useEffect(() => {
+    const isValidFormat = emailRegex.test(data.email);
+    if (isValidFormat && !isEmailVerified && !emailError && emailStatus === 'idle') {
+      checkEmailExists(data.email);
+    }
+  }, [data.email, isEmailVerified, emailError, emailStatus, checkEmailExists]);
 
   useEffect(() => {
-    const isFirstNameValid = !!data.firstName;
-    const isLastNameValid = !!data.lastName;
+    const isFirstNameValid = !!data.first_name;
+    const isLastNameValid = !!data.last_name;
     const isEmailValid = emailRegex.test(data.email) && isEmailVerified;
     const isPhoneValid = data.phone && phoneRegex.test(data.phone);
     const isPasswordValid = data.password && data.password.length >= 8;
@@ -72,32 +77,35 @@ export default function Step1({ data, setData, isStepValid }) {
         {/* Names Row */}
         <div className="grid grid-cols-2 gap-4 items-center">
           <Input
+            name="first_name"
             label={t("registerPage.step1.inputs.firstName.label")}
-            value={data.firstName}
-            onChange={(e) => setData({ ...data, firstName: e.target.value })}
-            onBlur={() => handleBlur('firstName')} // Added Blur
+            value={data.first_name || ""}
+            onChange={(e) => setData({ ...data, first_name: e.target.value })}
+            onBlur={() => handleBlur('first_name')}
             placeholder={t("registerPage.step1.inputs.firstName.placeholder")}
-            error={touched.firstName && !data.firstName} // Border only if empty
+            error={touched.first_name && !data.first_name}
           />
           <Input
+            name="last_name"
             label={t("registerPage.step1.inputs.lastName.label")}
-            value={data.lastName}
-            onChange={(e) => setData({ ...data, lastName: e.target.value })}
-            onBlur={() => handleBlur('lastName')} // Added Blur
+            value={data.last_name || ""}
+            onChange={(e) => setData({ ...data, last_name: e.target.value })}
+            onBlur={() => handleBlur('last_name')}
             placeholder={t("registerPage.step1.inputs.lastName.placeholder")}
-            error={touched.lastName && !data.lastName} // Border only if empty
+            error={touched.last_name && !data.last_name}
           />
         </div>
         
         {/* Email Input */}
         <div className="space-y-1">
           <Input
+            name="email"
             label={t("registerPage.step1.inputs.email.label")}
             type="email"
-            value={data.email}
+            value={data.email || ""}
             onBlur={() => {
-              handleBlur('email'); // CRITICAL FIX: Mark as touched
-              checkEmailExists(data.email); // Check backend
+              handleBlur('email');
+              if (!isEmailVerified) checkEmailExists(data.email);
             }}
             onChange={(e) => {
               setData({ ...data, email: e.target.value });
@@ -114,29 +122,33 @@ export default function Step1({ data, setData, isStepValid }) {
         
         {/* Phone Input */}
         <Input
+          name="phone"
           label={t("registerPage.step1.inputs.phone.label")}
-          value={data.phone}
+          value={data.phone || ""}
           onChange={(e) => setData({ ...data, phone: e.target.value })}
           onBlur={() => handleBlur('phone')}
           placeholder={t("registerPage.step1.inputs.phone.placeholder")}
           error={touched.phone && data.phone && !phoneRegex.test(data.phone) ? "Invalid phone format" : false}
         />
         
-        {/* Password Inputs */}
+        {/* Password Input */}
         <Input
+          name="password"
           label={t("registerPage.step1.inputs.password.label")}
           type="password"
-          value={data.password}
+          value={data.password || ""}
           onChange={(e) => setData({ ...data, password: e.target.value })}
           onBlur={() => handleBlur('password')}
           placeholder={t("registerPage.step1.inputs.password.placeholder")}
           error={touched.password && data.password && data.password.length < 8 ? "Minimum 8 characters" : false}
         />
         
+        {/* Confirm Password Input */}
         <Input
+          name="confirmPassword"
           label={t("registerPage.step1.inputs.confirmPassword.label")}
           type="password"
-          value={data.confirmPassword}
+          value={data.confirmPassword || ""}
           onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
           onBlur={() => handleBlur('confirmPassword')}
           placeholder={t("registerPage.step1.inputs.confirmPassword.placeholder")}

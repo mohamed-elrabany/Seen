@@ -7,7 +7,7 @@ export default function Step4({data, setData, isStepValid}) {
   const {t}= useTranslation();
 
    useEffect(()=>{
-      if( data.insulin ){
+      if( data.insulin_therapy ){
         isStepValid(true);
       }else{
         isStepValid(false);
@@ -20,28 +20,28 @@ export default function Step4({data, setData, isStepValid}) {
       <div className="grid items-center gap-4">
         <RadioButton
           id="diabetes-type"
-          name="insulin"
-          value="injection"
-          onChange={(e)=> setData({...data, insulin: e.target.value})}
-          isChecked={data.insulin === "injection"}
+          name="insulin_therapy"
+          value="Pen / Syringes"
+          onChange={(e)=> setData({...data, insulin_therapy: e.target.value})}
+          isChecked={data.insulin_therapy === "Pen / Syringes"}
         >
           <p>{t('registerPage.step4.options.injection')}</p>
         </RadioButton>
         <RadioButton
           id="diabetes-type"
-          name="insulin"
-          value="pills"
-          onChange={(e)=> setData({...data, insulin: e.target.value})}
-          isChecked={data.insulin === "pills"}
+          name="insulin_therapy"
+          value="pump"
+          onChange={(e)=> setData({...data, insulin_therapy: e.target.value})}
+          isChecked={data.insulin_therapy === "pump"}
         >
           <p>{t('registerPage.step4.options.pump')}</p>
         </RadioButton>
         <RadioButton
           id="diabetes-type"
-          name="insulin"
-          value="no-insulin"
-          onChange={(e)=> setData({...data, insulin: e.target.value})}
-          isChecked={data.insulin === "no-insulin"}
+          name="insulin_therapy"
+          value="No insulin"
+          onChange={(e)=> setData({...data, insulin_therapy: e.target.value})}
+          isChecked={data.insulin_therapy === "No insulin"}
         >
           <p>{t('registerPage.step4.options.noInsulin')}</p>
         </RadioButton>

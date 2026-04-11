@@ -11,7 +11,7 @@ async function handleRequest(request){
 
 export async function login(email, password) {
   try {
-    const response = await api.post("/login", { email, password });
+    const response = await api.post("/login", { email, password }, { withCredentials: false });
     return response.data;
   } catch (err) {
     throw err.response?.data?.message || "بيانات خاطئة";
@@ -20,28 +20,18 @@ export async function login(email, password) {
 
 export async function register(userData) {
   try {
-    const response = await api.post("/register", {
-      first_name: userData.firstName,
-      last_name: userData.lastName,
-      email: userData.email,
-      password: userData.password,
-      phone: userData.phone,
-      gender: userData.gender,
-      birthDate: userData.birthDate,
-      weight: userData.weight,
-      height: userData.height,
-      diabeted_type: userData.diabetesType,
-      insulin_therapy: userData.insulin,
-    });
+    const response = await api.post("/register", userData, { withCredentials: false });
+    console.log(response.data);
+    console.log('user Created Successfully');
     return response.data;
   } catch (err) {
-    throw err;
+    throw err.response?.data?.message || "Registration failed";
   }
 }
 
 export async function userExists(email){
   const data= await handleRequest(
-    api.get("/check-email", { params: {email} })
+    api.post("/check-email",  { email }, { withCredentials: false })
   );
   return data.exists;
 }

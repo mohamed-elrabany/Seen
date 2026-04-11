@@ -7,7 +7,7 @@ export default function Step3({data, setData, isStepValid}) {
   const {t}= useTranslation();
 
   useEffect(()=>{
-      if( data.diabetesType ){
+      if( data.diabetes_type ){
         isStepValid(true);
       }else{
         isStepValid(false);
@@ -20,55 +20,55 @@ export default function Step3({data, setData, isStepValid}) {
       <div className="grid items-center gap-4">
         <RadioButton
           id="type1"
-          name="diabetes"
+          name="diabetes_type"
           value="Type1"
-          onChange={(e)=> setData({...data, diabetesType: e.target.value})}
-          isChecked={data.diabetesType === "Type1"}
+          onChange={(e)=> setData({...data, diabetes_type: e.target.value})}
+          isChecked={data.diabetes_type === "Type1"}
         >
           <p>{t('registerPage.step3.options.type1')}</p>
         </RadioButton>
         <RadioButton
           id="type2"
-          name="diabetes"
+          name="diabetes_type"
           value="Type2"
-          onChange={(e)=> setData({...data, diabetesType: e.target.value})}
-          isChecked={data.diabetesType === "Type2"}
+          onChange={(e)=> setData({...data, diabetes_type: e.target.value})}
+          isChecked={data.diabetes_type === "Type2"}
         >
           <p>{t('registerPage.step3.options.type2')}</p>
         </RadioButton>
         <RadioButton
           id="lada"
-          name="diabetes"
+          name="diabetes_type"
           value="LADA"
-          onChange={(e)=> setData({...data, diabetesType: e.target.value})}
-          isChecked={data.diabetesType === "LADA"}
+          onChange={(e)=> setData({...data, diabetes_type: e.target.value})}
+          isChecked={data.diabetes_type === "LADA"}
         >
           <p>{t('registerPage.step3.options.lada')}</p>
         </RadioButton>
         <RadioButton
           id="mody"
-          name="diabetes"
+          name="diabetes_type"
           value="MODY"
-          onChange={(e)=> setData({...data, diabetesType: e.target.value})}
-          isChecked={data.diabetesType === "MODY"}
+          onChange={(e)=> setData({...data, diabetes_type: e.target.value})}
+          isChecked={data.diabetes_type === "MODY"}
         >
           <p>{t('registerPage.step3.options.mody')}</p>
         </RadioButton>
         <RadioButton
           id="gestational"
-          name="diabetes"
+          name="diabetes_type"
           value="Gestational"
-          onChange={(e)=> setData({...data, diabetesType: e.target.value})}
-          isChecked={data.diabetesType === "gestational"}
+          onChange={(e)=> setData({...data, diabetes_type: e.target.value})}
+          isChecked={data.diabetes_type === "Gestational"}
         >
           <p>{t('registerPage.step3.options.gestational')}</p>
         </RadioButton>
         <RadioButton
           id="other"
-          name="diabetes"
+          name="diabetes_type"
           value="other"
-          onChange={(e)=> setData({...data, diabetesType: e.target.value})}
-          isChecked={data.diabetesType === "other"}
+          onChange={(e)=> setData({...data, diabetes_type: e.target.value})}
+          isChecked={data.diabetes_type === "other"}
         >
           <p>{t('registerPage.step3.options.other')}</p>
         </RadioButton>

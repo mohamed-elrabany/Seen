@@ -38,9 +38,9 @@ export default function Step2({ data, setData, isStepValid }) {
           <RadioButton
             id="male"
             name="gender"
-            value="male" // Changed to lowercase to match your isChecked logic
+            value="Male" // Changed to lowercase to match your isChecked logic
             onChange={(e) => setData({ ...data, gender: e.target.value })}
-            isChecked={data.gender === "male"}
+            isChecked={data.gender === "Male"}
           >
             <IoMdMan className="w-10 h-10" />
             <p>{t("registerPage.step2.inputs.gender.male")}</p>
@@ -49,9 +49,9 @@ export default function Step2({ data, setData, isStepValid }) {
           <RadioButton
             id="female"
             name="gender"
-            value="female" // Changed to lowercase to match your isChecked logic
+            value="Female" // Changed to lowercase to match your isChecked logic
             onChange={(e) => setData({ ...data, gender: e.target.value })}
-            isChecked={data.gender === "female"}
+            isChecked={data.gender === "Female"}
           >
             <IoMdWoman className="w-10 h-10" />
             <p>{t("registerPage.step2.inputs.gender.female")}</p>
@@ -60,6 +60,7 @@ export default function Step2({ data, setData, isStepValid }) {
 
         {/* Birth Date */}
         <Input
+        name={'birthDate'}
           id="birthDate"
           label={t("registerPage.step2.inputs.birthDate.label")}
           type="date"
@@ -71,6 +72,7 @@ export default function Step2({ data, setData, isStepValid }) {
 
         {/* Weight */}
         <Input
+          name={'weight'}
           id="weight"
           label={t("registerPage.step2.inputs.weight.label")}
           type="number"
@@ -87,6 +89,7 @@ export default function Step2({ data, setData, isStepValid }) {
 
         {/* Height */}
         <Input
+          name={'height'}
           id="height"
           label={t("registerPage.step2.inputs.height.label")}
           type="number"
