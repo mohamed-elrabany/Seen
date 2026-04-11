@@ -1,5 +1,14 @@
 import api from "../api/axios";
 
+async function handleRequest(request){
+    try{
+        const response = await request;
+        return response.data;
+    }catch(error){
+        throw error.response?.data?.message || 'Something wrong happened!';
+    }
+}
+
 export async function login(email, password) {
   try {
     const response = await api.post("/login", { email, password });
@@ -28,4 +37,11 @@ export async function register(userData) {
   } catch (err) {
     throw err;
   }
+}
+
+export async function userExists(email){
+  const data= await handleRequest(
+    api.get("/check-email", { params: {email} })
+  );
+  return data.exists;
 }

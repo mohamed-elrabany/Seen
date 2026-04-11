@@ -5,59 +5,86 @@ import Step3 from "./register-steps/Step3";
 import Step4 from "./register-steps/Step4";
 import StepProgressBar from "../../components/ui/StepProgressBar";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { register } from "../../services/authService";
-import { redirect, Form } from "react-router-dom";
+import { redirect, Form, useActionData } from "react-router-dom";
 
 export default function Register() {
   const { t } = useTranslation();
   const [isStepValid, setIsStepValid] = useState(false);
+  const actionData = useActionData();
+
+  const isSubmitted = useRef(false);
+
+  // ENHANCEMENT: Initial State Logic
   const [formData, setFormData] = useState(() => {
-    const saved = localStorage.getItem("registerData");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          password: "",
-          confirmPassword: "",
-          gender: "",
-          birthDate: "",
-          weight: "",
-          height: "",
-          diabetesType: "",
-          insulin: "",
-        };
+    const saved = sessionStorage.getItem("registerData");
+    const parsed = saved ? JSON.parse(saved) : null;
+
+    return (
+      parsed || {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+        gender: "",
+        birthDate: "",
+        weight: "",
+        height: "",
+        diabetesType: "",
+        insulin: "",
+      }
+    );
   });
 
+  // ENHANCEMENT: Smart Step Initializer
+  // If password is missing (due to refresh), force user to Step 0 (Step 1)
+  const [currentStep, setCurrentStep] = useState(() => {
+    const step = sessionStorage.getItem("registerStep");
+    const parsedStep = step ? JSON.parse(step) : 0;
+
+    // Logic: If we have saved data but NO password, reset to start
+    if (parsedStep > 0 && !formData.password) {
+      return 0;
+    }
+    return parsedStep;
+  });
+
+  // ENHANCEMENT: Modified Sync Effect
+  // We exclude password and confirmPassword from sessionStorage for security
   useEffect(() => {
     const timer = setTimeout(() => {
-      localStorage.setItem("registerData", JSON.stringify(formData));
+      const { password, confirmPassword, ...safeData } = formData;
+      sessionStorage.setItem("registerData", JSON.stringify(safeData));
     }, 500);
-
     return () => clearTimeout(timer);
   }, [formData]);
 
-  const [currentStep, setCurrentStep] = useState(() => {
-    const step = localStorage.getItem("registerStep");
-    return step ? JSON.parse(step) : 0;
-  });
-
   useEffect(() => {
-    localStorage.setItem("registerStep", JSON.stringify(currentStep));
+    sessionStorage.setItem("registerStep", JSON.stringify(currentStep));
   }, [currentStep]);
 
+  // ENHANCEMENT: Auto-Cleanup on Navigation
+  useEffect(() => {
+    return () => {
+      if (!isSubmitted.current) {
+        sessionStorage.removeItem("registerData");
+        sessionStorage.removeItem("registerStep");
+      }
+    };
+  }, []);
+
   function handleCurrentStep(e) {
-    const action = e.currentTarget.name;
-    if (action === "prev" && currentStep > 0) {
+    const actionName = e.currentTarget.name;
+    if (actionName === "prev" && currentStep > 0) {
       setCurrentStep((step) => step - 1);
-    } else if (action === "next" && currentStep < 3) {
+    } else if (actionName === "next" && currentStep < 3) {
       setCurrentStep((step) => step + 1);
       setIsStepValid(false);
     }
@@ -67,10 +94,26 @@ export default function Register() {
   const CurrentStep = steps[currentStep];
 
   return (
-    <Form className="">
+    <Form
+      className=""
+      method="post"
+      onSubmit={() => (isSubmitted.current = true)}
+    >
       <StepProgressBar currentStep={currentStep} />
 
+      {/* Hidden Input Bridge for React Router Action */}
+      {Object.keys(formData).map((key) => (
+        <input key={key} type="hidden" name={key} value={formData[key]} />
+      ))}
+
       <div className="max-w-3xl mx-auto px-6 py-12 mt-5">
+        {/* Backend Error Message Display */}
+        {actionData?.error && (
+          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-center rounded">
+            {actionData.error}
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
@@ -89,6 +132,7 @@ export default function Register() {
             <div className="flex-center gap-4 mt-10">
               {currentStep !== 0 && (
                 <Button
+                  type="button"
                   name="prev"
                   onClick={(e) => handleCurrentStep(e)}
                   className="bg-transparent border-2 border-[#6976EB] hover:bg-[#F8F9FF] w-full px-6 py-3 transition-all flex-center gap-2 cursor-pointer text-[#6976EB]"
@@ -101,6 +145,7 @@ export default function Register() {
               )}
               {currentStep !== 3 && (
                 <Button
+                  type="button"
                   name="next"
                   disabled={!isStepValid}
                   onClick={(e) => handleCurrentStep(e)}
@@ -129,27 +174,22 @@ export default function Register() {
   );
 }
 
-export async function action() {
-  const storedData = localStorage.getItem("registerData");
-  const userData = storedData ? JSON.parse(storedData) : null;
-  if (!userData) {
-    // If no data found, return an error
-    return { error: "بيانات التسجيل غير موجودة" };
-  }
+export async function action({ request }) {
+  const rawFormData = await request.formData();
+  const userData = Object.fromEntries(rawFormData);
 
   try {
     await register(userData);
 
-    localStorage.removeItem("registerData");
-    localStorage.removeItem("registerStep");
-    console.log('registered');
+    sessionStorage.removeItem("registerData");
+    sessionStorage.removeItem("registerStep");
 
-    return redirect("/login");
+    return redirect("/home");
   } catch (err) {
-    console.error(err);
-
     return {
-      error: err.response?.data?.message || "حدث خطأ أثناء إنشاء الحساب",
+      error:
+        err.response?.data?.message ||
+        "Please check that all steps are filled correctly.",
     };
   }
 }

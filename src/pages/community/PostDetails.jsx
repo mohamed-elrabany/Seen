@@ -1,21 +1,22 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { IoSend } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { getPostComments } from "../../services/communityServices";
 
 import i18next from "i18next";
 import PostCard from "../../components/community/PostCard";
 import PostComment from "../../components/community/PostComment";
+import CommentsFeed from "../../components/community/CommentsFeed";
 
 import { posts } from "../../util/content";
 
 export default function PostDetails() {
   const { postId } = useParams();
   const [comment, setComment] = useState("");
+  const [loadedComments, setLoadedComments]= useState([]);
+  const [page, setPage]= useState(1);
 
   return (
     <div className="overflow-y-auto flex flex-col w-full min-h-screen">
@@ -27,6 +28,8 @@ export default function PostDetails() {
           className={`${i18next.language === "ar" ? "rotate-180" : ""} w-5 h-5`}
         />
       </Link>
+
+
       
       <PostCard
         key={posts[5]}
@@ -44,19 +47,7 @@ export default function PostDetails() {
       />
 
       {/* comments list */}
-      <div className="w-full mt-8 pb-28">
-        {posts[5].comments.map((comment, index) => (
-          <PostComment
-            key={index}
-            id={comment.id}
-            content={comment.content}
-            isLiked={comment.isLiked}
-            likesCount={comment.likesCount}
-            dueDate={comment.dueDate}
-            user={comment.user}
-          />
-        ))}
-      </div>
+      <CommentsFeed postId={postId} />
 
       {/* comment input bar */}
       <div className="flex items-end gap-3 w-full bg-white fixed bottom-0 p-4 border-t border-[#D9D9D9]/50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">

@@ -77,7 +77,7 @@ export default function PostFeed({ category }) {
           user={post.user}
         />
       ))}
-      {isLoading && <CommunityPostSkeleton />}
+      {/* {isLoading && <CommunityPostSkeleton />} */}
       {!moreData && <p className="w-full bg-gradient-to-b from-[#6976EB] to-[#2B3695] text-white font-semibold text-center p-4 rounded-2xl shadow-lg">No more posts</p>}
     </div>
   );

@@ -86,3 +86,32 @@ export const CommunityPostSkeleton = () => {
     </div>
   );
 };
+
+export const CommentSkeleton = () => {
+  return (
+    <div className="flex gap-4 items-start p-4 border-b border-[#D9D9D9]/30">
+      
+      {/* Avatar */}
+      <SkeletonBox className="w-10 h-10 rounded-full" />
+
+      {/* Content */}
+      <div className="flex-1 space-y-2">
+        {/* Name + Date */}
+        <div className="flex justify-between items-center">
+          <SkeletonBox className="w-24 h-4 rounded" /> {/* name */}
+          <SkeletonBox className="w-16 h-3 rounded" /> {/* date */}
+        </div>
+
+        {/* Comment text */}
+        <SkeletonBox className="w-full h-4 rounded" />
+        <SkeletonBox className="w-3/4 h-4 rounded" />
+
+        {/* Actions (like/reply) */}
+        <div className="flex gap-4 pt-1">
+          <SkeletonBox className="w-12 h-6 rounded-lg" />
+          <SkeletonBox className="w-12 h-6 rounded-lg" />
+        </div>
+      </div>
+    </div>
+  );
+};
