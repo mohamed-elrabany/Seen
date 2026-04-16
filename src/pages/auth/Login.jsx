@@ -5,6 +5,10 @@ import {
   useActionData,
   useNavigation,
 } from "react-router-dom";
+
+import { store } from "../../store/store";
+import { userActions } from "../../store/slices/userSlice";
+
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -215,8 +219,8 @@ export default function Login() {
 export async function action({ request }) {
   const formData = await request.formData();
   try {
-    const result = await login(formData.get("email"), formData.get("password"));
-    localStorage.setItem("token", result.token);
+    const user = await login(formData.get("email"), formData.get("password"));
+    store.dispatch(userActions.setUser(user));
     return redirect("/home?login=success");
   } catch (err) {
     return {

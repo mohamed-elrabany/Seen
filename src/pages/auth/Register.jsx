@@ -5,6 +5,9 @@ import Step3 from "./register-steps/Step3";
 import Step4 from "./register-steps/Step4";
 import StepProgressBar from "../../components/ui/StepProgressBar";
 
+import { store } from "../../store/store";
+import { userActions } from "../../store/slices/userSlice";
+
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -175,10 +178,11 @@ export async function action({ request }) {
   if (userData.height) userData.height = Number(userData.height);
 
   try {
-    await register(userData);
+    const user= await register(userData);
+    store.dispatch(userActions.setUser(user));
     sessionStorage.removeItem("registerData");
     sessionStorage.removeItem("registerStep");
-    return redirect("/login");
+    return redirect("/home");
   } catch (err) {
     return {
       error: err.response?.data?.message || "Registration failed.",

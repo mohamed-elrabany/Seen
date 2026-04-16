@@ -35,3 +35,9 @@ export async function userExists(email){
   );
   return data.exists;
 }
+
+export function getMe(){
+  return handleRequest(
+    api.get("/me", { withCredentials: true })
+  );
+}

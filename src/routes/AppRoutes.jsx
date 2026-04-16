@@ -14,8 +14,15 @@ const EditPost = lazy(() => import("../pages/community/EditPost"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 import RootLayout from "./RootLayout";
+import ProtectedRoute from "./ProtectedRoute";
 import Loading from "../components/ui/Loading";
 import ErrorPage from "../pages/ErrorPage";
+
+const lazy_load = (Component) => (
+  <Suspense fallback={<Loading />}>
+    <Component />
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
@@ -25,72 +32,46 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <Suspense fallback={<Loading />}>
-            <LandingPage />
-          </Suspense>
-        ),
+        element: lazy_load(LandingPage),
       },
       {
         path: "login",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Login />
-          </Suspense>
-        ),
+        element: lazy_load(Login),
         action: loginAction
       },
       {
         path: "register",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Register />
-          </Suspense>
-        ),
+        element: lazy_load(Register),
         action: registerAction
-      },
-      {
-        path: "home",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Home />
-          </Suspense>
-        ),
-      },
-      {
-        path: "community",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Community />
-          </Suspense>
-        ),
-      },
-      {
-        path: "community/create",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <CreatePost />
-          </Suspense>
-        ),
-      },
-      {
-        path: "community/edit/:postId",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <EditPost />
-          </Suspense>
-        ),
-      },
-      {
-        path: "community/:postId",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <PostDetails />
-          </Suspense>
-        ),
       },
     ],
   },
+  {
+    element: <ProtectedRoute />,
+    errorElement: <ErrorPage />,
+    children:[
+      {
+        path: 'home',
+        element: lazy_load(Home)
+      },
+      {
+        path: 'community',
+        element: lazy_load(Community)
+      },
+      {
+        path: 'community/create',
+        element: lazy_load(CreatePost)
+      },
+      {
+        path: 'community/edit/:postId',
+        element: lazy_load(EditPost)
+      },
+      {
+        path: 'community/:postId',
+        element: lazy_load(PostDetails)
+      },
+    ]
+  }
 ]);
 
 
