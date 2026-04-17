@@ -9,6 +9,8 @@ import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 
 import { useEffect, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { themeActions } from "../../store/slices/themeSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import i18next from "i18next";
 
@@ -19,6 +21,10 @@ import Button from "../ui/Button";
 export default function Sidebar() {
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef();
+
+  const dispatch = useDispatch();
+  const { toggleTheme } = themeActions;
+
 
 useEffect(() => {
   const handleOutsideClick = (e) => {
@@ -129,6 +135,7 @@ useEffect(() => {
 
         <div className="mt-auto border-t border-[#D9D9D9]/30 p-4 flex flex-col gap-2">
           <Button
+          onClick={ () => dispatch(toggleTheme()) }
             className="w-full flex-start gap-4 p-4 rounded-xl cursor-pointer
         text-[#808080] bg-[#F8F9FF] hover:bg-[#6976EB]/10
         dark:bg-white/10 dark:text-[#D1D5DC] dark:hover:bg-white/20"
@@ -236,6 +243,7 @@ useEffect(() => {
 
               <div className="mt-auto border-t border-[#D9D9D9]/30 p-4 flex flex-col gap-2">
                 <Button
+                onClick={ () => dispatch(toggleTheme()) }
                   className="w-full flex-start gap-4 p-4 rounded-xl cursor-pointer
         text-[#808080] bg-[#F8F9FF] hover:bg-[#6976EB]/10
         dark:bg-white/10 dark:text-[#D1D5DC] dark:hover:bg-white/20"

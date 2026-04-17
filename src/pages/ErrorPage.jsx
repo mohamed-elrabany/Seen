@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ErrorPage() {
+  const navigate= useNavigate();
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="text-center flex flex-col items-center gap-4">
@@ -10,12 +12,12 @@ export default function ErrorPage() {
           Oops! The page you are looking for does not exist.
         </p>
 
-        <Link
-          to="/"
+        <button
+          onClick={() => navigate(-1)}
           className="mt-4 px-6 py-3 bg-[#6976EB] text-white rounded-lg hover:bg-[#1F1A5F] transition"
         >
-          Go Back Home
-        </Link>
+           Back To Safety
+        </button>
       </div>
     </div>
   );
