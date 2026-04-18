@@ -13,6 +13,7 @@ const PostDetails = lazy(() => import("../pages/community/PostDetails"));
 const EditPost = lazy(() => import("../pages/community/EditPost"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
+const Profile = lazy(() => import("../pages/profile/Profile"));
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import Loading from "../components/ui/Loading";
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
         path: 'community/:postId',
         element: lazy_load(PostDetails)
       },
+      {
+        path: 'profile',
+        element: lazy_load(Profile)
+      }
     ]
   }
 ]);

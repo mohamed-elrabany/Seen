@@ -56,7 +56,9 @@ export default function PostCard({
     profileBorderColorMap[user?.diabetesType] ?? "border-2 border-gray-300";
 
   return (
-    <div className="w-full bg-white shadow-lg flex-col-start gap-8 border border-[#D9D9D9]/30 p-8 rounded-2xl">
+    <div className="w-full shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl
+    bg-white bg-none border-[#D9D9D9]/30
+        dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10">
       {/* user info */}
       <div className="flex justify-between items-center w-full">
         <div className="flex-start gap-4">
@@ -66,10 +68,10 @@ export default function PostCard({
             <img src={user?.avatar} alt="" />
           </div>
           <div className="flex-col-start">
-            <p className="text-[#161A41] text-sm sm:text-base font-bold">
+            <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
               {user?.name}
             </p>
-            <p className="text-[#808080] text-xs sm:text-sm">{dueDate}</p>
+            <p className="text-[#808080] dark:text-gray-400 text-xs sm:text-sm">{dueDate}</p>
           </div>
         </div>
         <p
@@ -81,8 +83,8 @@ export default function PostCard({
 
       {/* content section */}
       <div>
-        <h3>{title}</h3>
-        <p className="text-[#3B3D53] text-sm sm:text-base">{body}</p>
+        <h3 className="text-[#161A41] dark:text-white">{title}</h3>
+        <p className="text-[#3B3D53] dark:text-gray-300 text-sm sm:text-base">{body}</p>
       </div>
 
       {/* images section */}
@@ -93,7 +95,7 @@ export default function PostCard({
         {hashtags?.map((tag, index) => (
           <span
             key={index}
-            className="text-sm font-medium text-[#6976EB] bg-[#E0E3FF] px-2 py-1 rounded-full"
+            className="text-sm font-medium text-[#6976EB] bg-[#E0E3FF] dark:bg-[#E0E3FF]/5 px-3 py-1 rounded-full"
           >
             {tag}
           </span>
