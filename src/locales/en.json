@@ -6,7 +6,10 @@
     "logout": "Logout",
     "more": "Know More"
   },
-
+  "units": {
+    "thousand": "K",
+    "million": "M"
+  },
   "navbar": {
     "features": "Features",
     "community": "Community",
@@ -175,7 +178,6 @@
       "button": "Create Free Account"
     }
   },
-
   "loginPage": {
     "email": "Email",
     "password": "Password",
@@ -191,8 +193,7 @@
     "sentence": "Track your sugar levels, get detailed reports, and connect with a supportive community",
     "or": "or",
     "loginToContinue": "Sign in to continue"
-  },
-  
+  }, 
   "registerPage": {
     "buttons": {
       "prev": "Previous",
@@ -304,7 +305,12 @@
       "contentLabel": "Post Content",
       "contentPlaceholder": "Share your experience or advice...",
       "categoryLabel": "Select the diabetes category for this post",
-      "submit": "Confirm",
+      "submit": "Confirm"
+    },
+    "alerts": {
+      "postSuccess": "Post created successfully"
+    },
+    "shared": {
       "categories": {
         "general": "General",
         "type1": "Type 1",
@@ -314,9 +320,36 @@
         "gestational": "Gestational",
         "advices": "Advices"
       }
+    }
+  },
+  "profilePage":{
+    "header": {
+      "points": "{{count}} Points",
+      "streak": "{{count}} Days",
+      "followers": "Followers",
+      "following": "Following",
+      "support": "Support",
+      "editAccount": "Edit Account",
+      "settings": "Settings"
     },
-    "alerts": {
-      "postSuccess": "Post created successfully"
+    "personalInfo": {
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "birthDateLabel": "Date of Birth",
+      "ageLabel": "Age",
+      "weightLabel": "Weight",
+      "heightLabel": "Height",
+      "bloodSugarUnitLabel": "Blood Sugar Unit",
+      "carbUnitLabel": "Carbohydrate Unit",
+      "ageValue": "{{count}} years old",
+      "weightValue": "{{value}} kg",
+      "heightValue": "{{value}} cm",
+      "carbValue": "Grams",
+      "months": {
+        "0": "January", "1": "February", "2": "March", "3": "April", 
+        "4": "May", "5": "June", "6": "July", "7": "August", 
+        "8": "September", "9": "October", "10": "November", "11": "December"
+      }
     }
   }
 }

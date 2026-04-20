@@ -89,7 +89,7 @@ const commentsData = [
   {
     id: 1,
     content: "فعلاً الأكل الصحي بيفرق جدًا 🙌",
-    likesCount: 4,
+    likesCount: 4210,
     isLiked: false,
     dueDate: "2026-04-03",
     user: {
@@ -101,7 +101,7 @@ const commentsData = [
   {
     id: 2,
     content: "أنا جربت أقلل السكر وحسيت بتحسن كبير 👍",
-    likesCount: 6,
+    likesCount: 101,
     isLiked: true,
     dueDate: "2026-04-03",
     user: {
@@ -113,7 +113,7 @@ const commentsData = [
   {
     id: 3,
     content: "ممكن تشاركنا نظامك الغذائي؟",
-    likesCount: 2,
+    likesCount: 1000025,
     isLiked: false,
     dueDate: "2026-04-03",
     user: {
@@ -132,14 +132,14 @@ export const posts = [
     images: [],
     category: "general",
     isOwner: false,
-    likesCount: 12,
+    likesCount: 25064,
     isLiked: false,
     commentsCount: 3,
-    dueDate: "2026-04-01",
+    // DYNAMIC: This will always show "Just now" or "less than a minute"
+    dueDate: new Date().toISOString(), 
     user: { name: "Ahmed Ali", avatar: "https://i.pravatar.cc/150?img=1", diabetesType: "type2" },
     hashtags: ["#health", "#صحة", "#fitness"],
     comments: commentsData,
-    
   },
   {
     id: 2,
@@ -148,14 +148,14 @@ export const posts = [
     images: ["https://picsum.photos/300/200?random=1"],
     category: "type1",
     isOwner: true,
-    likesCount: 25,
+    likesCount: 12500,
     isLiked: true,
-    commentsCount: 8,
-    dueDate: "2026-04-02",
+    commentsCount: 25000,
+    // STATIC: Set to ~5 minutes ago from current system time
+    dueDate: "2026-04-20T05:25:00.000Z", 
     user: { name: "Mohamed Hassan", avatar: "https://i.pravatar.cc/150?img=2", diabetesType: "type1" },
     hashtags: ["#Type1", "#تجربة", "#Control"],
     comments: commentsData,
-    
   },
   {
     id: 3,
@@ -168,14 +168,14 @@ export const posts = [
     ],
     category: "type2",
     isOwner: false,
-    likesCount: 7,
+    likesCount: 3164,
     isLiked: false,
-    commentsCount: 2,
-    dueDate: "2026-04-03",
+    commentsCount: 100,
+    // STATIC: Set to ~2 hours ago
+    dueDate: "2026-04-20T03:30:00.000Z", 
     user: { name: "Sara Mohamed", avatar: "https://i.pravatar.cc/150?img=3", diabetesType: "type2" },
     hashtags: ["#Type2", "#أكل_صحي"],
     comments: commentsData,
-    
   },
   {
     id: 4,
@@ -184,14 +184,14 @@ export const posts = [
     images: [],
     category: "lada",
     isOwner: false,
-    likesCount: 14,
+    likesCount: 1011065,
     isLiked: true,
-    commentsCount: 5,
-    dueDate: "2026-04-04",
+    commentsCount: 1024,
+    // STATIC: Set to Yesterday
+    dueDate: "2026-04-19T10:00:00.000Z", 
     user: { name: "Omar Khaled", avatar: "https://i.pravatar.cc/150?img=4", diabetesType: "lada" },
     hashtags: ["#LADA", "#Diabetes", "#تجربة"],
     comments: commentsData,
-    
   },
   {
     id: 5,
@@ -200,14 +200,13 @@ export const posts = [
     images: ["https://picsum.photos/300/200?random=4"],
     category: "mody",
     isOwner: false,
-    likesCount: 5,
+    likesCount: 30215,
     isLiked: false,
-    commentsCount: 1,
-    dueDate: "2026-04-05",
+    commentsCount: 2500,
+    dueDate: "2026-04-05T12:00:00.000Z", 
     user: { name: "Nour Ahmed", avatar: "https://i.pravatar.cc/150?img=5", diabetesType: "mody" },
     hashtags: ["#MODY", "#Rare", "#نادر"],
     comments: commentsData,
-    
   },
   {
     id: 6,
@@ -221,14 +220,14 @@ export const posts = [
     ],
     category: "gestational",
     isOwner: false,
-    likesCount: 18,
+    likesCount: 1221542,
     isLiked: true,
-    commentsCount: 6,
-    dueDate: "2026-04-06",
+    commentsCount: 120,
+    // STATIC: Today, but 10 hours ago
+    dueDate: "2026-04-19T19:30:00.000Z", 
     user: { name: "Fatma Ali", avatar: "https://i.pravatar.cc/150?img=6", diabetesType: "gestational" },
     hashtags: ["#Gestational", "#حملي", "#Pregnancy"],
     comments: commentsData,
-    
   },
   {
     id: 7,
@@ -237,13 +236,12 @@ export const posts = [
     images: [],
     category: "advices",
     isOwner: true,
-    likesCount: 30,
+    likesCount: 10000,
     isLiked: true,
-    commentsCount: 10,
-    dueDate: "2026-04-07",
+    commentsCount: 1200,
+    dueDate: "2026-04-07T08:00:00.000Z", 
     user: { name: "You", avatar: "https://i.pravatar.cc/150?img=7", diabetesType: "type1" },
     hashtags: ["#Tips", "#نصائح", "#Health"],
     comments: commentsData,
-    
   },
 ];

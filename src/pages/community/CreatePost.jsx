@@ -33,13 +33,13 @@ export default function CreatePost() {
 
   // Restored the labels as translation keys
   const postCategories = [
-    { id: "general", label: "communityPage.createPost.categories.general" },
-    { id: "type1", label: "communityPage.createPost.categories.type1" },
-    { id: "type2", label: "communityPage.createPost.categories.type2" },
-    { id: "lada", label: "communityPage.createPost.categories.lada" },
-    { id: "mody", label: "communityPage.createPost.categories.mody" },
-    { id: "gestational", label: "communityPage.createPost.categories.gestational" },
-    { id: "advices", label: "communityPage.createPost.categories.advices" },
+    { id: "general", label: "communityPage.shared.categories.general" },
+    { id: "type1", label: "communityPage.shared.categories.type1" },
+    { id: "type2", label: "communityPage.shared.categories.type2" },
+    { id: "lada", label: "communityPage.shared.categories.lada" },
+    { id: "mody", label: "communityPage.shared.categories.mody" },
+    { id: "gestational", label: "communityPage.shared.categories.gestational" },
+    { id: "advices", label: "communityPage.shared.categories.advices" },
   ];
 
   return (

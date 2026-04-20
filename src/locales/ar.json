@@ -6,6 +6,10 @@
     "logout": "تسجيل الخروج",
     "more": "اعرف المزيد"
   },
+  "units": {
+    "thousand": "ألف",
+    "million": "مليون"
+  },
   "navbar": {
     "features": "المميزات",
     "community": "المجتمع",
@@ -315,6 +319,47 @@
     },
     "alerts": {
       "postSuccess": "تم نشر المشاركة بنجاح"
+    },
+    "shared": {
+      "categories": {
+        "general": "عام",
+        "type1": "النوع الأول",
+        "type2": "النوع الثاني",
+        "lada": "السكري المناعي",
+        "mody": "السكري أحادي الجين",
+        "gestational": "السكري الحملي",
+        "advices": "نصائح"
+      }
+    }
+  },
+  "profilePage":{
+    "header": {
+      "points": "{{count}} نقاط",
+      "streak": "{{count}} يوم",
+      "followers": "متابعون",
+      "following": "يتابع",
+      "support": "دعم",
+      "editAccount": "تعديل الحساب",
+      "settings": "الإعدادات"
+    },
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "fullName": "الاسم الكامل",
+      "birthDateLabel": "تاريخ الميلاد",
+      "ageLabel": "العمر",
+      "weightLabel": "الوزن",
+      "heightLabel": "الطول",
+      "bloodSugarUnitLabel": "وحدة قياس السكر",
+      "carbUnitLabel": "وحدة الكربوهيدرات",
+      "ageValue": "{{count}} سنة",
+      "weightValue": "{{value}} كجم",
+      "heightValue": "{{value}} سم",
+      "carbValue": "غرام",
+      "months": {
+        "0": "يناير", "1": "فبراير", "2": "مارس", "3": "أبريل", 
+        "4": "مايو", "5": "يونيو", "6": "يوليو", "7": "أغسطس", 
+        "8": "سبتمبر", "9": "أكتوبر", "10": "نوفمبر", "11": "ديسمبر"
+      }
     }
   }
 }

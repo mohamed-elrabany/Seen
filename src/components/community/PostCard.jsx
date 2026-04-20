@@ -6,6 +6,10 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+import { formatRelativeTime } from "../../util/formatRelativeTime";
+import {formatCount} from "../../util/formatPostStatus";
 
 import PostImages from "./PostImages";
 
@@ -26,6 +30,12 @@ export default function PostCard({
 }) {
   const [like, setLike] = useState(isLiked);
   const navigate= useNavigate();
+  const { t } = useTranslation();
+
+  const relativeDate = formatRelativeTime(dueDate);
+  const formattedLikesCount = formatCount(likesCount, t);
+  const formattedCommentsCount = formatCount(commentsCount, t);
+
 
   const categoryColorMap = {
     type1:
@@ -71,13 +81,13 @@ export default function PostCard({
             <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
               {user?.name}
             </p>
-            <p className="text-[#808080] dark:text-gray-400 text-xs sm:text-sm">{dueDate}</p>
+            <p className="text-[#808080] dark:text-gray-400 text-xs sm:text-sm">{relativeDate}</p>
           </div>
         </div>
         <p
-          className={`px-4 py-2 text-center rounded-full font-bold ${categoryColor}`}
+          className={`px-4 py-2 text-center text-xs md:text-base rounded-full font-bold ${categoryColor}`}
         >
-          {category}
+          {t(`communityPage.shared.categories.${category}`)}
         </p>
       </div>
 
@@ -113,19 +123,19 @@ export default function PostCard({
           animate={like ? { scale: [1.2, 1] } : { scale: 1 }}
           transition={{ type: "spring", stiffness: 300 }}
             onClick={() => setLike(prev => !prev)}
-            className="flex-center text-[#808080] w-auto gap-2 hover:text-[#6976EB] transition-colors cursor-pointer"
+            className="flex-center text-[#808080] dark:text-gray-400 w-auto gap-2 hover:text-[#6976EB] transition-colors cursor-pointer"
           >
             {like ? (
               <FaHeart className="w-5 h-5 text-red-600" />
             ) : (
               <FaRegHeart className="w-5 h-5" />
             )}
-            <span className={`${like ? "text-red-600" : ""}`}>{likesCount}K</span>
+            <span className={`${like ? "text-red-600" : ""}`}>{formattedLikesCount}</span>
           </motion.button>
           <button onClick={()=> navigate(`/community/:${id}`)}
-          className="flex-center w-auto gap-2 text-[#808080] hover:text-[#6976EB] transition-colors cursor-pointer">
+          className="flex-center w-auto gap-2 text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-colors cursor-pointer">
             <FaRegComment className="w-5 h-5" />
-            <span>{commentsCount}K</span>
+            <span>{formattedCommentsCount}</span>
           </button>
         </div>
 

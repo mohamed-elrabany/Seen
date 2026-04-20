@@ -2,6 +2,10 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+import {formatCount} from "../../util/formatPostStatus";
+import { formatRelativeTime } from "../../util/formatRelativeTime";
+import { useTranslation } from "react-i18next";
+
 export default function PostComment({
   id,
   content,
@@ -11,6 +15,9 @@ export default function PostComment({
   user,
 }) {
   const [like, setLike] = useState(isLiked);
+  const { t } = useTranslation();
+  const formattedLikesCount = formatCount(likesCount, t);
+  const relativeDate = formatRelativeTime(dueDate);
 
   const profileBorderColorMap = {
     type1: "border-2 border-red-700 dark:border-red-400",
@@ -22,7 +29,7 @@ export default function PostComment({
   const profileBorderColor =
     profileBorderColorMap[user?.diabetesType] ?? "border-2 border-gray-300";
   return (
-    <div className="flex-col-start w-full gap-4 border-b border-[#D9D9D9]/30 p-4">
+    <div className="flex-col-start w-full gap-4 border-b border-[#D9D9D9]/20 p-4">
       <div className="flex-between w-full">
         <div className="flex-start gap-4">
           <div
@@ -31,10 +38,10 @@ export default function PostComment({
             <img src={user?.avatar} alt="" />
           </div>
           <div className="flex-col-start">
-            <p className="text-[#161A41] text-sm sm:text-base font-bold">
+            <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
               {user?.name}
             </p>
-            <p className="text-[#808080] text-xs sm:text-sm">{dueDate}</p>
+            <p className="text-[#808080] dark:text-white/30 text-xs sm:text-sm">{relativeDate}</p>
           </div>
         </div>
 
@@ -44,17 +51,17 @@ export default function PostComment({
           animate={like ? { scale: [1.2, 1] } : { scale: 1 }}
           transition={{ type: "spring", stiffness: 300 }}
           onClick={() => setLike((prev) => !prev)}
-          className="flex-col-center text-[#808080] w-auto gap-2 hover:text-[#6976EB] transition-colors cursor-pointer"
+          className="flex-col-center text-[#808080] dark:text-gray-400 w-auto gap-2 hover:text-[#6976EB] transition-colors cursor-pointer"
         >
           {like ? (
             <FaHeart className="w-5 h-5 text-red-600" />
           ) : (
             <FaRegHeart className="w-5 h-5" />
           )}
-          <span className={`${like ? "text-red-600" : ""}`}>{likesCount}K</span>
+          <span className={`${like ? "text-red-600" : ""}`}>{formattedLikesCount}</span>
         </motion.button>
       </div>
-      <p className="w-full">{content}</p>
+      <p className="w-full text-[#808080] dark:text-gray-400">{content}</p>
     </div>
   );
 }
