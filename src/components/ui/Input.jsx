@@ -15,7 +15,7 @@ export default function Input({
     <div className="flex-col-start gap-2 w-full">
       {label && (
         <label
-          className="text-[#161A41] font-bold text-sm sm:text-base cursor-pointer"
+          className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
           htmlFor={id}
         >
           {label}
@@ -24,8 +24,9 @@ export default function Input({
 
       <input
         id={id}
-        className={`w-full text-[#161A41] font-semibold rounded-lg px-4 py-2.5 sm:py-3 border-2 
-        ${hasError ? "border-red-600 focus:border-red-500 bg-red-50/20" : "border-[#D9D9D9]/30 focus:border-[#6976EB]"} 
+        className={`w-full text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 border-2 
+        ${hasError ? "border-red-600 focus:border-red-500 bg-red-50/20" : "border-[#D9D9D9]/30 focus:border-[#6976EB]"}
+        placeholder:text-[#808080] dark:placeholder:text-gray-400 
         text-sm sm:text-base outline-none transition-all
         ${className}`}
         {...props}

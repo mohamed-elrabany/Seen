@@ -1,8 +1,8 @@
 import { GoImage } from "react-icons/go";
 import { IoArrowBack, IoClose } from "react-icons/io5";
-
 import { Form, Link } from "react-router-dom";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 
 import Button from "../../components/ui/Button";
@@ -10,6 +10,7 @@ import Input from "../../components/ui/Input";
 import RadioButton from "../../components/ui/RadioButton";
 
 export default function CreatePost() {
+  const { t } = useTranslation();
   const [checkedCategory, setCheckedCategory] = useState("");
   const [images, setImages] = useState([]); // [{ file, preview }]
 
@@ -20,7 +21,7 @@ export default function CreatePost() {
       preview: URL.createObjectURL(file),
     }));
     setImages((prev) => [...prev, ...newImages]);
-    e.target.value = ""; // reset input so same file can be picked again
+    e.target.value = ""; 
   };
 
   const removeImage = (index) => {
@@ -30,19 +31,20 @@ export default function CreatePost() {
     });
   };
 
+  // Restored the labels as translation keys
   const postCategories = [
-    { id: "general", name: "general", value: "عام" },
-    { id: "type1", name: "type1", value: "النوع الأول" },
-    { id: "type2", name: "type2", value: "النوع الثاني" },
-    { id: "lada", name: "LADA", value: "السكري المناعي" },
-    { id: "mody", name: "MODY", value: "السكري أحادي الجين" },
-    { id: "gestational", name: "Gestational", value: "السكري الحملي" },
-    { id: "advices", name: "advices", value: "نصائح" },
+    { id: "general", label: "communityPage.createPost.categories.general" },
+    { id: "type1", label: "communityPage.createPost.categories.type1" },
+    { id: "type2", label: "communityPage.createPost.categories.type2" },
+    { id: "lada", label: "communityPage.createPost.categories.lada" },
+    { id: "mody", label: "communityPage.createPost.categories.mody" },
+    { id: "gestational", label: "communityPage.createPost.categories.gestational" },
+    { id: "advices", label: "communityPage.createPost.categories.advices" },
   ];
 
   return (
     <div className="min-h-screen max-w-3xl mx-auto px-6 py-8 mt-5">
-      {/* header */}
+      {/* Header */}
       <div className="flex-start gap-5">
         <Link to={"/community"} className="bg-white p-3 rounded-lg shadow-lg">
           <IoArrowBack
@@ -57,22 +59,22 @@ export default function CreatePost() {
             <img src="" alt="" />
           </div>
           <div className="flex-col-start">
-            <p className="text-[#161A41] text-sm sm:text-base font-bold">
+            <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
               منتصر إسماعيل
             </p>
           </div>
         </div>
       </div>
 
-      {/* form */}
+      {/* Form */}
       <Form className="grid gap-6 mt-8">
-        {/* image upload area */}
+        {/* Image Upload Area */}
         <div className="flex-col-start gap-3">
-          <label className="text-[#161A41] font-bold text-sm sm:text-base">
-            الصور
+          <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base">
+            {t("communityPage.createPost.imagesLabel")}
           </label>
 
-          {/* previews grid */}
+          {/* Previews Grid */}
           {images.length > 0 && (
             <div
               className={`grid gap-3 w-full ${
@@ -93,7 +95,6 @@ export default function CreatePost() {
                     alt={`preview ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
-                  {/* remove button */}
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
@@ -106,7 +107,7 @@ export default function CreatePost() {
             </div>
           )}
 
-          {/* add more / initial upload button */}
+          {/* Add Image Button */}
           <label
             htmlFor="images"
             className={`w-full cursor-pointer transition-all ${
@@ -125,7 +126,7 @@ export default function CreatePost() {
             />
 
             <div
-              className={` rounded-full flex items-center justify-center shrink-0 ${
+              className={`rounded-full flex items-center justify-center shrink-0 ${
                 images.length === 0 ? "w-16 h-16 bg-white/20" : "w-9 h-9 bg-[#6976EB]"
               }`}
             >
@@ -143,64 +144,67 @@ export default function CreatePost() {
                   : "text-[#6976EB] text-sm"
               }`}
             >
-              {images.length === 0 ? "إضافة صورة" : "إضافة المزيد من الصور"}
+              {images.length === 0 
+                ? t("communityPage.createPost.addImage") 
+                : t("communityPage.createPost.addMore")}
             </p>
           </label>
         </div>
 
-        {/* title */}
+        {/* Title */}
         <Input
-          label={"عنوان المنشور"}
+          label={t("communityPage.createPost.titleLabel")}
           name="title"
-          placeholder="أدخل عنوان المنشور..."
+          placeholder={t("communityPage.createPost.titlePlaceholder")}
         />
 
-        {/* body */}
+        {/* Body */}
         <div className="flex-col-start gap-3">
           <label
             htmlFor="post-body"
-            className="text-[#161A41] font-bold text-sm sm:text-base cursor-pointer"
+            className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
           >
-            محتوى المنشور
+            {t("communityPage.createPost.contentLabel")}
           </label>
 
           <textarea
             name="body"
             id="post-body"
-            placeholder="شارك تجربتك أو نصيحتك..."
-            className="w-full bg-[#D9D9D9]/30 text-[#161A41] rounded-lg px-4 py-2.5 sm:py-3 
-            border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base font-semibold outline-none transition-all"
+            placeholder={t("communityPage.createPost.contentPlaceholder")}
+            className="w-full bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400
+            border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"
           ></textarea>
         </div>
 
-        {/* categories */}
+        {/* Categories */}
         <div className="flex flex-col gap-3">
-          <label className="text-[#161A41] font-bold text-sm sm:text-base cursor-pointer">
-            اختر فئة السكري المرتبطة بالمنشور
+          <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer">
+            {t("communityPage.createPost.categoryLabel")}
           </label>
 
-          <div className="grid grid-cols-3 gap-4">
-            {postCategories.map((category, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {postCategories.map((category) => (
               <RadioButton
-                key={index}
+                key={category.id}
                 id={category.id}
-                name={category.name}
-                value={category.value}
+                name="category"
+                value={category.id}
                 onChange={() => setCheckedCategory(category.id)}
                 isChecked={checkedCategory === category.id}
               >
-                {category.value}
+                {/* Now translating the label key from the array */}
+                {t(category.label)}
               </RadioButton>
             ))}
           </div>
         </div>
 
-        {/* submit */}
+        {/* Submit */}
         <Button
           type="submit"
           className="bg-[#6976EB] hover:bg-[#2B3695] w-full p-4 transition-all flex-center gap-2 cursor-pointer"
         >
-          <p className="text-white">تأكيد</p>
+          <p className="text-white">{t("communityPage.createPost.submit")}</p>
         </Button>
       </Form>
     </div>

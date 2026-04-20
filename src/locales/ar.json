@@ -6,13 +6,30 @@
     "logout": "تسجيل الخروج",
     "more": "اعرف المزيد"
   },
-
   "navbar": {
     "features": "المميزات",
     "community": "المجتمع",
     "testimonials": "التقييمات"
   },
-
+  "sidebar": {
+    "header": {
+      "welcome": "أهلاً {{name}}",
+      "glucoseLevel": "مستوى السكر اليوم"
+    },
+    "nav": {
+      "home": "الرئيسية",
+      "reports": "التقارير",
+      "community": "المجتمع",
+      "chats": "المحادثات",
+      "assistant": "المساعد الذكي",
+      "profile": "الملف الشخصي"
+    },
+    "buttons": {
+      "darkMode": "الوضع الداكن",
+      "lightMode": "الوضع الفاتح",
+      "logout": "تسجيل الخروج"
+    }
+  },
   "footer": {
     "description": "منصة متكاملة لإدارة السكري بذكاء",
 
@@ -38,7 +55,6 @@
 
     "copyright": "© 2026 Seen. جميع الحقوق محفوظة."
   },
-
   "landingPage": {
     "hero": {
       "title": "أدر مستوى السكر بثقة",
@@ -254,6 +270,51 @@
         "pump": "مضخة",
         "noInsulin": "لا أستخدم الإنسولين"
       }
+    }
+  },
+  "homePage": {
+    "alerts": {
+      "loginSuccess": "تم تسجيل الدخول بنجاح"
+    },
+    "header": {
+      "welcome": "مرحباً بك، {{name}} 👋",
+      "summary": "إليك ملخص صحتك اليوم",
+      "cards": {
+        "currentReading": "القراءة الحالية",
+        "weeklyAverage": "متوسط الأسبوع",
+        "streak": "سلسلة متصلة",
+        "timeInRange": "الوقت في النطاق"
+      }
+    }
+  },
+  "communityPage": {
+    "header": {
+      "title": "المجتمع",
+      "subtitle": "شارك تجربتك وتواصل مع الآخرين",
+      "placeholder": "شارك شيئاً مع المجتمع..."
+    },
+    "createPost": {
+      "imagesLabel": "الصور",
+      "addImage": "إضافة صورة",
+      "addMore": "إضافة المزيد من الصور",
+      "titleLabel": "عنوان المنشور",
+      "titlePlaceholder": "أدخل عنوان المنشور...",
+      "contentLabel": "محتوى المنشور",
+      "contentPlaceholder": "شارك تجربتك أو نصيحتك...",
+      "categoryLabel": "اختر فئة السكري المرتبطة بالمنشور",
+      "submit": "تأكيد",
+      "categories": {
+        "general": "عام",
+        "type1": "النوع الأول",
+        "type2": "النوع الثاني",
+        "lada": "السكري المناعي (LADA)",
+        "mody": "السكري أحادي الجين (MODY)",
+        "gestational": "السكري الحملي",
+        "advices": "نصائح"
+      }
+    },
+    "alerts": {
+      "postSuccess": "تم نشر المشاركة بنجاح"
     }
   }
 }

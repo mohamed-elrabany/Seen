@@ -12,7 +12,25 @@
     "community": "Community",
     "testimonials": "Testimonials"
   },
-
+  "sidebar": {
+    "header": {
+      "welcome": "Hello {{name}}",
+      "glucoseLevel": "Daily Glucose Level"
+    },
+    "nav": {
+      "home": "Home",
+      "reports": "Reports",
+      "community": "Community",
+      "chats": "Chats",
+      "assistant": "Smart Assistant",
+      "profile": "Profile"
+    },
+    "buttons": {
+      "darkMode": "Dark Mode",
+      "lightMode": "Light Mode",
+      "logout": "Logout"
+    }
+  },
   "footer": {
     "description": "An integrated platform for smart diabetes management",
 
@@ -255,6 +273,50 @@
         "noInsulin": "I do not use insulin"
       }
     }
+  },
+  "homePage": {
+ "alerts": {
+      "loginSuccess": "Logged in successfully"
+    },
+    "header": {
+      "welcome": "Welcome back, {{name}} 👋",
+      "summary": "Here's your health summary for today",
+      "cards": {
+        "currentReading": "Current Reading",
+        "weeklyAverage": "Weekly Average",
+        "streak": "Streak",
+        "timeInRange": "Time in Range"
+      }
+    }
+  },
+  "communityPage": {
+    "header": {
+      "title": "Community",
+      "subtitle": "Share your experience and connect with others",
+      "placeholder": "Share something with the community..."
+    },
+    "createPost": {
+      "imagesLabel": "Images",
+      "addImage": "Add Image",
+      "addMore": "Add More Images",
+      "titleLabel": "Post Title",
+      "titlePlaceholder": "Enter post title...",
+      "contentLabel": "Post Content",
+      "contentPlaceholder": "Share your experience or advice...",
+      "categoryLabel": "Select the diabetes category for this post",
+      "submit": "Confirm",
+      "categories": {
+        "general": "General",
+        "type1": "Type 1",
+        "type2": "Type 2",
+        "lada": "LADA",
+        "mody": "MODY",
+        "gestational": "Gestational",
+        "advices": "Advices"
+      }
+    },
+    "alerts": {
+      "postSuccess": "Post created successfully"
+    }
   }
-
 }

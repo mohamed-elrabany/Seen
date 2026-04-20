@@ -61,26 +61,27 @@ export const testimonials = [
   },
 ];
 
-export const headerCardsContent=[
+//Home header cards content
+export const headerCardsContent = [
   {
     icon: PiPulseBold,
     value: 128,
-    label: 'القراءة الحالية',
+    label: 'homePage.header.cards.currentReading',
   },
   {
     icon: IoBarChart,
     value: 132,
-    label: 'متوسط الأسبوع',
+    label: 'homePage.header.cards.weeklyAverage',
   },
   {
     icon: SlEnergy,
     value: 12,
-    label: 'سلسلة متصلة',
+    label: 'homePage.header.cards.streak',
   },
   {
     icon: FaRegHeart,
     value: "85%",
-    label: 'Time in Range',
+    label: 'homePage.header.cards.timeInRange',
   },
 ];
 
