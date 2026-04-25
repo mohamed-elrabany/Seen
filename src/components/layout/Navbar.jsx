@@ -8,32 +8,32 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop */}
-      <nav className="hidden lg:flex justify-between items-center fixed top-0 z-50 w-full bg-white px-8 py-4 shadow-md">
+      <nav className="hidden lg:flex justify-between items-center fixed top-0 z-50 w-full bg-white dark:bg-[#161A41] px-8 py-4 shadow-md">
         <img src="/logo.svg" alt="Seen logo" className="h-10 w-auto" />
 
-        <ul className="flex items-center gap-8 text-lightGray">
+        <ul className="flex items-center gap-8 text-[#808080] dark:text-gray-400">
           <a
             href="#features"
-            className="text-lightGray hover:text-[#6976EB] transition-all font-medium"
+            className="text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-all font-medium"
           >
             {t("navbar.features")}
           </a>
           <a
             href="#community"
-            className="text-lightGray hover:text-[#6976EB] transition-all font-medium"
+            className="text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-all font-medium"
           >
             {t("navbar.community")}
           </a>
           <a
             href="#testimonials"
-            className="text-lightGray hover:text-[#6976EB] transition-all font-medium"
+            className="text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-all font-medium"
           >
             {t("navbar.testimonials")}
           </a>
           <li>
             <Link
               to="/login"
-              className="text-lightGray hover:text-[#6976EB] transition-all font-medium"
+              className="text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-all font-medium"
             >
               {t("common.login")}
             </Link>
@@ -52,7 +52,7 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile */}
-      <nav className="flex lg:hidden justify-between items-center fixed top-0 z-50 w-full bg-white px-4 py-3 shadow-md">
+      <nav className="flex lg:hidden justify-between items-center fixed top-0 z-50 w-full bg-white dark:bg-[#161A41] px-4 py-8 shadow-md">
         <img src="/logo.svg" alt="Seen logo" className="h-8 w-auto" />
 
         {/* Mobile Navbar */}

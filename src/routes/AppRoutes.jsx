@@ -5,8 +5,8 @@ import { Suspense, lazy } from "react";
 import {action as loginAction} from '../pages/auth/Login';
 import { action as registerAction } from "../pages/auth/Register";
 
-const LandingPage = lazy(() => import("../pages/LandingPage"));
-const Home = lazy(() => import("../pages/Home/Home"));
+const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
+const Home = lazy(() => import("../pages/home/Home"));
 const Community = lazy(() => import("../pages/community/Community"));
 const CreatePost = lazy(() => import("../pages/community/CreatePost"));
 const PostDetails = lazy(() => import("../pages/community/PostDetails"));
@@ -14,10 +14,15 @@ const EditPost = lazy(() => import("../pages/community/EditPost"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
+const Settings = lazy(() => import("../pages/settings/Settings"));
+const Assistant = lazy(() => import("../pages/assistant/Assistant"));
+const Chats = lazy(() => import("../pages/chats/Chats"));
+const Reports = lazy(() => import("../pages/reports/Reports"));
+
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import Loading from "../components/ui/Loading";
-import ErrorPage from "../pages/ErrorPage";
+import ErrorPage from "../pages/error/ErrorPage";
 
 const lazy_load = (Component) => (
   <Suspense fallback={<Loading />}>
@@ -74,6 +79,22 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: lazy_load(Profile)
+      },
+      {
+        path: 'settings',
+        element: lazy_load(Settings)
+      },
+      {
+        path: 'assistant',
+        element: lazy_load(Assistant)
+      },
+      {
+        path: 'chats',
+        element: lazy_load(Chats)
+      },
+      {
+        path: 'reports',
+        element: lazy_load(Reports)
       }
     ]
   }

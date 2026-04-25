@@ -5,6 +5,7 @@ import { LuChartColumn } from "react-icons/lu";
 import { RiRobot3Line } from "react-icons/ri";
 import { BsPerson } from "react-icons/bs";
 import { MdOutlineLogout } from "react-icons/md";
+import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 
@@ -12,10 +13,10 @@ import { useEffect, useState, useRef, use } from "react";
 import { useDispatch } from "react-redux";
 import { themeActions } from "../../store/slices/themeSlice";
 import { motion, AnimatePresence } from "framer-motion";
-import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
+import i18next from "i18next";
 import logo from "/logo.svg";
 import Button from "../ui/Button";
 
@@ -95,6 +96,11 @@ useEffect(() => {
       label: t("sidebar.nav.profile"),
       icon: <BsPerson className="w-5 h-5" />,
     },
+    {
+      to: "/settings",
+      label: t("sidebar.nav.settings"),
+      icon: <IoSettingsOutline className="w-5 h-5" />,
+    },
   ];
 
   return (
@@ -161,7 +167,7 @@ useEffect(() => {
       </aside>
 
       {/* Top nav */}
-      <nav className={`flex justify-between ${i18next.language === 'ar' && 'flex-row-reverse'} items-center lg:hidden fixed top-0 z-40 w-full border border-b-[#D9D9D9]/10 ${theme === "dark" ? "bg-[#161A41]" : "bg-white"} p-8 shadow-md`}>
+      <nav className={`flex justify-between ${i18next.language === 'ar' && 'flex-row-reverse'} items-center lg:hidden fixed top-0 z-40 w-full border border-b-[#D9D9D9]/10 bg-white dark:bg-[#161A41] p-8 shadow-md`}>
         {/* profile */}
         <div className="w-14 h-14 flex items-center justify-center rounded-full shadow-lg border-2 border-[#6976EB]">
           <IoPerson className="w-6 h-6 text-[#6976EB]" />

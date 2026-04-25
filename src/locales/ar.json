@@ -26,7 +26,8 @@
       "community": "المجتمع",
       "chats": "المحادثات",
       "assistant": "المساعد الذكي",
-      "profile": "الملف الشخصي"
+      "profile": "الملف الشخصي",
+      "settings": "الإعدادات"
     },
     "buttons": {
       "darkMode": "الوضع الداكن",
@@ -177,7 +178,6 @@
       "button": "إنشاء حساب مجاني"
     }
   },
-
   "loginPage": {
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
@@ -194,7 +194,6 @@
     "or": "أو",
     "loginToContinue": "سجل الدخول للمتابعة"
   },
-
   "registerPage": {
     "buttons": {
       "prev": "السابق",

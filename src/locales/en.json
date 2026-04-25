@@ -26,7 +26,8 @@
       "community": "Community",
       "chats": "Chats",
       "assistant": "Smart Assistant",
-      "profile": "Profile"
+      "profile": "Profile",
+      "settings": "Settings"
     },
     "buttons": {
       "darkMode": "Dark Mode",
@@ -59,7 +60,6 @@
 
     "copyright": "© 2026 Seen. All rights reserved."
   },
-
   "landingPage": {
     "hero": {
       "title": "Manage Your Blood Sugar with Confidence",
