@@ -28,7 +28,7 @@ export default function Step2({ data, setData, isStepValid }) {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-[#161A41] mb-8">
+      <h2 className="mb-6">
         {t("registerPage.step2.title")}
       </h2>
       

@@ -14,14 +14,16 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { register } from "../../services/authService";
-import { redirect, Form, useActionData } from "react-router-dom";
+import { redirect, Form, useActionData, useNavigation } from "react-router-dom";
 
 export default function Register() {
   const { t } = useTranslation();
   const [isStepValid, setIsStepValid] = useState(false);
   const actionData = useActionData();
+  const navigation = useNavigation();
 
   const isSubmitted = useRef(false);
+  const isSubmitting = navigation.state === "submitting";
 
   const [formData, setFormData] = useState(() => {
     const saved = sessionStorage.getItem("registerData");
@@ -49,7 +51,6 @@ export default function Register() {
     const step = sessionStorage.getItem("registerStep");
     const parsedStep = step ? JSON.parse(step) : 0;
 
-    // SECURITY: If user is past Step 1 but password was cleared from storage
     if (parsedStep > 0 && !formData.password) {
       return 0;
     }
@@ -58,7 +59,6 @@ export default function Register() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Stripping passwords for security in SessionStorage
       const { password, confirmPassword, ...safeData } = formData;
       sessionStorage.setItem("registerData", JSON.stringify(safeData));
     }, 500);
@@ -94,18 +94,18 @@ export default function Register() {
   return (
     <Form
       method="post"
+      className="min-h-screen bg-gradient-to-br from-[#F8F9FF] via-[#FAFAFF] to-[#F0F2FF] dark:from-[#0A0E27] dark:via-[#161A41] dark:to-[#1F1A5F] overflow-hidden"
       onSubmit={() => (isSubmitted.current = true)}
     >
       <StepProgressBar currentStep={currentStep} />
 
-      {/* Hidden inputs ensure the password in memory is actually submitted */}
       {Object.keys(formData).map((key) => (
         <input key={key} type="hidden" name={key} value={formData[key] || ""} />
       ))}
 
       <div className="max-w-3xl mx-auto px-6 py-12 mt-5">
         {actionData?.error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-center rounded">
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-400 text-center rounded">
             {actionData.error}
           </div>
         )}
@@ -117,7 +117,9 @@ export default function Register() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-xl shadow-xl p-8 lg:p-12"
+            className="rounded-xl shadow-xl p-8 lg:p-12
+            bg-white border border-[#D9D9D9]/30
+            dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
           >
             <CurrentStep
               data={formData}
@@ -125,13 +127,14 @@ export default function Register() {
               isStepValid={setIsStepValid}
             />
 
-            <div className="flex-center gap-4 mt-10">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-10">
               {currentStep !== 0 && (
                 <Button
+                  disabled={isSubmitting}
                   type="button"
                   name="prev"
                   onClick={(e) => handleCurrentStep(e)}
-                  className="bg-transparent border-2 border-[#6976EB] hover:bg-[#F8F9FF] w-full px-6 py-3 transition-all flex-center gap-2 cursor-pointer text-[#6976EB]"
+                  className="bg-transparent border-2 border-[#6976EB] text-[#6976EB] hover:bg-[#6976EB]/10 w-full px-6 py-3 transition-all flex-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <IoIosArrowBack
                     className={`${i18next.language === "ar" && "rotate-180"}`}
@@ -139,13 +142,18 @@ export default function Register() {
                   <p>{t("registerPage.buttons.prev")}</p>
                 </Button>
               )}
+
               {currentStep !== 3 ? (
                 <Button
                   type="button"
                   name="next"
-                  disabled={!isStepValid}
+                  disabled={!isStepValid || isSubmitting}
                   onClick={(e) => handleCurrentStep(e)}
-                  className={`${isStepValid ? "bg-[#6976EB] hover:bg-[#2B3695] cursor-pointer" : "bg-gray-300 cursor-not-allowed"} w-full px-6 py-3 transition-all flex-center gap-2 text-white`}
+                  className={`w-full px-6 py-3 transition-all flex-center gap-2 ${
+                    !isStepValid
+                      ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
+                      : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
+                  }`}
                 >
                   <p>{t("registerPage.buttons.next")}</p>
                   <IoIosArrowForward
@@ -155,10 +163,18 @@ export default function Register() {
               ) : (
                 <Button
                   type="submit"
-                  disabled={!isStepValid}
-                  className={`${isStepValid ? "bg-[#6976EB] hover:bg-[#2B3695] cursor-pointer" : "bg-gray-300 cursor-not-allowed"} w-full px-6 py-3 transition-all flex-center gap-2 text-white`}
+                  disabled={!isStepValid || isSubmitting}
+                  className={`w-full px-6 py-3 transition-all flex-center gap-2 ${
+                    !isStepValid || isSubmitting
+                      ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
+                      : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
+                  }`}
                 >
-                  <p>{t("registerPage.buttons.submit")}</p>
+                  <p>
+                    {isSubmitting
+                      ? `${t("registerPage.buttons.submit")}...`
+                      : t("registerPage.buttons.submit")}
+                  </p>
                 </Button>
               )}
             </div>
@@ -172,13 +188,13 @@ export default function Register() {
 export async function action({ request }) {
   const rawFormData = await request.formData();
   const userData = Object.fromEntries(rawFormData);
-  
+
   delete userData.confirmPassword;
   if (userData.weight) userData.weight = Number(userData.weight);
   if (userData.height) userData.height = Number(userData.height);
 
   try {
-    const user= await register(userData);
+    const user = await register(userData);
     store.dispatch(userActions.setUser(user));
     sessionStorage.removeItem("registerData");
     sessionStorage.removeItem("registerStep");

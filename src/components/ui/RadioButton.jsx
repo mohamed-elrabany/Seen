@@ -8,7 +8,7 @@ export default function RadioButton({
   ...props
 }) {
   return (
-    <label className={`text-white flex-col-center gap-2 cursor-pointer shadow-md ${isChecked ? "bg-[#6976EB]" : 'bg-[#ADB4F3] dark:bg-white/10'} hover:bg-[#6976EB] font-bold rounded-lg p-6 text-md text-start transition-all`}>
+    <label className={`text-white flex-col-center gap-2 cursor-pointer shadow-md ${isChecked ? "bg-[#6976EB]" : 'bg-[#6976EB]/20 dark:bg-white/10'} hover:bg-[#6976EB] font-bold rounded-lg p-6 text-md text-start transition-all`}>
       <input
         id={id}
         type="radio"

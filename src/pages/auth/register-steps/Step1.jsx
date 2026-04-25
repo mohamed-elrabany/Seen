@@ -68,8 +68,8 @@ export default function Step1({ data, setData, isStepValid }) {
   }, [data, isEmailVerified, isStepValid]);
 
   return (
-    <div>
-      <h2 className="text-3xl font-bold text-[#161A41] mb-8">
+    <div className="">
+      <h2 className="mb-6">
         {t("registerPage.step1.title")}
       </h2>
       
