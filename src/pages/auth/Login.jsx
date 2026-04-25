@@ -25,7 +25,7 @@ import IncrementalCounter from "../../components/ui/IncrementalCounter";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [touched, setTouched] = useState({}); // Tracks blurred fields
+  const [touched, setTouched] = useState({});
 
   const navigation = useNavigation();
   const actionData = useActionData();
@@ -33,9 +33,13 @@ export default function Login() {
   const isLtr = i18n.language === "en";
 
   const isSubmitting = navigation.state === "submitting";
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Mark field as touched when user clicks away
+  // Logic for validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isEmailValid = emailRegex.test(email);
+  const isPasswordValid = password.length >= 8;
+  const isFormValid = isEmailValid && isPasswordValid;
+
   const handleBlur = (fieldName) => {
     setTouched((prev) => ({ ...prev, [fieldName]: true }));
   };
@@ -50,7 +54,11 @@ export default function Login() {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-white">
+      <div
+        className="flex-1 flex items-center justify-center p-8 
+      bg-gradient-to-br from-[#F8F9FF] via-[#FAFAFF] to-[#F0F2FF] 
+      dark:from-[#0A0E27] dark:via-[#161A41] dark:to-[#1F1A5F]"
+      >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -62,10 +70,8 @@ export default function Login() {
             <img src="/logo.svg" alt="Seen Logo" className="w-48 h-48" />
           </Link>
 
-          <h1>{t("common.welcome")}</h1>
-          <p className="description-text">
-            {t("loginPage.loginToContinue")}
-          </p>
+          <h2>{t("common.welcome")}</h2>
+          <p className="description-text">{t("loginPage.loginToContinue")}</p>
 
           <Form action="/login" method="post" className="space-y-4">
             <Input
@@ -78,10 +84,10 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={() => handleBlur("email")}
               error={
-                touched.email && 
-                (!email 
+                touched.email &&
+                (!email
                   ? "ادخل البريد الإلكتروني"
-                  : !emailRegex.test(email) && "البريد الإلكتروني غير صالح")
+                  : !isEmailValid && "البريد الإلكتروني غير صالح")
               }
             />
 
@@ -95,15 +101,16 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               onBlur={() => handleBlur("password")}
               error={
-                touched.password && 
-                (!password 
-                  ? "ادخل كلمة المرور" 
-                  : password.length < 8 && "كلمة المرور يجب أن تكون 8 أحرف على الأقل")
+                touched.password &&
+                (!password
+                  ? "ادخل كلمة المرور"
+                  : !isPasswordValid &&
+                    "كلمة المرور يجب أن تكون 8 أحرف على الأقل")
               }
             />
 
             <div className="flex justify-between items-center">
-              <label className="flex items-center gap-2 cursor-pointer text-[#808080]">
+              <label className="flex items-center gap-2 cursor-pointer text-[#808080] dark:text-gray-400">
                 <input
                   type="checkbox"
                   className="w-4 h-4 rounded border-2 border-[#D9D9D9] focus:ring-[#6976EB]"
@@ -113,13 +120,12 @@ export default function Login() {
 
               <Link
                 to="/forget-password"
-                className="text-[#6976EB] hover:text-[#2B3695]"
+                className="text-[#6976EB] hover:text-[#2B3695] dark:hover:text-[#6976EB] transition-colors text-sm"
               >
                 {t("loginPage.forgotPassword")}
               </Link>
             </div>
 
-            {/* Error Message from Action Data */}
             {actionData?.error && (
               <p className="text-red-500 text-center font-medium">
                 {actionData.error}
@@ -127,10 +133,12 @@ export default function Login() {
             )}
 
             <Button
-              disabled={isSubmitting || !email || !password}
+              disabled={isSubmitting || !isFormValid}
               type="submit"
               className={`w-full px-6 py-3 transition-all flex items-center justify-center gap-2 ${
-                !email || !password ? "bg-gray-300" : "bg-[#6976EB] hover:bg-[#2B3695]"
+                !isFormValid
+                  ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
+                  : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
               }`}
             >
               <p className="text-white">
@@ -141,28 +149,31 @@ export default function Login() {
               />
             </Button>
 
-            <div className="relative my-4">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-full border-t border-[#D9D9D9]"></div>
-              </div>
-              <div className="relative flex items-center justify-center text-md bg-white px-4 text-[#808080]">
+            <div className="flex justify-center items-center my-4">
+              <div className="w-full border-t border-[#D9D9D9] dark:border-[#D9D9D9]/20"></div>
+              <div className="relative flex items-center justify-center text-md px-4 text-[#808080]">
                 {t("loginPage.or")}
               </div>
+              <div className="w-full border-t border-[#D9D9D9] dark:border-[#D9D9D9]/20"></div>
             </div>
 
             <Button
               type="button"
-              className="bg-white hover:bg-[#6976EB]/10 border-2 border-[#808080]/40 w-full px-6 py-3 transition-all flex items-center justify-center gap-2"
+              className="bg-transparent text-[#161A41] dark:text-white dark:bg-white/10 
+    hover:bg-[#6976EB] hover:text-white hover:border-[#6976EB] 
+    border-2 border-[#D9D9D9]/40 dark:border-[#D9D9D9]/15 
+    w-full px-6 py-3 transition-all flex items-center justify-center gap-2 cursor-pointer group"
             >
               <FcGoogle className="w-8 h-8" />
-              <p className="text-[#161A41]">{t("loginPage.google")}</p>
+              {/* Using text-inherit allows the p tag to take the color from the button's hover state */}
+              <p className="text-inherit font-bold">{t("loginPage.google")}</p>
             </Button>
 
-            <p className="text-[#808080] text-center mt-4">
+            <p className="text-[#808080] dark:text-gray-400 text-center mt-4">
               {t("loginPage.noAccount")}{" "}
               <Link
                 to="/register"
-                className="text-[#6976EB] font-bold hover:text-[#2B3695] transition-colors"
+                className="text-[#6976EB] font-bold hover:text-[#2B3695] dark:hover:text-[#6976EB] transition-colors"
               >
                 {t("loginPage.createAccount")}
               </Link>
@@ -184,32 +195,34 @@ export default function Login() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative z-10 text-white text-center max-w-xl"
         >
-          <h1 className="text-white text-4xl mb-4 font-bold">{t("loginPage.start")}</h1>
+          <h1 className="text-white text-4xl mb-4 font-bold">
+            {t("loginPage.start")}
+          </h1>
           <p className="text-base sm:text-lg lg:text-xl text-white mb-8">
             {t("loginPage.sentence")}
           </p>
 
-<div className="mt-12 grid grid-cols-3 gap-6">
-  {[
-    { value: 50000, suffix: "K+", label: t("loginPage.user") },
-    { value: 1000000, suffix: "M+", label: t("loginPage.log") },
-    { value: 10000, suffix: "K+", label: t("loginPage.post") },
-  ].map((stat, index) => (
-    <motion.div
-      key={index}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-      className="bg-white/10 backdrop-blur-sm rounded-2xl p-6"
-    >
-      <p className="text-3xl font-bold mb-2">
-        <IncrementalCounter target={stat.value} />
-        {stat.suffix}
-      </p>
-      <p className="text-white/80">{stat.label}</p>
-    </motion.div>
-  ))}
-</div>
+          <div className="mt-12 grid grid-cols-3 gap-6">
+            {[
+              { value: 50000, suffix: "K+", label: t("loginPage.user") },
+              { value: 1000000, suffix: "M+", label: t("loginPage.log") },
+              { value: 10000, suffix: "K+", label: t("loginPage.post") },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6"
+              >
+                <p className="text-3xl font-bold mb-2">
+                  <IncrementalCounter target={stat.value} />
+                  {stat.suffix}
+                </p>
+                <p className="text-white/80">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </div>

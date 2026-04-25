@@ -41,7 +41,7 @@ export default function Navbar() {
           <li>
             <Link
               to="/register"
-              className="bg-[#6976EB] hover:bg-[#1F1A5F] transition-all text-white rounded-full px-6 py-2.5 font-bold shadow-lg"
+              className="bg-[#6976EB] hover:bg-[#1F1A5F] dark:hover:bg-[#2B3695] transition-all text-white rounded-full px-6 py-2.5 font-bold shadow-lg"
             >
               {t("common.signup")}
             </Link>
@@ -60,7 +60,7 @@ export default function Navbar() {
           <Link
             to="/login"
             className="border-2 border-[#6976EB] bg-[#6976EB] hover:bg-[#1F1A5F] 
-    hover:border-[#1F1A5F] text-white rounded-xl px-4 py-2 text-sm font-bold 
+    hover:border-[#1F1A5F] dark:hover:bg-[#2B3695] dark:hover:border-[#2B3695] text-white rounded-xl px-4 py-2 text-sm font-bold 
     shadow-lg transition-all"
           >
             {t("common.login")}

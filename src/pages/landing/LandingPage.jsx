@@ -130,93 +130,92 @@ export default function LandingPage() {
         </div>
       </section>
 
-{/* Analytics Section */}
-<section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center 
+      {/* Analytics Section */}
+      <section
+        className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center 
   bg-gradient-to-br from-[#F8F9FF] to-white 
-  dark:from-[#161A41] dark:to-[#1F1A5F] transition-colors duration-300">
-  
-  <div>
-    <h2 className="text-[#161A41] dark:text-white">
-      {t("landingPage.analytics.title")}
-    </h2>
-    <p className="description-text dark:text-gray-300">
-      {t("landingPage.analytics.description")}
-    </p>
-    
-    <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-      className="flex-col-start gap-4 mt-8"
-    >
-      <div className="flex-start gap-4">
-        <div className="w-12 h-12 bg-[#6976EB]/20 rounded-xl flex items-center justify-center shrink-0">
-          <IoMdCheckmarkCircleOutline className="w-6 h-6 text-[#6976EB]" />
-        </div>
-        <div className="flex-col-start">
-          <h4 className="text-[#161A41] dark:text-white font-bold">
-            {t("landingPage.analytics.a1cTitle")}
-          </h4>
-          <p className="card-text dark:text-gray-400">
-            {t("landingPage.analytics.a1cDesc")}
+  dark:from-[#161A41] dark:to-[#1F1A5F] transition-colors duration-300"
+      >
+        <div>
+          <h2 className="text-[#161A41] dark:text-white">
+            {t("landingPage.analytics.title")}
+          </h2>
+          <p className="description-text dark:text-gray-300">
+            {t("landingPage.analytics.description")}
           </p>
-        </div>
-      </div>
 
-      <div className="flex-start gap-4">
-        <div className="w-12 h-12 bg-[#6976EB]/20 rounded-xl flex items-center justify-center shrink-0">
-          <IoBarChart className="w-6 h-6 text-[#6976EB]" />
-        </div>
-        <div className="flex-col-start">
-          <h4 className="text-[#161A41] dark:text-white font-bold">
-            {t("landingPage.analytics.filterTitle")}
-          </h4>
-          <p className="card-text dark:text-gray-400">
-            {t("landingPage.analytics.filterDesc")}
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  </div>
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex-col-start gap-4 mt-8"
+          >
+            <div className="flex-start gap-4">
+              <div className="w-12 h-12 bg-[#6976EB]/20 rounded-xl flex items-center justify-center shrink-0">
+                <IoMdCheckmarkCircleOutline className="w-6 h-6 text-[#6976EB]" />
+              </div>
+              <div className="flex-col-start">
+                <h4 className="text-[#161A41] dark:text-white font-bold">
+                  {t("landingPage.analytics.a1cTitle")}
+                </h4>
+                <p className="card-text dark:text-gray-400">
+                  {t("landingPage.analytics.a1cDesc")}
+                </p>
+              </div>
+            </div>
 
-  <motion.div
-    initial={{ opacity: 0, x: -50 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.6 }}
-    viewport={{ once: true }}
-    className="grid gap-4 p-4 md:p-8 dark:backdrop-blur-sm rounded-3xl shadow-2xl border
+            <div className="flex-start gap-4">
+              <div className="w-12 h-12 bg-[#6976EB]/20 rounded-xl flex items-center justify-center shrink-0">
+                <IoBarChart className="w-6 h-6 text-[#6976EB]" />
+              </div>
+              <div className="flex-col-start">
+                <h4 className="text-[#161A41] dark:text-white font-bold">
+                  {t("landingPage.analytics.filterTitle")}
+                </h4>
+                <p className="card-text dark:text-gray-400">
+                  {t("landingPage.analytics.filterDesc")}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="grid gap-4 p-4 md:p-8 dark:backdrop-blur-sm rounded-3xl shadow-2xl border
     bg-white bg-none border-[#D9D9D9]/30
       dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
-  >
-    <div className="aspect-video flex-center overflow-hidden p-8 bg-gradient-to-br from-[#6976EB]/10 to-[#ADB4F3]/10 dark:from-[#6976EB]/20 dark:to-[#ADB4F3]/5 rounded-2xl">
-      <img
-        className="w-[60%] object-cover"
-        src={analysisReport}
-        alt="analysis vector image"
-      />
-    </div>
-    
-    <div className="grid grid-cols-2 gap-4 md:gap-8">
-      <div className="bg-[#F8F9FF] dark:bg-[#6976EB]/10 rounded-xl p-4">
-        <p className="card-text dark:text-gray-300">
-          {t("landingPage.analytics.timeRange")}
-        </p>
-        <p className="text-base md:text-xl font-bold text-[#6976EB]">
-          85%
-        </p>
-      </div>
-      <div className="bg-[#F8F9FF] dark:bg-[#6976EB]/10 rounded-xl p-4">
-        <p className="card-text">
-          {t("landingPage.analytics.avgSugar")}
-        </p>
-        <p className="text-base md:text-xl font-bold text-[#6976EB]">
-          142
-        </p>
-      </div>
-    </div>
-  </motion.div>
-</section>
+        >
+          <div className="aspect-video flex-center overflow-hidden p-8 bg-gradient-to-br from-[#6976EB]/10 to-[#ADB4F3]/10 dark:from-[#6976EB]/20 dark:to-[#ADB4F3]/5 rounded-2xl">
+            <img
+              className="w-[60%] object-cover"
+              src={analysisReport}
+              alt="analysis vector image"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 md:gap-8">
+            <div className="bg-[#F8F9FF] dark:bg-[#6976EB]/10 rounded-xl p-4">
+              <p className="card-text dark:text-gray-300">
+                {t("landingPage.analytics.timeRange")}
+              </p>
+              <p className="text-base md:text-xl font-bold text-[#6976EB]">
+                85%
+              </p>
+            </div>
+            <div className="bg-[#F8F9FF] dark:bg-[#6976EB]/10 rounded-xl p-4">
+              <p className="card-text">{t("landingPage.analytics.avgSugar")}</p>
+              <p className="text-base md:text-xl font-bold text-[#6976EB]">
+                142
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </section>
 
       {/* Community Section */}
       <section id="community" className="flex-col-center gap-8">
@@ -341,9 +340,11 @@ export default function LandingPage() {
       </section>
 
       {/* Donation Section */}
-      <section className="bg-gradient-to-br flex-col-center gap-8 
+      <section
+        className="bg-gradient-to-br flex-col-center gap-8 
         bg-gradient-to-br from-[#F8F9FF] to-white 
-      dark:from-[#1F1A5F] dark:to-[#161A41]">
+      dark:from-[#1F1A5F] dark:to-[#161A41]"
+      >
         <div className="w-20 h-20 bg-gradient-to-t from-[#6976EB] to-[#2B3695] rounded-full flex items-center justify-center">
           <HiHeart className="w-10 h-10 text-white" />
         </div>
@@ -375,7 +376,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
               viewport={{ once: true }}
-            className="bg-white bg-none border-[#D9D9D9]/30
+              className="bg-white bg-none border-[#D9D9D9]/30
                 dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10
               p-8 rounded-2xl shadow-lg border border-[#D9D9D9]/30 flex flex-col"
             >
