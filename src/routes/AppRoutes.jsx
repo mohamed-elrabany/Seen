@@ -6,7 +6,7 @@ import {action as loginAction} from '../pages/auth/Login';
 import { action as registerAction } from "../pages/auth/Register";
 
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
-const Home = lazy(() => import("../pages/home/Home"));
+const Home = lazy(() => import("../pages/dashboard/Home"));
 const Community = lazy(() => import("../pages/community/Community"));
 const CreatePost = lazy(() => import("../pages/community/CreatePost"));
 const PostDetails = lazy(() => import("../pages/community/PostDetails"));
