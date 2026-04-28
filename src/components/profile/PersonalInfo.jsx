@@ -23,6 +23,24 @@ export default function PersonalInfo() {
     return `${date.getDate()} ${t(`profilePage.personalInfo.months.${date.getMonth()}`)} ${date.getFullYear()}`;
   };
 
+  const calculateAge = (birthDateString) => {
+  if (!birthDateString) return 0;
+  
+  const today = new Date();
+  const birthDate = new Date(birthDateString);
+  
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+  // If we haven't reached the birth month, or we are in the birth month 
+  // but haven't reached the birth day, subtract one year.
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  
+  return age;
+};
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -62,7 +80,7 @@ export default function PersonalInfo() {
               {formatBirthDate(user?.birthDate)}
             </p>
             <p className="text-sm text-[#808080] dark:text-gray-400">
-              {t("profilePage.personalInfo.ageValue", { count: user?.age || 34 })}
+              {t("profilePage.personalInfo.ageValue", { count: calculateAge(user?.birthDate) || 34 })}
             </p>
           </div>
 

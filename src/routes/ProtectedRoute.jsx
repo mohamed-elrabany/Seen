@@ -11,9 +11,9 @@ export default function ProtectedRoute() {
     return <Loading />;
   }
 
-//   if (!isAuthenticated) {
-//     return <Navigate to={"/login"} state={{ from: location }} replace />;
-//   }
+  // if (!isAuthenticated) {
+  //   return <Navigate to={"/login"} state={{ from: location }} replace />;
+  // }
 
   return (
     <div className="flex min-h-screen bg-gradient-to-b from-[#F8F9FF] via-[#FAFAFF] to-[#F0F2FF] dark:from-[#0A0E27] dark:via-[#161A41] dark:to-[#1F1A5F]">

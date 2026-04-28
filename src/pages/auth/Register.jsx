@@ -118,7 +118,7 @@ export default function Register() {
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
             className="rounded-xl shadow-xl p-8 lg:p-12
-            bg-white border border-[#D9D9D9]/30
+            bg-white bg-none border border-[#D9D9D9]/30
             dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
           >
             <CurrentStep
@@ -194,8 +194,8 @@ export async function action({ request }) {
   if (userData.height) userData.height = Number(userData.height);
 
   try {
-    const user = await register(userData);
-    store.dispatch(userActions.setUser(user));
+    const data = await register(userData);
+    store.dispatch(userActions.setUser(data.user));
     sessionStorage.removeItem("registerData");
     sessionStorage.removeItem("registerStep");
     return redirect("/home");

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+
 import Header from "../layout/Header";
 import HeaderCards from "../ui/HeaderCards";
 
@@ -8,13 +10,14 @@ import { headerCardsContent as cards } from "../../util/content";
 
 export default function HomeHeader() {
   const { t } = useTranslation();
+  const user = useSelector((state) => state.user.user);
 
   return (
     <Header className="flex-col-between">
       <div className="w-full flex-col-start gap-4 mb-6">
         <h1 className="text-white">
           {/* Path updated to homePage.header.welcome */}
-          {t("homePage.header.welcome", { name: "منتصر" })}
+          {t("homePage.header.welcome", { name: user?.first_name || "منتصر" })}
         </h1>
         <p className="text-white">
           {t("homePage.header.summary")}

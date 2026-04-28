@@ -232,8 +232,8 @@ export default function Login() {
 export async function action({ request }) {
   const formData = await request.formData();
   try {
-    const user = await login(formData.get("email"), formData.get("password"));
-    store.dispatch(userActions.setUser(user));
+    const data = await login(formData.get("email"), formData.get("password"));
+    store.dispatch(userActions.setUser(data.user));
     return redirect("/home?login=success");
   } catch (err) {
     return {

@@ -14,7 +14,9 @@ export default function ProfileHeader() {
   const { t } = useTranslation(); // Initialize
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
+  console.log("User in ProfileHeader:", user); // Debugging log
   const userName = user?.first_name ? `${user.first_name} ${user.last_name}` : "username";
+  const diabetesType = user?.diabetes_type.toLowerCase() || "gestational";
 
   const categoryColorMap = {
     type1: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 capitalize",
@@ -22,8 +24,6 @@ export default function ProfileHeader() {
     lada: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase",
     mody: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 uppercase",
     gestational: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 capitalize",
-    general: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 capitalize",
-    advices: "bg-gray-200 text-gray-700 dark:bg-gray-900/50 dark:text-gray-300 capitalize",
   };
 
   const profileBorderColorMap = {
@@ -34,8 +34,8 @@ export default function ProfileHeader() {
     gestational: "border-2 border-purple-700 dark:border-purple-400",
   };
 
-  const categoryColor = categoryColorMap[user?.diabetes_type] ?? "bg-gray-100 text-gray-700";
-  const profileBorderColor = profileBorderColorMap[user?.diabetes_type] ?? "border-2 border-gray-300";
+  const categoryColor = categoryColorMap[diabetesType] ?? "bg-gray-100 text-gray-700";
+  const profileBorderColor = profileBorderColorMap[diabetesType] ?? "border-2 border-gray-300";
 
   return (
     <motion.div
@@ -52,7 +52,7 @@ export default function ProfileHeader() {
           {user?.profileImg ? (
             <img src={user.profileImg} alt="Profile" className="w-full h-full object-cover rounded-xl" />
           ) : (
-            <IoPerson className="w-16 h-16 text-[#6976EB]" />
+            <IoPerson className="w-16 h-16 text-gray-400" />
           )}
         </div>
 
@@ -62,7 +62,7 @@ export default function ProfileHeader() {
           
           <p className={`px-4 py-2 w-full text-center rounded-full font-bold ${categoryColor}`}>
             {/* Reusing the shared categories from earlier */}
-            {t(`communityPage.shared.categories.${user?.diabetes_type || "type2"}`)}
+            {t(`communityPage.shared.categories.${ diabetesType }`)}
           </p>
 
           <div className="flex items-center justify-center md:justify-start gap-6 mb-4">
