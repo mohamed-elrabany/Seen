@@ -234,6 +234,7 @@ export async function action({ request }) {
   try {
     const data = await login(formData.get("email"), formData.get("password"));
     store.dispatch(userActions.setUser(data.user));
+    localStorage.setItem("token", data.token);
     return redirect("/home?login=success");
   } catch (err) {
     return {

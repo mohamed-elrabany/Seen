@@ -1,8 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
-
-import {action as loginAction} from '../pages/auth/Login';
+import { action as loginAction } from "../pages/auth/Login";
 import { action as registerAction } from "../pages/auth/Register";
 
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
@@ -21,6 +20,7 @@ const Reports = lazy(() => import("../pages/reports/Reports"));
 
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoutes";
 import Loading from "../components/ui/Loading";
 import ErrorPage from "../pages/error/ErrorPage";
 
@@ -32,74 +32,76 @@ const lazy_load = (Component) => (
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <RootLayout />,
-    errorElement: <ErrorPage />,
+    element: <PublicRoute />,
     children: [
       {
-        index: true,
-        element: lazy_load(LandingPage),
-      },
-      {
-        path: "login",
-        element: lazy_load(Login),
-        action: loginAction
-      },
-      {
-        path: "register",
-        element: lazy_load(Register),
-        action: registerAction
+        element: <RootLayout />,
+        children: [
+          {
+            index: true,
+            element: lazy_load(LandingPage),
+          },
+          {
+            path: "login",
+            element: lazy_load(Login),
+            action: loginAction,
+          },
+          {
+            path: "register",
+            element: lazy_load(Register),
+            action: registerAction,
+          },
+        ],
       },
     ],
   },
   {
     element: <ProtectedRoute />,
     errorElement: <ErrorPage />,
-    children:[
+    children: [
       {
-        path: 'home',
-        element: lazy_load(Home)
+        path: "home",
+        element: lazy_load(Home),
       },
       {
-        path: 'community',
-        element: lazy_load(Community)
+        path: "community",
+        element: lazy_load(Community),
       },
       {
-        path: 'community/create',
-        element: lazy_load(CreatePost)
+        path: "community/create",
+        element: lazy_load(CreatePost),
       },
       {
-        path: 'community/edit/:postId',
-        element: lazy_load(EditPost)
+        path: "community/edit/:postId",
+        element: lazy_load(EditPost),
       },
       {
-        path: 'community/:postId',
-        element: lazy_load(PostDetails)
+        path: "community/:postId",
+        element: lazy_load(PostDetails),
       },
       {
-        path: 'profile',
-        element: lazy_load(Profile)
+        path: "profile",
+        element: lazy_load(Profile),
       },
       {
-        path: 'settings',
-        element: lazy_load(Settings)
+        path: "settings",
+        element: lazy_load(Settings),
       },
       {
-        path: 'assistant',
-        element: lazy_load(Assistant)
+        path: "assistant",
+        element: lazy_load(Assistant),
       },
       {
-        path: 'chats',
-        element: lazy_load(Chats)
+        path: "chats",
+        element: lazy_load(Chats),
       },
       {
-        path: 'reports',
-        element: lazy_load(Reports)
-      }
-    ]
-  }
+        path: "reports",
+        element: lazy_load(Reports),
+      },
+    ],
+  },
 ]);
-
 
 export default function AppRoutes() {
   return (

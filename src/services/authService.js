@@ -5,7 +5,9 @@ async function handleRequest(request){
         const response = await request;
         return response.data;
     }catch(error){
-        throw error.response?.data?.message || 'Something wrong happened!';
+        return {
+            error: error || "Something wrong happened!"
+        }
     }
 }
 
@@ -14,7 +16,8 @@ export async function login(email, password) {
     const response = await api.post("/login", { email, password }, { withCredentials: false });
     return response.data;
   } catch (err) {
-    throw err.response?.data?.message || "بيانات خاطئة";
+    const message = error.response?.data?.message || "Something went wrong";
+    throw new Error(message);
   }
 }
 
@@ -38,6 +41,6 @@ export async function userExists(email){
 
 export function getMe(){
   return handleRequest(
-    api.get("/me", { withCredentials: true })
+    api.get("/me", { withCredentials: false })
   );
 }

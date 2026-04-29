@@ -12,6 +12,7 @@ import { FaWeightScale } from "react-icons/fa6";
 export default function PersonalInfo() {
   const { t } = useTranslation();
   const user = useSelector((state) => state.user.user);
+  console.log("User data in PersonalInfo:", user);
   const userName = (user?.first_name + " " + user?.last_name) ?? "username";
 
   // Helper to format the date using JSON month keys

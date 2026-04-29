@@ -1,16 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 
 export default function RootLayout() {
   const location = useLocation();
-  const { pathname } = location;
-
-  const isLandingPage = pathname === "/";
-  const isAuthPage = pathname === "/login" || pathname === "/register";
-  const isAppPage = !isLandingPage && !isAuthPage; // /home and future pages
+  const isLandingPage = location.pathname === "/";
 
   return (
     <>
@@ -28,17 +23,17 @@ export default function RootLayout() {
         }}
       />
 
-      {/* LANDING PAGE — Navbar + full width, no extra padding */}
-      {isLandingPage && (
+      {isLandingPage ? (
         <div className="flex flex-col min-h-screen">
           <Navbar />
-          <Outlet />
+          <div className="flex-grow">
+            <Outlet />
+          </div>
           <Footer />
         </div>
+      ) : (
+        <Outlet />
       )}
-
-      {isAuthPage && <Outlet />}
-
     </>
   );
 }

@@ -196,8 +196,11 @@ export async function action({ request }) {
   try {
     const data = await register(userData);
     store.dispatch(userActions.setUser(data.user));
+    localStorage.setItem("token", data.token);
+
     sessionStorage.removeItem("registerData");
     sessionStorage.removeItem("registerStep");
+    
     return redirect("/home");
   } catch (err) {
     return {
