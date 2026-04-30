@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next"; // Added this
 
 import HomeHeader from "../../components/home/HomeHeader";
+import Chart from "../../components/home/Chart";
 
 export default function Home() {
   const [params] = useSearchParams();
@@ -17,8 +18,9 @@ export default function Home() {
   }, [params, t]); // Added t to dependency array
 
   return (
-    <main>
+    <main className="space-y-8">
       <HomeHeader />
+      <Chart />
     </main>
   );
 }

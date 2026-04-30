@@ -60,7 +60,7 @@ export default function PostFeed({ category }) {
   }, [handleScroll]);
 
   return (
-    <div className="flex-col-center gap-8 overflow-y-auto w-full py-8">
+    <div className="flex-col-center gap-8 overflow-y-auto w-full">
       {posts.map((post, index) => (
         <PostCard
           key={post.id}

@@ -4,7 +4,8 @@
     "login": "Login",
     "signup": "Get Started",
     "logout": "Logout",
-    "more": "Know More"
+    "more": "Know More",
+    "categories": "Categories"
   },
   "units": {
     "thousand": "K",
@@ -276,6 +277,13 @@
     }
   },
   "homePage": {
+    "chart":{
+      "title": "Your Glucose Levels Over Time",
+      "tooltip": {
+        "date": "Time: {{date}}",
+        "glucose": "Glucose Level: {{value}}"
+      }
+    },
  "alerts": {
       "loginSuccess": "Logged in successfully"
     },
