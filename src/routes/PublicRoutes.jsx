@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import Loading from "../components/ui/Loading";
+import LoadingPage from "../pages/loading/LoadingPage";
 
 export default function PublicRoute() {
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <LoadingPage />;
 
   // If already logged in, redirect to home
   if (isAuthenticated) {

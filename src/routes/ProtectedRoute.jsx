@@ -1,7 +1,7 @@
 import { Outlet, useLocation, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
-import Loading from "../components/ui/Loading";
+import LoadingPage from "../pages/loading/LoadingPage";
 import Sidebar from "../components/layout/Sidebar";
 import { use } from "react";
 
@@ -12,7 +12,7 @@ export default function ProtectedRoute() {
   const location = useLocation();
 
   if (isLoading) {
-    return <Loading />;
+    return <LoadingPage />;
   }
 
   if (!isAuthenticated) {

@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
 import AppRoutes from "./routes/AppRoutes";
+import LoadingPage from "./pages/loading/LoadingPage";
 
-import Loading from "./components/ui/Loading";
 
 import { getMe } from "./services/authService";
 import { useEffect, useState } from "react";
@@ -49,7 +49,7 @@ function App() {
   }, [theme]);
 
   if (loader) {
-    return <Loading />;
+    return <LoadingPage />;
   }
 
   return <AppRoutes />;

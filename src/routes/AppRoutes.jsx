@@ -21,11 +21,11 @@ const Reports = lazy(() => import("../pages/reports/Reports"));
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoutes";
-import Loading from "../components/ui/Loading";
 import ErrorPage from "../pages/error/ErrorPage";
+import LoadingPage from "../pages/loading/LoadingPage";
 
 const lazy_load = (Component) => (
-  <Suspense fallback={<Loading />}>
+  <Suspense fallback={<LoadingPage />}>
     <Component />
   </Suspense>
 );
