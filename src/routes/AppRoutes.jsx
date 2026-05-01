@@ -33,6 +33,7 @@ const lazy_load = (Component) => (
 const router = createBrowserRouter([
   {
     element: <PublicRoute />,
+    errorElement: <ErrorPage />,
     children: [
       {
         element: <RootLayout />,

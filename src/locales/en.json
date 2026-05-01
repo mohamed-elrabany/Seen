@@ -7,6 +7,16 @@
     "more": "Know More",
     "categories": "Categories"
   },
+  "toasts":{
+    "home":{
+      "dateError": "Date is out of the valid range.",
+      "fetchError": "Something went wrong. Please try again later."
+    }
+  },
+  "errorPage":{
+    "message": "The page you are looking for does not exist.",
+    "button": "Back To Safety"
+  },
   "units": {
     "thousand": "K",
     "million": "M"
