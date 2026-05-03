@@ -13,15 +13,12 @@ export default function LogCard({ logData }) {
   const isRTL = i18n.dir() === "rtl";
   const navigate = useNavigate();
 
-  const logTime = () => {
-    if (logData.recordGlucose) return logData.recordGlucose.reading_time;
-    if (logData.recordMeal) return logData.recordMeal.meal_time;
-    if (logData.medication) return logData.medication.medication_time;
-  };
-  const displayedTime = logTime()
-    ? new Date(logTime()).toLocaleTimeString([], {
+  const displayedTime = logData.log_time
+    ? new Date(logData.log_time).toLocaleTimeString(i18n.language, {
         hour: "2-digit",
         minute: "2-digit",
+        hour12: true,
+        numberingSystem: 'latn'
       })
     : "No time";
 
@@ -54,7 +51,7 @@ export default function LogCard({ logData }) {
       style={{
         boxShadow: `
             ${!isRTL ? "inset 4px 0px 0px 0px #6976EB" : "inset -4px 0px 0px 0px #6976EB"} ,
-            0px 10px 15px -3px rgba(0, 0, 0, 0.1)
+            0 2px 4px -1px rgba(0, 0, 0, 0.1)
             `,
       }}
     >

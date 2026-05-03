@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { getGlucoseReadings } from "../../services/analysisServices";
+import { formatDisplayedDate } from "../../util/formatDiplayedDate";
 
 import { CgSpinner } from "react-icons/cg"; 
 
@@ -33,7 +34,7 @@ const emptyStateWithLabels = [
   { time: "22:00", value: null },
 ];
 
-export default function Chart() {
+export default function Chart({ setDate }) {
   const { t } = useTranslation();
   
   // 1. inputValue: Changes instantly as user types/picks
@@ -46,14 +47,14 @@ export default function Chart() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Pretty format for the <h3> area
-  const formatDisplayDate = (dateStr) => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    const day = d.getDate();
-    const month = t(`profilePage.personalInfo.months.${d.getMonth()}`);
-    const year = d.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
+  // const formatDisplayDate = (dateStr) => {
+  //   if (!dateStr) return "";
+  //   const d = new Date(dateStr);
+  //   const day = d.getDate();
+  //   const month = t(`profilePage.personalInfo.months.${d.getMonth()}`);
+  //   const year = d.getFullYear();
+  //   return `${day} ${month} ${year}`;
+  // };
 
   useEffect(() => {
     if (!inputValue) return;
@@ -68,7 +69,7 @@ export default function Chart() {
       // Prevent fetching or UI updates if year is unrealistic (e.g., 0014)
       if (selectedYear >= 2026 && selectedYear <= currentYear) {
         setDateValue(inputValue); // Update the visual "Source of Truth"
-        
+        setDate(inputValue); // Update the parent component's date state
         const fetchGlucoseReadings = async () => {
           setIsLoading(true);
           try {
@@ -105,7 +106,7 @@ export default function Chart() {
           </h3>
           {/* Display logic linked to dateValue, so it doesn't flicker while typing */}
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {formatDisplayDate(dateValue)}
+            {formatDisplayedDate(dateValue)}
           </p>
         </div>
         

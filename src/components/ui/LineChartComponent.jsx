@@ -16,6 +16,21 @@ export default function LineChartComponent({ glucoseReadings }) {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl"; // Arabic
 
+  const formatChartTime = (timeStr, lng) => {
+    // 1. Create a dummy date (today + the time from backend)
+    const [hours, minutes] = timeStr.split(":");
+    const date = new Date();
+    date.setHours(parseInt(hours), parseInt(minutes));
+
+    // 2. Use the same logic we used for cards
+    return date.toLocaleTimeString(lng, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      numberingSystem: "latn", // Keeps digits as 1, 2, 3
+    });
+  };
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       {/* Increased left margin slightly to make room for the Y-Axis label */}
@@ -30,6 +45,7 @@ export default function LineChartComponent({ glucoseReadings }) {
         />
 
         <XAxis
+          tickFormatter={(time) => formatChartTime(time, i18n.language)}
           dataKey="time"
           stroke={!isDark ? "#808080" : "#D9D9D9"}
           dy={5}
