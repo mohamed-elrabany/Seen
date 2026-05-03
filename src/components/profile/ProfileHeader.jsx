@@ -15,27 +15,33 @@ export default function ProfileHeader() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   console.log("User in ProfileHeader:", user); // Debugging log
-  const userName = user?.first_name ? `${user.first_name} ${user.last_name}` : "username";
+  const userName = user?.first_name
+    ? `${user.first_name} ${user.last_name}`
+    : "username";
   const diabetesType = user?.diabetes_type.toLowerCase() || "gestational";
 
   const categoryColorMap = {
-    type1: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 capitalize",
-    type2: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 capitalize",
-    lada: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase",
-    mody: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 uppercase",
-    gestational: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 capitalize",
+    type1: "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize",
+    type2: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6] capitalize",
+    lada: "bg-[#22c55e]/20 text-[#22c55e] border-[#22c55e] uppercase",
+    mody: "bg-[#f97316]/20 text-[#f97316] border-[#f97316] uppercase",
+    gestational: "bg-[#a855f7]/20 text-[#a855f7] border-[#a855f7] capitalize",
+    general: "bg-[#eab308]/20 text-[#eab308] border-[#eab308] capitalize",
+    advices: "bg-[#9ca3af]/20 text-[#9ca3af] border-[#9ca3af] capitalize",
   };
 
   const profileBorderColorMap = {
-    type1: "border-2 border-red-700 dark:border-red-400",
-    type2: "border-2 border-blue-700 dark:border-blue-400",
-    mody: "border-2 border-orange-700 dark:border-orange-400",
-    lada: "border-2 border-green-700 dark:border-green-400",
-    gestational: "border-2 border-purple-700 dark:border-purple-400",
+    type1: "border-2 border-[#ef4444]",
+    type2: "border-2 border-[#3b82f6]",
+    mody: "border-2 border-[#f97316]",
+    lada: "border-2 border-[#22c55e]",
+    gestational: "border-2 border-[#a855f7]",
   };
 
-  const categoryColor = categoryColorMap[diabetesType] ?? "bg-gray-100 text-gray-700";
-  const profileBorderColor = profileBorderColorMap[diabetesType] ?? "border-2 border-gray-300";
+  const categoryColor =
+    categoryColorMap[diabetesType] ?? "bg-gray-100 text-gray-700";
+  const profileBorderColor =
+    profileBorderColorMap[diabetesType] ?? "border-2 border-gray-300";
 
   return (
     <motion.div
@@ -48,9 +54,15 @@ export default function ProfileHeader() {
     >
       <div className="flex flex-col justify-center items-center md:flex-row gap-4">
         {/* profile photo */}
-        <div className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg ${profileBorderColor}`}>
+        <div
+          className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg ${profileBorderColor}`}
+        >
           {user?.profileImg ? (
-            <img src={user.profileImg} alt="Profile" className="w-full h-full object-cover rounded-xl" />
+            <img
+              src={user.profileImg}
+              alt="Profile"
+              className="w-full h-full object-cover rounded-xl"
+            />
           ) : (
             <IoPerson className="w-16 h-16 text-gray-400" />
           )}
@@ -58,11 +70,15 @@ export default function ProfileHeader() {
 
         {/* user info */}
         <div className="flex-col-center gap-2 mt-4">
-          <h2 className="text-center text-[#161A41] dark:text-white">{userName}</h2>
-          
-          <p className={`px-4 py-2 w-full text-center rounded-full font-bold ${categoryColor}`}>
+          <h2 className="text-center text-[#161A41] dark:text-white">
+            {userName}
+          </h2>
+
+          <p
+            className={`px-4 py-2 w-full text-center rounded-full font-bold ${categoryColor}`}
+          >
             {/* Reusing the shared categories from earlier */}
-            {t(`communityPage.shared.categories.${ diabetesType }`)}
+            {t(`communityPage.shared.categories.${diabetesType}`)}
           </p>
 
           <div className="flex items-center justify-center md:justify-start gap-6 mb-4">
@@ -82,19 +98,25 @@ export default function ProfileHeader() {
 
           <div className="grid grid-cols-3 items-center justify-center md:justify-start gap-6 mb-4">
             <div className="flex-col-center">
-              <p className="font-bold text-2xl text-[#161A41] dark:text-white">122</p>
+              <p className="font-bold text-2xl text-[#161A41] dark:text-white">
+                122
+              </p>
               <span className="font-bold text-sm text-[#808080] dark:text-gray-400">
                 {t("profilePage.header.followers")}
               </span>
             </div>
             <div className="flex-col-center">
-              <p className="font-bold text-2xl text-[#161A41] dark:text-white">67</p>
+              <p className="font-bold text-2xl text-[#161A41] dark:text-white">
+                67
+              </p>
               <span className="font-bold text-sm text-[#808080] dark:text-gray-400">
                 {t("profilePage.header.following")}
               </span>
             </div>
             <div className="flex-col-center">
-              <p className="font-bold text-2xl text-[#161A41] dark:text-white">37k</p>
+              <p className="font-bold text-2xl text-[#161A41] dark:text-white">
+                37k
+              </p>
               <span className="font-bold text-sm text-[#808080] dark:text-gray-400">
                 {t("profilePage.header.support")}
               </span>
@@ -115,7 +137,7 @@ export default function ProfileHeader() {
           <FiEdit className="w-5 h-5" />
           <p>{t("profilePage.header.editAccount")}</p>
         </Button>
-        
+
         <Button
           onClick={() => navigate("/settings")}
           className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer bg-[#F8F9FF] text-[#808080] hover:bg-[#ADB4F3]/20 dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-300 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"

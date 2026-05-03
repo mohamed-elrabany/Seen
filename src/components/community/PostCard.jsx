@@ -37,28 +37,23 @@ export default function PostCard({
   const formattedCommentsCount = formatCount(commentsCount, t);
 
 
-  const categoryColorMap = {
-    type1:
-      "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 capitalize",
-    type2:
-      "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 capitalize",
-    lada: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase",
-    mody: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 uppercase",
-    gestational:
-      "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 capitalize",
-    general:
-      "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 capitalize",
-    advices:
-      "bg-gray-200 text-gray-700 dark:bg-gray-900/50 dark:text-gray-300 capitalize",
-  };
+const categoryColorMap = {
+  type1: "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize",
+  type2: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6] capitalize",
+  lada: "bg-[#22c55e]/20 text-[#22c55e] border-[#22c55e] uppercase",
+  mody: "bg-[#f97316]/20 text-[#f97316] border-[#f97316] uppercase",
+  gestational: "bg-[#a855f7]/20 text-[#a855f7] border-[#a855f7] capitalize",
+  general: "bg-[#eab308]/20 text-[#eab308] border-[#eab308] capitalize",
+  advices: "bg-[#9ca3af]/20 text-[#9ca3af] border-[#9ca3af] capitalize",
+};
 
-  const profileBorderColorMap = {
-    type1: "border-2 border-red-700 dark:border-red-400",
-    type2: "border-2 border-blue-700 dark:border-blue-400",
-    mody: "border-2 border-orange-700 dark:border-orange-400",
-    lada: "border-2 border-green-700 dark:border-green-400",
-    gestational: "border-2 border-purple-700 dark:border-purple-400",
-  };
+const profileBorderColorMap = {
+  type1: "border-2 border-[#ef4444]",
+  type2: "border-2 border-[#3b82f6]",
+  mody: "border-2 border-[#f97316]",
+  lada: "border-2 border-[#22c55e]",
+  gestational: "border-2 border-[#a855f7]",
+};
 
   const categoryColor =
     categoryColorMap[category] ?? "bg-gray-100 text-gray-700";

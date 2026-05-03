@@ -239,7 +239,7 @@ export default function LandingPage() {
             <div className="flex justify-between items-start sm:items-center w-full">
               <div className="flex-start gap-4">
                 {/* profileBorderColor logic for type1 (red) */}
-                <div className="w-12 h-12 border-2 border-2 border-red-700 dark:border-red-400 bg-[#6976EB]/20 rounded-full flex items-center overflow-hidden justify-center shrink-0">
+                <div className="w-12 h-12 border-2 border-2 border-[#ef4444] bg-[#6976EB]/20 rounded-full flex items-center overflow-hidden justify-center shrink-0">
                   <IoPerson className="w-6 h-6 text-[#6976EB]" />
                 </div>
                 <div className="flex-col-start">
@@ -253,7 +253,7 @@ export default function LandingPage() {
               </div>
 
               {/* Category Tag: type1*/}
-              <p className="px-4 py-2 text-center text-xs md:text-sm rounded-full font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 capitalize">
+              <p className="px-4 py-2 text-center text-xs md:text-sm rounded-full font-bold bg-[#ef4444]/20 text-[#ef4444] capitalize">
                 {t("communityPage.shared.categories.type1")}
               </p>
             </div>

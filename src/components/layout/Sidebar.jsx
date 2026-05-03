@@ -30,12 +30,13 @@ export default function Sidebar() {
   const { toggleTheme } = themeActions;
 
   const diabetesType = user?.diabetes_type.toLowerCase() || "gestational";
+
   const profileBorderColorMap = {
-    type1: "border-2 border-red-700 dark:border-red-400",
-    type2: "border-2 border-blue-700 dark:border-blue-400",
-    mody: "border-2 border-orange-700 dark:border-orange-400",
-    lada: "border-2 border-green-700 dark:border-green-400",
-    gestational: "border-2 border-purple-700 dark:border-purple-400",
+    type1: "border-2 border-[#ef4444]",
+    type2: "border-2 border-[#3b82f6]",
+    mody: "border-2 border-[#f97316]",
+    lada: "border-2 border-[#22c55e]",
+    gestational: "border-2 border-[#a855f7]",
   };
   const profileBorderColor =
     profileBorderColorMap[diabetesType] ?? "border-2 border-gray-300";
