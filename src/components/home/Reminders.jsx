@@ -58,6 +58,7 @@ const remindersData = [
 
 export default function Reminders() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <div
       className="w-full h-full shadow-lg space-y-8 border p-4 md:p-6 rounded-2xl

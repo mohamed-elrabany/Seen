@@ -3,6 +3,7 @@ import { Suspense, lazy } from "react";
 
 import { action as loginAction } from "../pages/auth/Login";
 import { action as registerAction } from "../pages/auth/Register";
+import { action as reminderAction } from "../pages/reminders/AddReminder";
 
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
 const Home = lazy(() => import("../pages/dashboard/Home"));
@@ -17,6 +18,7 @@ const Settings = lazy(() => import("../pages/settings/Settings"));
 const Assistant = lazy(() => import("../pages/assistant/Assistant"));
 const Chats = lazy(() => import("../pages/chats/Chats"));
 const Reports = lazy(() => import("../pages/reports/Reports"));
+const AddReminder = lazy(() => import("../pages/reminders/AddReminder"));
 
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -100,6 +102,11 @@ const router = createBrowserRouter([
         path: "reports",
         element: lazy_load(Reports),
       },
+      {
+        path: "add-reminder",
+        element: lazy_load(AddReminder),
+        action: reminderAction,
+      }
     ],
   },
 ]);
