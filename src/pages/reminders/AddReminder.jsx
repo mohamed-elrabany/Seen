@@ -17,7 +17,6 @@ import { MdNotificationAdd } from "react-icons/md";
 import RadioButton from "../../components/ui/RadioButton";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
-import ReminderHeader from "../../components/reminders/Header";
 import AddMedicineModal from "../../components/modals/AddMedicineModal";
 import IconHeader from "../../components/ui/IconHeader";
 

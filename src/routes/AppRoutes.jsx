@@ -19,7 +19,7 @@ const Assistant = lazy(() => import("../pages/assistant/Assistant"));
 const Chats = lazy(() => import("../pages/chats/Chats"));
 const Reports = lazy(() => import("../pages/reports/Reports"));
 const AddReminder = lazy(() => import("../pages/reminders/AddReminder"));
-const AddLog = lazy(() => import("../pages/logs/AddLog"));
+const AddLog= lazy(() => import("../pages/logs/AddLog"));
 
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
