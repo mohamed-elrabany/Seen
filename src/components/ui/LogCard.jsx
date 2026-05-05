@@ -1,7 +1,7 @@
 //icons
 import { BiSolidInjection } from "react-icons/bi";
 import { BsForkKnife } from "react-icons/bs";
-import { TbPillFilled } from "react-icons/tb";
+import GlucoseIcon from "./GlucoseIcon";
 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -71,17 +71,17 @@ export default function LogCard({ logData }) {
         <div className="flex items-center -space-x-2">
           {logData.recordGlucose && (
             <div className="bg-[#6976EB] p-2 rounded-full text-white ring-1 ring-white/5">
-              <BiSolidInjection className="w-3 h-3" />
+              <GlucoseIcon className="w-4 h-4" />
             </div>
           )}
           {logData.medication && (
             <div className="bg-[#6976EB] p-2 rounded-full text-white ring-1 ring-white/5">
-              <TbPillFilled className="w-3 h-3" />
+              <BiSolidInjection className="w-4 h-4" />
             </div>
           )}
           {logData.recordMeal && (
             <div className="bg-[#6976EB] p-2 rounded-full text-white ring-1 ring-white/5">
-              <BsForkKnife className="w-3 h-3" />
+              <BsForkKnife className="w-4 h-4" />
             </div>
           )}
         </div>

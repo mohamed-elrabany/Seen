@@ -1,8 +1,8 @@
 //icons
 import { BiSolidInjection } from "react-icons/bi";
 import { BsForkKnife } from "react-icons/bs";
-import { TbPillFilled } from "react-icons/tb";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import GlucoseIcon from "./GlucoseIcon";
 
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
@@ -16,7 +16,7 @@ export default function ReminderCard({ reminderData }) {
     // Keeping your logic: result is an element
     switch (reminderData.message_type) {
       case "glucose":
-        return <TbPillFilled className="w-6 h-6" />;
+        return <GlucoseIcon className="w-6 h-6" />;
       case "medication":
         return <BiSolidInjection className="w-6 h-6" />;
       case "meal":
