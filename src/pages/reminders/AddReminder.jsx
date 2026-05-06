@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Form, useNavigation, redirect } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,7 @@ import { BsForkKnife } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { RiAddLargeLine } from "react-icons/ri";
 import { MdNotificationAdd } from "react-icons/md";
+import { FaAngleDown, FaCircleCheck } from "react-icons/fa6";
 
 // Components
 import RadioButton from "../../components/ui/RadioButton";
@@ -22,6 +23,7 @@ import IconHeader from "../../components/ui/IconHeader";
 
 // Services
 import { addReminder } from "../../services/reminderServices";
+import { getMedications } from "../../services/medicationServices";
 
 const medicationNames = [
   "Insulin Glargine (Lantus)",
@@ -42,10 +44,10 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: "spring", stiffness: 260, damping: 20 } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 260, damping: 20 },
   },
 };
 
@@ -57,10 +59,34 @@ export default function AddReminder() {
   const [reminderType, setReminderType] = useState("");
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("");
+  const [medicationList, setMedicationList] = useState([]);
   const [medication, setMedication] = useState("");
+  const [openMedicationDropdown, setOpenMedicationDropdown] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef();
+
+  useEffect(() => {
+    const fetchMedications = async () => {
+      try {
+        const data = await getMedications();
+
+        // If it's an array, use it. If it's an object, convert it.
+        // If it's null/undefined, use medicationNames.
+        const formattedList = Array.isArray(data)
+          ? data
+          : data
+            ? Object.values(data)
+            : medicationNames;
+
+        setMedicationList(formattedList);
+      } catch (error) {
+        toast.error("Failed to fetch medications. Using default list.");
+        setMedicationList(medicationNames);
+      }
+    };
+    fetchMedications();
+  }, []);
 
   const handleReminderTypeChange = (e) => {
     setReminderType(e.target.value);
@@ -84,24 +110,28 @@ export default function AddReminder() {
             isChecked={reminderType === "glucose"}
             onChange={handleReminderTypeChange}
           >
-            <motion.div animate={{ scale: reminderType === "glucose" ? 1.1 : 1 }}>
+            <motion.div
+              animate={{ scale: reminderType === "glucose" ? 1.1 : 1 }}
+            >
               <GlucoseIcon className="w-8 h-8" />
             </motion.div>
             <p className="text-xs md:text-base">Glucose Check</p>
           </RadioButton>
-          
+
           <RadioButton
             name="reminderType"
             value="medication"
             isChecked={reminderType === "medication"}
             onChange={handleReminderTypeChange}
           >
-            <motion.div animate={{ scale: reminderType === "medication" ? 1.1 : 1 }}>
+            <motion.div
+              animate={{ scale: reminderType === "medication" ? 1.1 : 1 }}
+            >
               <BiSolidInjection className="w-8 h-8" />
             </motion.div>
             <p className="text-xs md:text-base">Medication</p>
           </RadioButton>
-          
+
           <RadioButton
             name="reminderType"
             value="meal"
@@ -167,53 +197,97 @@ export default function AddReminder() {
               </motion.div>
 
               {reminderType === "medication" && (
-                <motion.div variants={itemVariants} className="grid grid-cols-5 gap-4 items-end justify-center">
-                  <div className="flex flex-col gap-2 w-full col-span-4">
+                <motion.div
+                  variants={itemVariants}
+                  className="grid grid-cols-5 gap-4 items-end justify-center"
+                >
+                  <div className="flex flex-col gap-2 w-full col-span-4 relative">
                     <label
                       htmlFor="medication"
                       className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
                     >
                       Medication
                     </label>
-                    <select
-                      name="medication"
-                      id="medication"
-                      onChange={(e) => setMedication(e.target.value)}
-                      className="w-full text-base text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 border-2 border-[#D9D9D9]/30 focus:border-[#6976EB] outline-none transition-all bg-transparent cursor-pointer appearance-none"
+
+                    {/* Custom Dropdown Header */}
+                    <div
+                      onClick={() => setOpenMedicationDropdown((prev) => !prev)}
+                      className={`w-full flex justify-between items-center text-base rounded-lg px-4 py-2.5 sm:py-3 border-2 transition-all bg-transparent cursor-pointer ${
+                        openMedicationDropdown
+                          ? "border-[#6976EB] text-[#161A41] dark:text-white"
+                          : "border-[#D9D9D9]/30 " + (medication ? "text-[#161A41] dark:text-white" : "text-[#808080] dark:text-gray-400")
+                      } `}
                     >
-                      <option value="" disabled selected className="text-[#808080]">
-                        Select medication...
-                      </option>
-                      {medicationNames.map((name) => (
-                        <option
-                          key={name}
-                          value={name}
-                          className="bg-white dark:bg-[#1a1e4d] text-[#161A41] dark:text-white"
+                      <p className="truncate ">
+                        {/* medication is the state variable for the single selected value */}
+                        {medication ? medication : "Select medication..."}
+                      </p>
+                      <FaAngleDown
+                        className={`w-5 h-5 transition-transform duration-200 ${
+                          openMedicationDropdown
+                            ? "rotate-180 text-[#6976EB]"
+                            : "rotate-0"
+                        }`}
+                      />
+                    </div>
+
+                    {/* Custom Dropdown List */}
+                    <AnimatePresence>
+                      {openMedicationDropdown && (
+                        <motion.ul
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="absolute top-full left-0 w-full bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mt-1 text-sm text-[#161A41] dark:text-white shadow-xl max-h-60 overflow-y-auto z-[60]"
                         >
-                          {name}
-                        </option>
-                      ))}
-                    </select>
+                          {medicationList.map((med) => {
+                            const name =
+                              typeof med === "string" ? med : med.name;
+                            const isSelected = medication === name;
+
+                            return (
+                              <li
+                                key={name}
+                                className={`px-4 py-3 hover:bg-[#6976EB]/10 cursor-pointer flex items-center justify-between transition-colors ${
+                                  isSelected ? "bg-[#6976EB] hover:bg-[#6976EB]/80 text-white" : ""
+                                }`}
+                                onClick={() => {
+                                  setMedication(name); // Set single value
+                                  setOpenMedicationDropdown(false); // Close on select
+                                }}
+                              >
+                                <p className={isSelected ? "font-bold" : ""}>
+                                  {name}
+                                </p>
+                                {isSelected && (
+                                  <FaCircleCheck className="w-5 h-5 text-white" />
+                                )}
+                              </li>
+                            );
+                          })}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
                   </div>
-                  
-                  {/* Desktop Button */}
+
+                  {/* Desktop Add Button */}
                   <motion.button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-4 py-3 sm:py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg hidden md:flex items-center justify-center shadow-md"
+                    className="px-4 py-3 sm:py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg hidden md:flex items-center justify-center shadow-md h-[46px] sm:h-[52px]"
                   >
                     Add Medication
                   </motion.button>
-                  
-                  {/* Mobile Button */}
+
+                  {/* Mobile Add Button */}
                   <motion.button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-3 py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg flex md:hidden items-center justify-center shadow-md"
+                    className="px-3 py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg flex md:hidden items-center justify-center shadow-md h-[46px] sm:h-[52px]"
                   >
                     <RiAddLargeLine className="w-5 h-5" />
                   </motion.button>

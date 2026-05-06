@@ -13,7 +13,7 @@ import Button from "../ui/Button";
 
 
 // Services
-import { addMedicine } from "../../services/reminderServices";
+import { addMedication } from "../../services/medicationServices";
 
 export default function AddMedicineModal({ isOpen, onClose, formRef }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,22 +35,21 @@ export default function AddMedicineModal({ isOpen, onClose, formRef }) {
 
     setIsSubmitting(true);
 
-    try {
-      await addMedicine({ medicineName });
-      toast.success("Medicine added successfully");
-      
-      // Reset the form using the ref passed from the parent
-      formRef.current?.reset();
-      
-      // Close the modal
-      onClose();
+     try {
+      // Simulate API call delay
+      const result = await addMedication({ medicineName });
+      if (result.success) {
+        toast.success("Medication added successfully!");
+        redirect("/home");
+      } else {
+        toast.error("Failed to add medication. Please try again.");
+      }
     } catch (error) {
-      toast.error("Failed to add medicine");
-      console.error("Error adding medicine:", error);
+      toast.error("An error occurred while adding the medication.");
     } finally {
       setIsSubmitting(false);
     }
-  };
+    }
 
   return (
     <BaseModal

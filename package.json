@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.2.1",
     "axios": "^1.13.6",
+    "clsx": "^2.1.1",
     "daisyui": "^5.5.19",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.34.3",
@@ -27,7 +28,8 @@
     "react-router-dom": "^7.13.1",
     "react-step-progress-bar": "^1.0.3",
     "recharts": "^3.8.1",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

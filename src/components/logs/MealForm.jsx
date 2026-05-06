@@ -1,0 +1,132 @@
+import Input from "../ui/Input";
+import RadioButton from "../ui/RadioButton";
+import { motion } from "framer-motion";
+import { useState, useId } from "react";
+
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 260, damping: 20 },
+  },
+};
+
+export default function MealForm({ mealData, setMealData }) {
+  const id = useId(); // Generates a unique ID for the label/input association
+
+    function handleInputChange(e) {
+      const { name, value } = e.target;
+      setMealData((prevData) => ({
+        ...prevData,
+        recordMeal:{
+          ...prevData.recordMeal,
+          [name]: value
+        }
+      }));
+    }
+
+  const mealTypes = [
+    { value: "breakfast", label: "Breakfast" },
+    { value: "lunch", label: "Lunch" },
+    { value: "dinner", label: "Dinner" },
+    { value: "snack", label: "Snack" },
+  ];
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="space-y-6"
+    >
+      <div className="flex flex-col gap-4 items-start">
+        <label
+          className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base"
+          htmlFor={id}
+        >
+          Meal Type
+        </label>
+        
+        <div className="w-full md:col-span-3 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {mealTypes.map((type) => (
+            <motion.div key={type.value} variants={itemVariants}>
+              <RadioButton
+                name="meal_type"
+                value={type.value}
+                isChecked={mealData?.meal_type === type.value}
+                onChange={(e) => handleInputChange(e)}
+              >
+                {type.label}
+              </RadioButton>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      <motion.div variants={itemVariants}>
+        <Input
+          label="Meal Description"
+          name="meal_description"
+          type="text"
+          placeholder="Enter meal description"
+          defaultValue={mealData?.meal_description || ""}
+          onChange={(e) => handleInputChange(e)}
+        />
+      </motion.div>
+      <motion.div variants={itemVariants}>
+        <Input
+          label="Carbohydrate Estimation (grams)"
+          name="carbohydrate_estimation"
+          type="number"
+          placeholder="Enter carbohydrate estimation"
+          defaultValue={mealData?.carbohydrate_estimation || ""}
+          onChange={(e) => handleInputChange(e)}
+        />
+      </motion.div>
+      <motion.div variants={itemVariants}>
+        <Input
+          label="Calories Estimation"
+          name="calories_estimation"
+          type="number"
+          placeholder="Enter calories estimation"
+          defaultValue={mealData?.calories_estimation || ""}
+          onChange={(e) => handleInputChange(e)}
+        />
+      </motion.div>
+      <motion.div variants={itemVariants}>
+        <div className="flex-col-start gap-3">
+          <label
+            htmlFor="meal-notes"
+            className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
+          >
+            Notes
+          </label>
+
+          <textarea
+            onChange={(e)=> handleInputChange(e)}
+            name="notes"
+            id="meal-notes"
+            placeholder={"Add any additional notes about this meal..."}
+            className="w-full bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400
+            border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"
+          >
+            {mealData?.notes || ""}
+          </textarea>
+        </div>
+      </motion.div>
+
+    </motion.div>
+  );
+}

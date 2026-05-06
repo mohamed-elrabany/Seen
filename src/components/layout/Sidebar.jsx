@@ -220,7 +220,7 @@ export default function Sidebar() {
           <>
             {/* Overlay */}
             <motion.div
-              className="fixed inset-0 bg-black/40 z-50 lg:hidden"
+              className="fixed inset-0 bg-black/40 z-80 lg:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -236,7 +236,7 @@ export default function Sidebar() {
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="w-2/3 h-screen shadow-2xl flex flex-col lg:hidden gap-6 
-              fixed top-0 right-0 z-50 overflow-y-auto
+              fixed top-0 right-0 z-100 overflow-y-auto
               from-[#FFFFFF] via-[#FFFFFF] to-[#FFFFFF] bg-gradient-to-b  
               dark:from-[#1F1A5F] dark:via-[#161A41] dark:to-[#0A0E27]"
             >
