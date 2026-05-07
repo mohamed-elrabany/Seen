@@ -18,10 +18,13 @@ import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import logo from "/logo.svg";
 import Button from "../ui/Button";
+import LogoutModal from "../modals/LogoutModal";
 
 export default function Sidebar() {
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const logoutRef = useRef();
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
@@ -117,6 +120,11 @@ export default function Sidebar() {
 
   return (
     <>
+    <LogoutModal 
+    isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        logoutRef={logoutRef}
+    />
       {/* Sidebar navigation */}
       <aside className="hidden w-1/3 lg:w-1/4 h-screen overflow-y-auto sticky top-0 shadow-2xl lg:flex flex-col gap-6 from-[#FFFFFF] via-[#FFFFFF] to-[#FFFFFF] bg-gradient-to-b  dark:from-[#1F1A5F] dark:via-[#161A41] dark:to-[#0A0E27]">
         {/* Header */}
@@ -172,7 +180,7 @@ export default function Sidebar() {
         text-[#808080] bg-[#F8F9FF] hover:bg-[#6976EB]/10
         dark:bg-white/10 dark:text-[#D1D5DC] dark:hover:bg-white/20"
           >
-            <MdOutlineDarkMode className="w-5 h-5" />
+            {theme === "dark" ? <MdOutlineLightMode className="w-5 h-5" /> : <MdOutlineDarkMode className="w-5 h-5" />}
             <p>
               {theme === "dark"
                 ? t("sidebar.buttons.lightMode")
@@ -181,6 +189,7 @@ export default function Sidebar() {
           </Button>
 
           <Button
+            onClick={() => setShowLogoutConfirm(true)}
             className="w-full flex-start gap-4 p-4 rounded-xl cursor-pointer
         text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20"
           >
@@ -304,6 +313,7 @@ export default function Sidebar() {
                 </Button>
 
                 <Button
+                  onClick={() => setShowLogoutConfirm(true)}
                   className="w-full flex-start gap-4 p-4 rounded-xl cursor-pointer
         text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20"
                 >

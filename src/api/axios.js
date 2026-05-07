@@ -5,7 +5,7 @@ const NGROK_BASE_URL = import.meta.env.NGROK_API_BASE_URL;
 
 const api = axios.create({
     baseURL: BASE_URL,
-    withCredentials: true, 
+    // withCredentials: true, 
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

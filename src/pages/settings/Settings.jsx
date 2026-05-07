@@ -1,17 +1,25 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import { themeActions } from "../../store/slices/themeSlice";
+import { notificationActions } from "../../store/slices/notificationSlice";
 
 import Header from "../../components/layout/Header";
 import Button from "../../components/ui/Button";
+import LogoutModal from "../../components/modals/LogoutModal";
+import DeleteAccountModal from "../../components/modals/DeleteAccountModal";
 import { BsPerson, BsTrash } from "react-icons/bs";
 import { GoLock } from "react-icons/go";
-import { 
-  MdOutlineLogout, 
-  MdOutlineNotifications, 
-  MdOutlineLanguage, 
-  MdOutlineDarkMode 
+
+import {
+  MdOutlineLogout,
+  MdOutlineNotifications,
+  MdOutlineNotificationsOff,
+  MdOutlineLanguage,
+  MdOutlineDarkMode,
+  MdOutlineLightMode,
 } from "react-icons/md";
 
 const containerVariants = {
@@ -33,9 +41,60 @@ const itemVariants = {
 };
 
 export default function Settings() {
+  const { isEnabled } = useSelector((state) => state.notification);
   const user = useSelector((state) => state.user.user);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme.theme);
+  const { toggleTheme } = themeActions;
+  const { toggleEnabled } = notificationActions;
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const logoutRef = useRef();
+  const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] = useState(false);
+  const deleteAccountRef = useRef();
+
+  const preferenceItems = [
+    {
+      id: "theme",
+      title: "Display Theme",
+      desc: "Switch between light and dark mode appearance.",
+      icon: <MdOutlineDarkMode className="h-5 w-5 text-[#6976EB]" />,
+      action: () => dispatch(toggleTheme()),
+      btnIcon:
+        theme === "dark" ? (
+          <MdOutlineLightMode className="w-5 h-5" />
+        ) : (
+          <MdOutlineDarkMode className="w-5 h-5" />
+        ),
+      btnText:
+        theme === "dark"
+          ? t("sidebar.buttons.lightMode")
+          : t("sidebar.buttons.darkMode"),
+    },
+    {
+      id: "language",
+      title: "Language",
+      desc: "Choose your preferred language for the interface.",
+      icon: <MdOutlineLanguage className="h-5 w-5 text-[#6976EB]" />,
+      action: () => i18n.changeLanguage(i18n.language === "ar" ? "en" : "ar"),
+      btnIcon: <MdOutlineLanguage className="w-5 h-5" />,
+      btnText: i18n.language === "ar" ? "English" : "العربية",
+    },
+    {
+      id: "notifications",
+      title: "Notifications",
+      desc: "Configure how you receive alerts and updates.",
+      icon: <MdOutlineNotifications className="h-5 w-5 text-[#6976EB]" />,
+      action: () => dispatch(toggleEnabled()),
+      btnIcon: isEnabled ? (
+        <MdOutlineNotifications className="w-5 h-5" />
+      ) : (
+        <MdOutlineNotificationsOff className="w-5 h-5" />
+      ),
+      btnText: isEnabled ? "Disable" : "Enable",
+    },
+  ];
 
   return (
     <motion.div
@@ -54,111 +113,135 @@ export default function Settings() {
         </div>
       </Header>
 
-      {/* Account Section */}
+      {/* 1. Account Section */}
       <motion.div
         variants={itemVariants}
         className="overflow-hidden rounded-2xl shadow-lg border
         bg-white bg-none border-[#D9D9D9]/30
         dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
       >
-        <div className="p-6 w-full flex items-center justify-start bg-[#161A41]/5 dark:bg-white/5">
+        <div className="p-6 w-full flex items-center justify-start bg-gray-50/50 dark:bg-white/5">
           <h2 className="mb-0">Account</h2>
         </div>
 
         <div
           onClick={() => navigate(`profile/edit/${user?.id}`)}
-          className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-[#161A41]/5 dark:hover:bg-white/5 transition-colors"
+          className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors"
         >
           <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 flex-center">
             <BsPerson className="h-5 w-5 text-[#6976EB]" />
           </div>
           <div>
             <h4 className="mb-0 font-bold">Edit Profile</h4>
-            <p className="meta-text">Update your personal information and preferences.</p>
+            <p className="meta-text">
+              Update your personal information and preferences.
+            </p>
           </div>
         </div>
 
-        <div className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-[#161A41]/5 dark:hover:bg-white/5 transition-colors">
+        <div className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
           <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 flex-center">
             <GoLock className="h-5 w-5 text-[#6976EB]" />
           </div>
           <div>
             <h4 className="mb-0 font-bold">Security and Privacy</h4>
-            <p className="meta-text">Manage your security settings and privacy preferences.</p>
+            <p className="meta-text">
+              Manage your security settings and privacy preferences.
+            </p>
           </div>
         </div>
+      </motion.div>
 
-        <div className="p-4 border-t border-[#D9D9D9]/30 space-y-4">
+      {/* 2. Preferences Section */}
+      <motion.div
+        variants={itemVariants}
+        className="overflow-hidden rounded-2xl shadow-lg border
+  bg-white bg-none border-[#D9D9D9]/30
+  dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
+      >
+        <div className="p-6 w-full flex items-center justify-start bg-gray-50/50 dark:bg-white/5">
+          <h2 className="mb-0">Preferences</h2>
+        </div>
+
+        {preferenceItems.map((item) => (
+          <div
+            key={item.id}
+            className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors group"
+          >
+            <div className="flex items-center gap-4 text-start">
+              <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 shrink-0 flex-center">
+                {item.icon}
+              </div>
+              <div>
+                <h4 className="mb-0 font-bold leading-tight">{item.title}</h4>
+                <p className="meta-text mt-1">{item.desc}</p>
+              </div>
+            </div>
+
+            <Button
+              onClick={item.action}
+              className="w-full sm:w-auto flex items-center justify-center gap-4 cursor-pointer font-semibold px-4 py-3 sm:py-2 rounded-lg text-xs
+        bg-[#6976EB]/10 text-[#6976EB] border border-[#6976EB]/20 hover:bg-[#6976EB] hover:text-white transition-all active:scale-95"
+            >
+              {item.btnIcon}
+              <span>{item.btnText}</span>
+            </Button>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* 3. Danger Zone Section */}
+      <motion.div
+        variants={itemVariants}
+        className="overflow-hidden rounded-2xl shadow-lg border
+        bg-white bg-none border-[#FF0404]/20
+        dark:bg-gradient-to-br dark:from-[#2a1a1a] dark:to-[#161A41] dark:border-[#FF0404]/20"
+      >
+        <div className="p-6 w-full flex items-center justify-start bg-[#FF0404]/5">
+          <h2 className="mb-0 text-[#FF0404]">Danger Zone</h2>
+        </div>
+
+        <div className="p-6 border-t border-[#FF0404]/20 space-y-4">
           <Button
             className="w-full flex-start gap-4 p-4 rounded-xl cursor-pointer
             text-[#FF0404] border border-[#FF0404]/30 hover:border-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 transition-all"
-            onClick={() => console.log("Logout")}
+            onClick={() => setShowLogoutConfirm(true)}
           >
             <MdOutlineLogout className="w-5 h-5" />
             <div className="text-left">
               <h4 className="mb-0 font-bold text-[#FF0404]">Logout Account</h4>
-              <p className="text-sm opacity-80">Sign out of your current session.</p>
+              <p className="text-sm opacity-80">
+                Sign out of your current session.
+              </p>
             </div>
           </Button>
 
           <Button
             className="w-full flex-start gap-4 p-4 rounded-xl cursor-pointer
             text-[#FF0404] border border-[#FF0404]/30 hover:border-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 transition-all"
-            onClick={() => console.log("Delete")}
+            onClick={() => setShowDeleteAccountConfirm(true)}
           >
             <BsTrash className="w-5 h-5" />
             <div className="text-left">
               <h4 className="mb-0 font-bold text-[#FF0404]">Delete Account</h4>
-              <p className="text-sm opacity-80">Permanently remove your account and data.</p>
+              <p className="text-sm opacity-80">
+                Permanently remove your account and data.
+              </p>
             </div>
           </Button>
         </div>
       </motion.div>
 
-      {/* Preferences Section */}
-      <motion.div
-        variants={itemVariants}
-        className="overflow-hidden rounded-2xl shadow-lg border
-        bg-white bg-none border-[#D9D9D9]/30
-        dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
-      >
-        <div className="p-6 w-full flex items-center justify-start bg-[#161A41]/5 dark:bg-white/5">
-          <h2 className="mb-0">Preferences</h2>
-        </div>
-
-        {/* Theme Settings */}
-        <div className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-[#161A41]/5 dark:hover:bg-white/5 transition-colors">
-          <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 flex-center">
-            <MdOutlineDarkMode className="h-5 w-5 text-[#6976EB]" />
-          </div>
-          <div>
-            <h4 className="mb-0 font-bold">Display Theme</h4>
-            <p className="meta-text">Switch between light and dark mode appearance.</p>
-          </div>
-        </div>
-
-        {/* Language Settings */}
-        <div className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-[#161A41]/5 dark:hover:bg-white/5 transition-colors">
-          <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 flex-center">
-            <MdOutlineLanguage className="h-5 w-5 text-[#6976EB]" />
-          </div>
-          <div>
-            <h4 className="mb-0 font-bold">Language</h4>
-            <p className="meta-text">Choose your preferred language for the interface.</p>
-          </div>
-        </div>
-
-        {/* Notification Settings */}
-        <div className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-[#161A41]/5 dark:hover:bg-white/5 transition-colors">
-          <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 flex-center">
-            <MdOutlineNotifications className="h-5 w-5 text-[#6976EB]" />
-          </div>
-          <div>
-            <h4 className="mb-0 font-bold">Notifications</h4>
-            <p className="meta-text">Configure how you receive alerts and updates.</p>
-          </div>
-        </div>
-      </motion.div>
+      <LogoutModal
+        isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        logoutRef={logoutRef}
+      />
+      <DeleteAccountModal
+        isOpen={showDeleteAccountConfirm}
+        onClose={() => setShowDeleteAccountConfirm(false)}
+        deleteRef={deleteAccountRef}
+      />
     </motion.div>
   );
 }

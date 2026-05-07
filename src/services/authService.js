@@ -44,3 +44,14 @@ export function getMe(){
     api.get("/me", { withCredentials: false })
   );
 }
+
+export function logout(){
+  return handleRequest(
+    api.post("/logout")
+  );
+}
+export function deleteAccount({ password }){
+  return handleRequest(
+    api.post("/delete-account", { password })
+  );
+}
