@@ -1,0 +1,50 @@
+import { motion } from "framer-motion";
+import { BsForkKnife } from "react-icons/bs";
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 260, damping: 20 },
+  },
+};
+
+export default function MealDetails({ mealRecordData }) {
+    const mealDataArray = [
+        { label: "Meal Type", value: mealRecordData.meal_type },
+        { label: "Description", value: mealRecordData.meal_description },
+        { label: "Carbohydrate Estimation", value: `${mealRecordData.carbohydrate_estimation} g` || "N/A" },
+        { label: "Calories Estimation", value: `${mealRecordData.calories_estimation} kcal` || "N/A" },
+        { label: "Notes", value: mealRecordData.notes || "No notes provided" },
+    ];
+  return (
+        <motion.div 
+          variants={itemVariants} 
+          className="overflow-hidden rounded-2xl border-2 border-[#6976EB] bg-white shadow-lg dark:bg-[#1e224f]"
+        >
+          {/* Static Purple Header */}
+          <div className="flex items-center gap-4 bg-[#6976EB] px-6 py-6 text-white">
+            <div className="rounded-lg bg-white p-2 text-[#6976EB]">
+              <BsForkKnife className="h-6 w-6" />
+            </div>
+            <p className="text-2xl font-bold">Meal Record</p>
+          </div>
+    
+          {/* Details List (Always Visible) */}
+          <ul className="w-full text-[#161A41] dark:text-white">
+            {mealDataArray.map((item, index) => (
+              <li
+                key={index}
+                className={`border-b border-[#D9D9D9]/30 px-6 py-4 last:border-b-0`}
+              >
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#808080] dark:text-gray-400">
+                  {item.label}
+                </p>
+                <p className="text-lg font-medium">{item.value}</p>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+  );
+};

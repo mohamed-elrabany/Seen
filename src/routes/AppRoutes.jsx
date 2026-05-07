@@ -121,7 +121,7 @@ const router = createBrowserRouter([
       {
         path: "logs/:logId",
         element: lazy_load(LogDetails),
-      }
+      },
     ],
   },
 ]);

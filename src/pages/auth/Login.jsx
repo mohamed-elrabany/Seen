@@ -21,6 +21,7 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import toast from "react-hot-toast";
 import IncrementalCounter from "../../components/ui/IncrementalCounter";
+import { t } from "i18next";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -235,6 +236,7 @@ export async function action({ request }) {
     const data = await login(formData.get("email"), formData.get("password"));
     store.dispatch(userActions.setUser(data.user));
     localStorage.setItem("token", data.token);
+    toast.success("Logged in successfully!");
     return redirect("/home?login=success");
   } catch (err) {
     return {

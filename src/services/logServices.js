@@ -30,9 +30,10 @@ export async function deleteLog(logId){
 }
 
 export async function getLogDetails(logId){
-    return handleRequest(
+    const data= await handleRequest(
         api.get(`/log-details/${logId}`, { withCredentials: false })
     );
+    return data.log
 }
 
 export async function getLogs(){

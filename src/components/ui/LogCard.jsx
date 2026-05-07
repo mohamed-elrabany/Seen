@@ -5,13 +5,13 @@ import GlucoseIcon from "./GlucoseIcon";
 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function LogCard({ logData }) {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl";
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const displayedTime = logData.log_time
     ? new Date(logData.log_time).toLocaleTimeString(i18n.language, {
@@ -46,7 +46,6 @@ export default function LogCard({ logData }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2, ease: "easeInOut" }}
-      onClick={() => navigate(`/logs/${logData.log_id}`)}
       className="w-full group cursor-pointer space-y-2 bg-white dark:bg-white/5 rounded-2xl p-4 border border-[#D9D9D9]/30 dark:border-white/10"
       style={{
         boxShadow: `

@@ -3,7 +3,7 @@ import Button from "../ui/Button";
 
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { formatDisplayedDate } from "../../util/formatDiplayedDate";
 
 import { RiAddLargeLine } from "react-icons/ri";
@@ -98,7 +98,9 @@ export default function Logs({ date }) {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           {logsData.map((log) => (
-            <LogCard key={log.log_id} logData={log} />
+            <Link to={`/logs/${log.log_id}`} key={log.log_id} className="w-full">
+              <LogCard key={log.log_id} logData={log} />
+            </Link>
           ))}
         </motion.div>
       ) : (

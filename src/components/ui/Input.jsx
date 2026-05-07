@@ -19,7 +19,7 @@ export default function Input({
     `w-full text-base text-[#161A41] dark:text-white rounded-lg px-4 py-3 sm:py-4 border-2 
     ${hasError 
       ? "border-red-600 focus:border-red-500 bg-red-500/5" 
-      : "border-[#D9D9D9]/30 focus:border-[#6976EB]"
+      : "border-[#808080]/30 dark:border-[#D9D9D9]/30 focus:border-[#6976EB]"
     }
     placeholder:text-[#808080] dark:placeholder:text-gray-400 
     outline-none transition-all`,
