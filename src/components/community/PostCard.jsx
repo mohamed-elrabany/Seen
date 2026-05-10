@@ -13,28 +13,15 @@ import {formatCount} from "../../util/formatPostStatus";
 
 import PostImages from "./PostImages";
 
-export default function PostCard({
-  id,
-  title,
-  body,
-  images,
-  category,
-  isOwner,
-  likesCount,
-  isLiked,
-  commentsCount,
-  hashtags,
-  dueDate,
-  user,
-  ...props
+export default function PostCard({ post,...props
 }) {
-  const [like, setLike] = useState(isLiked);
+  const [like, setLike] = useState(post.isLiked);
   const navigate= useNavigate();
   const { t } = useTranslation();
 
-  const relativeDate = formatRelativeTime(dueDate);
-  const formattedLikesCount = formatCount(likesCount, t);
-  const formattedCommentsCount = formatCount(commentsCount, t);
+  const relativeDate = formatRelativeTime(post.created_at);
+  const formattedLikesCount = formatCount(post.likes_count, t);
+  const formattedCommentsCount = formatCount(post.comments_count, t);
 
 
 const categoryColorMap = {
@@ -56,9 +43,9 @@ const profileBorderColorMap = {
 };
 
   const categoryColor =
-    categoryColorMap[category] ?? "bg-gray-100 text-gray-700";
+    categoryColorMap[post.category.toLowerCase()] ?? "bg-gray-100 text-gray-700";
   const profileBorderColor =
-    profileBorderColorMap[user?.diabetesType] ?? "border-2 border-gray-300";
+    profileBorderColorMap[post.user?.diabetes_type] ?? "border-2 border-gray-300";
 
   return (
     <div className="w-full shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl
@@ -70,11 +57,11 @@ const profileBorderColorMap = {
           <div
             className={`w-12 h-12 ${profileBorderColor} bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0`}
           >
-            <img src={user?.avatar} alt="" />
+            <img src={post.user?.avatar} alt="" />
           </div>
           <div className="flex-col-start">
             <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
-              {user?.name}
+              {post.user?.first_name} {post.user?.last_name}
             </p>
             <p className="text-[#808080] dark:text-gray-400 text-xs sm:text-sm">{relativeDate}</p>
           </div>
@@ -82,34 +69,22 @@ const profileBorderColorMap = {
         <p
           className={`px-4 py-2 text-center text-xs md:text-base rounded-full font-bold ${categoryColor}`}
         >
-          {t(`communityPage.shared.categories.${category}`)}
+          {t(`communityPage.shared.categories.${post.category.toLowerCase()}`)}
         </p>
       </div>
 
       {/* content section */}
       <div>
-        <h3 className="text-[#161A41] dark:text-white">{title}</h3>
-        <p className="text-[#3B3D53] dark:text-gray-300 text-sm sm:text-base">{body}</p>
+        <h3 className="text-[#161A41] dark:text-white">{post.title}</h3>
+        <p className="text-[#3B3D53] dark:text-gray-300 text-sm sm:text-base">{post.content}</p>
       </div>
 
       {/* images section */}
-      <PostImages images={images} />
-
-      {/* hastags section */}
-      <div className="flex flex-wrap gap-2 pt-2">
-        {hashtags?.map((tag, index) => (
-          <span
-            key={index}
-            className="text-sm font-medium text-[#6976EB] bg-[#E0E3FF] dark:bg-[#E0E3FF]/5 px-3 py-1 rounded-full"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      <PostImages images={post?.post_media} />
 
       {/* post status section */}
       <div
-        className={`w-full ${isOwner ? "flex-between" : "flex-start"} pt-3 border-t border-[#D9D9D9]/50`}
+        className={`w-full ${post.isOwner ? "flex-between" : "flex-start"} pt-3 border-t border-[#D9D9D9]/50`}
       >
         <div className="flex-start w-full gap-4 ">
           <motion.button
@@ -127,14 +102,14 @@ const profileBorderColorMap = {
             )}
             <span className={`${like ? "text-red-600" : ""}`}>{formattedLikesCount}</span>
           </motion.button>
-          <button onClick={()=> navigate(`/community/:${id}`)}
+          <button onClick={()=> navigate(`/community/:${post.id}`, { state: { post } })}
           className="flex-center w-auto gap-2 text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-colors cursor-pointer">
             <FaRegComment className="w-5 h-5" />
             <span>{formattedCommentsCount}</span>
           </button>
         </div>
 
-        {isOwner && (
+        {post.isOwner && (
           <div className="flex gap-2 justify-center items-center">
             <button className="cursor-pointer p-2 text-center rounded-md hover:bg-gray-300 dark:hover:bg-gray-900/30">
               <FiEdit className="text-gray-700 dark:text-gray-300 w-5 h-5" />

@@ -10,28 +10,23 @@ export default function CategorySidebar({
   const { t } = useTranslation();
   const categories = [
     {
-      id: "general",
+      id: "General",
       name: "general",
       value: t("communityPage.shared.categories.general"),
     },
     {
-      id: "type1",
+      id: "Type 1 and LADA",
       name: "type1",
-      value: t("communityPage.shared.categories.type1"),
+      value: `${t("communityPage.shared.categories.type1")} / ${t("communityPage.shared.categories.lada")}`,
     },
     {
-      id: "type2",
+      id: "Type 2",
       name: "type2",
       value: t("communityPage.shared.categories.type2"),
     },
     {
-      id: "lada",
-      name: "LADA",
-      value: t("communityPage.shared.categories.lada"),
-    },
-    {
-      id: "mody",
-      name: "MODY",
+      id: "MODY",
+      name: "mody",
       value: t("communityPage.shared.categories.mody"),
     },
     {

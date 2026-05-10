@@ -23,14 +23,15 @@ export default function CommentsFeed({ postId }) {
     const fetchComments = async () => {
       setIsLoading(true);
       try {
-        const response = await getPostComments(postId, page);
-        if (response?.comments?.length > 0) {
-          setLoadedComments((prevData) => [...prevData, ...response]);
+        const comments = await getPostComments(postId, page);
+        console.log("Fetched comments from feed:", comments);
+        if (comments?.length > 0) {
+          setLoadedComments((prevData) => [...prevData, ...comments]);
         } else {
           setMoreComments(false);
         }
       } catch (error) {
-        throw error.response?.data?.message || 'Failed to fetch comments!';
+        throw error.comments?.data?.message || 'Failed to fetch comments!';
       } finally {
         setIsLoading(false);
       }
@@ -56,15 +57,10 @@ export default function CommentsFeed({ postId }) {
 
   return (
     <div className="w-full mt-8 pb-28">
-      {posts[5].comments.map((comment, index) => (
+      {loadedomments.map((comment, index) => (
         <PostComment
           key={index}
-          id={comment.id}
-          content={comment.content}
-          isLiked={comment.isLiked}
-          likesCount={comment.likesCount}
-          dueDate={comment.dueDate}
-          user={comment.user}
+          comment={comment}
         />
       ))}
       {/* {isLoading && <CommentSkeleton />} */}

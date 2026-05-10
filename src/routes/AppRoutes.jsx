@@ -4,10 +4,12 @@ import { Suspense, lazy } from "react";
 import { action as loginAction } from "../pages/auth/Login";
 import { action as registerAction } from "../pages/auth/Register";
 import { action as reminderAction } from "../pages/reminders/AddReminder";
+import { action as createPostAction } from "../pages/community/CreatePost";
 
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
 const Home = lazy(() => import("../pages/dashboard/Home"));
 const Community = lazy(() => import("../pages/community/Community"));
+const Search= lazy(() => import("../pages/community/Search"));
 const CreatePost = lazy(() => import("../pages/community/CreatePost"));
 const PostDetails = lazy(() => import("../pages/community/PostDetails"));
 const EditPost = lazy(() => import("../pages/community/EditPost"));
@@ -74,8 +76,13 @@ const router = createBrowserRouter([
         element: lazy_load(Community),
       },
       {
+        path: "community/search",
+        element: lazy_load(Search),
+      },
+      {
         path: "community/create",
         element: lazy_load(CreatePost),
+        action: createPostAction,
       },
       {
         path: "community/edit/:postId",

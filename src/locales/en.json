@@ -145,11 +145,11 @@
 
       "categories": [
         "General",
-        "Type 1",
+        "Type 1 / LADA",
         "Type 2",
-        "Monogenic Diabetes",
-        "Autoimmune Diabetes",
-        "Gestational Diabetes"
+        "MODY",
+        "Gestational",
+        "Advices"
       ],
 
       "doctors": {

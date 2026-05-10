@@ -13,6 +13,7 @@ import { FaStar } from "react-icons/fa";
 
 import Footer from "../../components/layout/Footer";
 import Button from "../../components/ui/Button";
+import RadioButton from "../../components/ui/RadioButton";
 import { motion } from "framer-motion";
 import { HiHeart } from "react-icons/hi";
 import { features, testimonials } from "../../util/content";
@@ -303,16 +304,12 @@ export default function LandingPage() {
             <h3>{t("landingPage.community.categoriesTitle")}</h3>
             <div className="space-y-3">
               {categories.map((type, index) => (
-                <button
+                <RadioButton
                   key={index}
-                  className={`w-full px-4 py-3 rounded-xl transition-all text-sm sm:text-base ${
-                    index === 2
-                      ? "bg-[#6976EB] text-white hover:bg-[#6976EB]/90 font-bold"
-                      : "bg-[#F8F9FF] dark:bg-white/10 text-[#808080] dark:text-white hover:bg-[#ADB4F3]/20 font-medium"
-                  }`}
+                  isChecked={index ===1 }
                 >
                   {type}
-                </button>
+                </RadioButton>
               ))}
             </div>
           </motion.div>

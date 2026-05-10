@@ -1,95 +1,190 @@
-import { IoSend } from "react-icons/io5";
-import { IoArrowBack } from "react-icons/io5";
+import { MdClose } from "react-icons/md";
+import { RiSendPlaneFill } from "react-icons/ri";
 
-import { Link, useParams } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
-import { getPostComments } from "../../services/communityServices";
+import {
+  useParams,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
-import i18next from "i18next";
+import {
+  useState,
+  useEffect,
+} from "react";
+
+import {
+  getPostById, addPostComment
+} from "../../services/communityServices";
+
+import {
+  motion,
+  AnimatePresence,
+} from "framer-motion";
+
+import { useTranslation } from "react-i18next";
+
+import toast from "react-hot-toast";
+
 import PostCard from "../../components/community/PostCard";
-import PostComment from "../../components/community/PostComment";
 import CommentsFeed from "../../components/community/CommentsFeed";
+import Button from "../../components/ui/Button";
 
 import { posts } from "../../util/content";
 
 export default function PostDetails() {
-  const { postId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  const cachedPost = location.state?.post;
+
+  const [post, setPost] = useState(cachedPost);
   const [comment, setComment] = useState("");
-  const [loadedComments, setLoadedComments]= useState([]);
-  const [page, setPage]= useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { postId } = useParams();
+
+  const onClose = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/community");
+    }
+  };
+
+  useEffect(() => {
+    if (cachedPost) return;
+
+    const getPostDetails = async () => {
+      try {
+        const postData = await getPostById(postId);
+
+        if (postData) {
+          setPost(postData);
+        } else {
+          setPost(posts[5]);
+        }
+
+      } catch (error) {
+        toast.error("Something went wrong!");
+
+        console.error(
+          "Error fetching post details:",
+          error
+        );
+      }
+    };
+
+    getPostDetails();
+
+  }, [postId, cachedPost]);
+
+  async function handleCommentSubmit() {
+    if(comment.trim() === "") return;
+
+    setIsSubmitting(true);
+    try{
+      await addPostComment(postId, { content: comment });
+      setComment("");
+      toast.success("Comment added successfully!");
+    }catch(error){
+      toast.error("Failed to submit comment!");
+    }finally{
+      setIsSubmitting(false);
+    }
+  }
 
   return (
-    <div className="overflow-y-auto flex flex-col w-full min-h-screen">
-      <Link
-        to="/community"
-        className="bg-white p-3 rounded-lg shadow-lg self-start mb-4"
+    <AnimatePresence mode="wait">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
       >
-        <IoArrowBack
-          className={`${i18next.language === "ar" ? "rotate-180" : ""} w-5 h-5`}
-        />
-      </Link>
+        <motion.div
+          initial={{
+            scale: 0.95,
+            opacity: 0,
+            y: 20,
+          }}
+          animate={{
+            scale: 1,
+            opacity: 1,
+            y: 0,
+          }}
+          exit={{
+            scale: 0.95,
+            opacity: 0,
+            y: 20,
+          }}
+          transition={{ duration: 0.2 }}
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white dark:bg-[#161A41] w-full max-w-2xl h-[90dvh] rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-white/10 flex flex-col"
+        >
 
+          {/* Header */}
+          <div className="relative p-6 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5 flex-shrink-0">
+            <div className="flex items-center justify-center gap-3">
+              <h3 className="text-lg font-bold text-[#161A41] dark:text-white mb-0">
+                {post?.user?.first_name || "Unknown User"}'s post
+              </h3>
+            </div>
 
-      
-      <PostCard
-        key={posts[5]}
-        title={posts[5].title}
-        body={posts[5].body}
-        images={posts[5].images}
-        category={posts[5].category}
-        isLiked={posts[5].isLiked}
-        isOwner={posts[5].isOwner}
-        likesCount={posts[5].likesCount}
-        commentsCount={posts[5].commentsCount}
-        hashtags={posts[5].hashtags}
-        dueDate={posts[5].dueDate}
-        user={posts[5].user}
-      />
+            <button
+              onClick={onClose}
+              className="absolute cursor-pointer top-6 right-6 text-gray-400 hover:scale-110 transition-all"
+            >
+              <MdClose className="w-6 h-6" />
+            </button>
+          </div>
 
-      {/* comments list */}
-      <CommentsFeed postId={postId} />
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
 
-      {/* comment input bar */}
-      <div className="flex items-end gap-3 w-full bg-white fixed bottom-0 p-4 border-t border-[#D9D9D9]/50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-        {/* avatar */}
-        <div className="w-10 h-10 bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0 mb-1">
-          <img src={posts[1].user?.avatar} alt="" />
-        </div>
+            {post && (
+              <PostCard post={post} />
+            )}
 
-        {/* textarea wrapper */}
-        <div className="flex-1 relative bg-[#F4F5FF] rounded-2xl border border-[#D9D9D9]/50 focus-within:border-[#6976EB] transition-all">
-          <textarea
-            name="body"
-            id="post-body"
-            rows={1}
-            value={comment}
-            onChange={(e) => {
-              setComment(e.target.value);
-              // auto grow
-              e.target.style.height = "auto";
-              e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
-            }}
-            placeholder="اكتب تعليقاً..."
-            className="w-full bg-transparent text-[#161A41] rounded-2xl px-4 py-3 pr-12
-              text-sm sm:text-base font-semibold outline-none resize-none transition-all
-              placeholder:text-[#808080] placeholder:font-normal"
-          />
+            <CommentsFeed postId={postId} />
 
-          {/* send button inside textarea */}
-          <button
-            type="button"
-            disabled={!comment.trim()}
-            className={`absolute left-3 bottom-2.5 p-1.5 rounded-full transition-all
-              ${
-                comment.trim()
-                  ? "text-[#6976EB] hover:bg-[#6976EB]/10 cursor-pointer"
-                  : "text-[#D9D9D9] cursor-not-allowed"
-              }`}
-          >
-            <IoSend className="w-5 h-5 rotate-180" />
-          </button>
-        </div>
-      </div>
-    </div>
+          </div>
+
+          {/* Comment Input */}
+          <div className="border-t border-gray-200 dark:border-white/10 p-4 bg-white dark:bg-[#161A41] flex-shrink-0">
+            <div className="grid grid-cols-6 items-end justify-center gap-3">
+
+              <textarea
+                name="comment"
+                id="comment"
+                value={comment}
+                onChange={(e) =>
+                  setComment(e.target.value)
+                }
+                placeholder="Write a comment..."
+                rows={1}
+                className="w-full h-full col-span-5 bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400
+            border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"></textarea>
+
+              <button
+                type='submit'
+                disabled={comment.trim() === "" || isSubmitting}
+                onClick={handleCommentSubmit}
+                className={`w-full col-span-1 px-6 py-4 transition-all flex items-center justify-center rounded-lg gap-2 ${
+                !comment.trim() || isSubmitting
+              ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
+              : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
+          }`}
+              >
+                <RiSendPlaneFill className={`w-4 h-4 ${i18n.language === 'ar' ? "-rotate-90" : "rotate-0"}`} />
+              </button>
+
+            </div>
+          </div>
+
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

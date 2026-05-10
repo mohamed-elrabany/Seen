@@ -1,16 +1,22 @@
 import { GoImage } from "react-icons/go";
 import { IoArrowBack, IoClose } from "react-icons/io5";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, redirect, useSubmit } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import i18next from "i18next";
+import { createPost } from "../../services/communityServices";
 
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import RadioButton from "../../components/ui/RadioButton";
+import toast from "react-hot-toast";
 
 export default function CreatePost() {
+  const user = useSelector((state) => state.user.user);
   const { t } = useTranslation();
+  const submit = useSubmit(); // Hook to trigger manual submission
+
   const [checkedCategory, setCheckedCategory] = useState("");
   const [images, setImages] = useState([]); // [{ file, preview }]
 
@@ -21,7 +27,7 @@ export default function CreatePost() {
       preview: URL.createObjectURL(file),
     }));
     setImages((prev) => [...prev, ...newImages]);
-    e.target.value = ""; 
+    e.target.value = "";
   };
 
   const removeImage = (index) => {
@@ -31,7 +37,27 @@ export default function CreatePost() {
     });
   };
 
-  // Restored the labels as translation keys
+  // Manual submission handler to bridge State and FormData
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    // Remove the stale file list from the hidden input
+    formData.delete("post_media");
+
+    // Append the actual files from your React state
+    images.forEach((imgObj) => {
+      formData.append("post_media", imgObj.file);
+    });
+
+    // Manually trigger the action
+    submit(formData, {
+      method: "post",
+      encType: "multipart/form-data",
+    });
+  };
+
   const postCategories = [
     { id: "general", label: "communityPage.shared.categories.general" },
     { id: "type1", label: "communityPage.shared.categories.type1" },
@@ -45,7 +71,7 @@ export default function CreatePost() {
   return (
     <div className="min-h-screen max-w-3xl mx-auto px-6 py-8 mt-5">
       {/* Header */}
-      <div className="flex-start gap-5">
+      <div className="flex items-center gap-5">
         <Link to={"/community"} className="bg-white p-3 rounded-lg shadow-lg">
           <IoArrowBack
             className={`${
@@ -54,22 +80,22 @@ export default function CreatePost() {
           />
         </Link>
 
-        <div className="flex-start gap-4">
+        <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0">
-            <img src="" alt="" />
+            <img src={user?.avatar || ""} alt={user?.first_name} />
           </div>
-          <div className="flex-col-start">
+          <div className="flex flex-col items-start">
             <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
-              منتصر إسماعيل
+              {user?.first_name} {user?.last_name}
             </p>
           </div>
         </div>
       </div>
 
       {/* Form */}
-      <Form className="grid gap-6 mt-8">
+      <Form onSubmit={handleSubmit} className="grid gap-6 mt-8">
         {/* Image Upload Area */}
-        <div className="flex-col-start gap-3">
+        <div className="flex flex-col items-start gap-3">
           <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base">
             {t("communityPage.createPost.imagesLabel")}
           </label>
@@ -81,8 +107,8 @@ export default function CreatePost() {
                 images.length === 1
                   ? "grid-cols-1"
                   : images.length === 2
-                    ? "grid-cols-2"
-                    : "grid-cols-3"
+                  ? "grid-cols-2"
+                  : "grid-cols-3"
               }`}
             >
               {images.map((img, index) => (
@@ -112,7 +138,7 @@ export default function CreatePost() {
             htmlFor="images"
             className={`w-full cursor-pointer transition-all ${
               images.length === 0
-                ? "bg-[#6976EB] hover:bg-[#2B3695] rounded-2xl p-8 flex-col-center gap-4"
+                ? "bg-[#6976EB] hover:bg-[#2B3695] rounded-2xl p-8 flex flex-col items-center justify-center gap-4"
                 : "bg-[#6976EB]/10 hover:bg-[#6976EB]/20 border-2 border-dashed border-[#6976EB] rounded-xl p-4 flex items-center justify-center gap-4"
             }`}
           >
@@ -120,6 +146,7 @@ export default function CreatePost() {
               id="images"
               type="file"
               className="hidden"
+              name="post_media"
               multiple
               accept="image/*"
               onChange={handleImageChange}
@@ -156,23 +183,24 @@ export default function CreatePost() {
           label={t("communityPage.createPost.titleLabel")}
           name="title"
           placeholder={t("communityPage.createPost.titlePlaceholder")}
+          required
         />
 
         {/* Body */}
-        <div className="flex-col-start gap-3">
+        <div className="flex flex-col items-start gap-3">
           <label
-            htmlFor="post-body"
+            htmlFor="content"
             className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
           >
             {t("communityPage.createPost.contentLabel")}
           </label>
 
           <textarea
-            name="body"
-            id="post-body"
+            name="content"
+            id="content"
+            required
             placeholder={t("communityPage.createPost.contentPlaceholder")}
-            className="w-full bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400
-            border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"
+            className="w-full bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400 border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"
           ></textarea>
         </div>
 
@@ -192,7 +220,6 @@ export default function CreatePost() {
                 onChange={() => setCheckedCategory(category.id)}
                 isChecked={checkedCategory === category.id}
               >
-                {/* Now translating the label key from the array */}
                 {t(category.label)}
               </RadioButton>
             ))}
@@ -202,11 +229,28 @@ export default function CreatePost() {
         {/* Submit */}
         <Button
           type="submit"
-          className="bg-[#6976EB] hover:bg-[#2B3695] w-full p-4 transition-all flex-center gap-2 cursor-pointer"
+          className="bg-[#6976EB] hover:bg-[#2B3695] w-full p-4 transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <p className="text-white">{t("communityPage.createPost.submit")}</p>
         </Button>
       </Form>
     </div>
   );
+}
+
+/**
+ * Action function to handle the form submission
+ */
+export async function action({ request }) {
+  const formData = await request.formData();
+  try {
+    await createPost(formData);
+    
+    toast.success("Post created successfully!");
+    return redirect("/community");
+  } catch (error) {
+    console.error("Action error:", error);
+    toast.error('Failed to create post!');
+    return null; 
+  }
 }

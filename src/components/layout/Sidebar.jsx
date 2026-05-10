@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { IoPerson, IoChatbubbleOutline } from "react-icons/io5";
+import { PiChatCircleTextBold } from "react-icons/pi";
 import { GoHome } from "react-icons/go";
 import { LuChartColumn } from "react-icons/lu";
 import { RiRobot3Line } from "react-icons/ri";
@@ -99,7 +100,7 @@ export default function Sidebar() {
     {
       to: "/chats",
       label: t("sidebar.nav.chats"),
-      icon: <IoChatbubbleOutline className="w-5 h-5" />,
+      icon: <PiChatCircleTextBold className="w-5 h-5" />,
     },
     {
       to: "/assistant",
@@ -120,11 +121,11 @@ export default function Sidebar() {
 
   return (
     <>
-    <LogoutModal 
-    isOpen={showLogoutConfirm}
+      <LogoutModal
+        isOpen={showLogoutConfirm}
         onClose={() => setShowLogoutConfirm(false)}
         logoutRef={logoutRef}
-    />
+      />
       {/* Sidebar navigation */}
       <aside className="hidden w-1/3 lg:w-1/4 h-screen overflow-y-auto sticky top-0 shadow-2xl lg:flex flex-col gap-6 from-[#FFFFFF] via-[#FFFFFF] to-[#FFFFFF] bg-gradient-to-b  dark:from-[#1F1A5F] dark:via-[#161A41] dark:to-[#0A0E27]">
         {/* Header */}
@@ -167,8 +168,17 @@ export default function Sidebar() {
               to={link.to}
               className={({ isActive }) => getNavClass(isActive)}
             >
-              {link.icon}
-              <p>{link.label}</p>
+              <div className="flex justify-between items-center w-full">
+                <div className="flex justify-center items-center gap-4">
+                  {link.icon}
+                  <p>{link.label}</p>
+                </div>
+                {link.to === "/chats" && (
+                  <span className="bg-[#FB2C36] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    3
+                  </span>
+                )}
+              </div>
             </NavLink>
           ))}
         </nav>
@@ -180,7 +190,11 @@ export default function Sidebar() {
         text-[#808080] bg-[#F8F9FF] hover:bg-[#6976EB]/10
         dark:bg-white/10 dark:text-[#D1D5DC] dark:hover:bg-white/20"
           >
-            {theme === "dark" ? <MdOutlineLightMode className="w-5 h-5" /> : <MdOutlineDarkMode className="w-5 h-5" />}
+            {theme === "dark" ? (
+              <MdOutlineLightMode className="w-5 h-5" />
+            ) : (
+              <MdOutlineDarkMode className="w-5 h-5" />
+            )}
             <p>
               {theme === "dark"
                 ? t("sidebar.buttons.lightMode")
@@ -291,8 +305,17 @@ export default function Sidebar() {
                     to={link.to}
                     className={({ isActive }) => getNavClass(isActive)}
                   >
-                    {link.icon}
-                    <p>{link.label}</p>
+                    <div className="flex justify-between items-center w-full">
+                      <div className="flex justify-center items-center gap-4">
+                        {link.icon}
+                        <p>{link.label}</p>
+                      </div>
+                      {link.to === "/chats" && (
+                        <span className="bg-[#FB2C36] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                          3
+                        </span>
+                      )}
+                    </div>
                   </NavLink>
                 ))}
               </nav>

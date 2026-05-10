@@ -6,18 +6,11 @@ import {formatCount} from "../../util/formatPostStatus";
 import { formatRelativeTime } from "../../util/formatRelativeTime";
 import { useTranslation } from "react-i18next";
 
-export default function PostComment({
-  id,
-  content,
-  likesCount,
-  isLiked,
-  dueDate,
-  user,
-}) {
-  const [like, setLike] = useState(isLiked);
+export default function PostComment({ comment }) {
+  const [like, setLike] = useState(false);
   const { t } = useTranslation();
-  const formattedLikesCount = formatCount(likesCount, t);
-  const relativeDate = formatRelativeTime(dueDate);
+  const formattedLikesCount = formatCount(comment.likes_count, t);
+  const relativeDate = formatRelativeTime(comment.created_at);
 
   const profileBorderColorMap = {
     type1: "border-2 border-red-700 dark:border-red-400",
@@ -27,7 +20,7 @@ export default function PostComment({
     gestational: "border-2 border-purple-700 dark:border-purple-400",
   };
   const profileBorderColor =
-    profileBorderColorMap[user?.diabetesType] ?? "border-2 border-gray-300";
+    profileBorderColorMap[comment.user?.diabetes_type] ?? "border-2 border-gray-300";
   return (
     <div className="flex-col-start w-full gap-4 border-b border-[#D9D9D9]/20 p-4">
       <div className="flex-between w-full">
@@ -35,11 +28,11 @@ export default function PostComment({
           <div
             className={`w-12 h-12 ${profileBorderColor} bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0`}
           >
-            <img src={user?.avatar} alt="" />
+            <img src={comment.user?.avatar} alt="" />
           </div>
           <div className="flex-col-start">
             <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
-              {user?.name}
+              {comment.user?.first_name} {comment.user?.last_name}
             </p>
             <p className="text-[#808080] dark:text-white/30 text-xs sm:text-sm">{relativeDate}</p>
           </div>

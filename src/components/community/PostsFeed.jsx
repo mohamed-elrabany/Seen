@@ -10,13 +10,14 @@ export default function PostFeed({ category }) {
   const [loadedData, setLoadedData] = useState([]);
   const [page, setPage] = useState(1);
   const [moreData, setMoreData] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Reset everything when category changes
   useEffect(() => {
     setLoadedData([]);
     setPage(1);
     setMoreData(true);
+    setIsLoading(true);
   }, [category]);
 
   // Fetch whenever page changes (page is set by scroll or category reset)
@@ -26,9 +27,10 @@ export default function PostFeed({ category }) {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await getPostsData(category, page);
-        if (response?.posts?.length > 0) {
-          setLoadedData((prevData) => [...prevData, ...response]);
+        const posts = await getPostsData(category, page);
+        console.log("Fetched posts from feed:", posts);
+        if (posts?.length > 0) {
+          setLoadedData((prevData) => [...prevData, ...posts]);
         } else {
           setMoreData(false);
         }
@@ -60,24 +62,16 @@ export default function PostFeed({ category }) {
   }, [handleScroll]);
 
   return (
-    <div className="flex-col-center gap-8 overflow-y-auto w-full">
-      {posts.map((post, index) => (
+    <div className="flex-col-center gap-8 overflow-y-auto w-full px-4 pb-4">
+      {loadedData.map((post, index) => (
         <PostCard
-          key={post.id}
-          title={post.title}
-          body={post.body}
-          images={post.images}
-          category={post.category}
-          isLiked={post.isLiked}
-          isOwner={post.isOwner}
-          likesCount={post.likesCount}
-          commentsCount={post.commentsCount}
-          hashtags={post.hashtags}
-          dueDate={post.dueDate}
-          user={post.user}
+          key={`${post.id}-${index}`}
+          post={post}
         />
       ))}
-      {/* {isLoading && <CommunityPostSkeleton />} */}
+
+       {isLoading && Array.from({ length: 2 }).map((_, index) => <CommunityPostSkeleton key={index} />)}
+
       {!moreData && <p className="w-full bg-gradient-to-b from-[#6976EB] to-[#2B3695] text-white font-semibold text-center p-4 rounded-2xl shadow-lg">No more posts</p>}
     </div>
   );

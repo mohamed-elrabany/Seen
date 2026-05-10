@@ -3,7 +3,7 @@ import api from "../api/axios";
 async function handleRequest(request){
     try{
         const response = await request;
-        return response.data;
+        return response.data.data;
     }catch(error){
         throw error.response?.data?.message || 'Something wrong happened!';
     }
@@ -23,6 +23,7 @@ export function getPostById(postId){
     return handleRequest(
         api.get(`/posts/${postId}`)
     );
+
 }
 
 export function createPost(postData){
@@ -84,5 +85,14 @@ export function deletePostComment(commentId){
 export function toggleCommentLikes(commentId){
     return handleRequest(
         api.post(`/comments/${commentId}/like`)
+    );
+}
+
+// ==================== Search ====================
+export function search(query, page){
+    return handleRequest(
+        api.get("/search", {
+            params: { query, page }
+        })
     );
 }

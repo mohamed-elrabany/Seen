@@ -5,12 +5,12 @@ import PostFeed from "../../components/community/PostsFeed";
 import { useState } from "react";
 
 export default function Community() {
-  const [category, setCategory] = useState("general");
+  const [category, setCategory] = useState("General");
 
   return (
-    <>
+    <div className="space-y-8">
       <HeaderBar />
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 py-8 px-4 items-start">
+      <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-8 py-8 items-start">
         <CategorySidebar
           checkedCategory={category}
           setCheckedCategory={setCategory}
@@ -19,6 +19,6 @@ export default function Community() {
           <PostFeed category={category} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
