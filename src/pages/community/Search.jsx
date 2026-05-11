@@ -43,7 +43,7 @@ export default function Search() {
         
         setResults(prev => ({
           // If page 1, replace results. If page > 1, append new results
-          posts: page === 1 ? response.posts : [...prev.posts, ...response.posts],
+          posts: page === 1 ? response.posts.data : [...prev.posts, ...response.posts.data],
           users: page === 1 ? response.users : [...prev.users, ...response.users]
         }));
 
@@ -99,9 +99,10 @@ export default function Search() {
         className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
       >
         <motion.div
-          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          initial={{ scale: 0.80, opacity: 0, y: 40 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.95, opacity: 0, y: 20 }}
+          exit={{ scale: 0.80, opacity: 0, y: -40 }}
+          transition={{ type: "spring", damping: 25, stiffness: 200, duration: 1, ease: "easeOut" }}
           onClick={(e) => e.stopPropagation()}
           className="bg-white dark:bg-[#161A41] w-full max-w-2xl h-[85dvh] rounded-2xl shadow-2xl overflow-hidden flex flex-col"
         >
@@ -150,7 +151,7 @@ export default function Search() {
           {/* Scrollable Area */}
           <div 
             onScroll={handleScroll} 
-            className="flex-1 overflow-y-auto p-6 pt-4 custom-scrollbar"
+            className="flex-1 overflow-y-auto p-6 pt-4 no-scrollbar"
           >
             <div className="space-y-4">
               <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
@@ -174,7 +175,7 @@ export default function Search() {
                       whileHover={{y: -10, scale: 1.05}}
                       key={`${profile.id}-${index}`} className="flex items-center gap-4 p-3 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-gray-100 dark:hover:border-white/10">
                         <div className={`w-12 h-12 ${profileBorderColorMap[profile.diabetes_type?.toLowerCase()] || "border-2 border-[#6976EB]"} rounded-full overflow-hidden shrink-0`}>
-                          <img src={profile.avatar} alt="" className="w-full h-full object-cover" />
+                          <img src={profile.profile_picture} alt="" className="w-full h-full object-cover" />
                         </div>
                         <div>
                           <h4 className="mb-0 text-[#161A41] dark:text-white font-bold">{profile.full_name}</h4>

@@ -40,6 +40,7 @@ export default function PostFeed({ category }) {
         setIsLoading(false);
       }
     };
+    // setLoadedData(posts); // Temporary: Remove this line when API is ready
 
     fetchData();
   }, [page]);

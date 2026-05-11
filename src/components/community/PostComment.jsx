@@ -22,7 +22,7 @@ export default function PostComment({ comment }) {
   const profileBorderColor =
     profileBorderColorMap[comment.user?.diabetes_type] ?? "border-2 border-gray-300";
   return (
-    <div className="flex-col-start w-full gap-4 border-b border-[#D9D9D9]/20 p-4">
+    <div className="flex-col-start w-full gap-4 last:border-b-0 border-b border-[#D9D9D9]/20 p-4">
       <div className="flex-between w-full">
         <div className="flex-start gap-4">
           <div
@@ -54,7 +54,7 @@ export default function PostComment({ comment }) {
           <span className={`${like ? "text-red-600" : ""}`}>{formattedLikesCount}</span>
         </motion.button>
       </div>
-      <p className="w-full text-[#808080] dark:text-gray-400">{content}</p>
+      <p className="w-full text-[#808080] dark:text-gray-400">{comment.comment_text}</p>
     </div>
   );
 }

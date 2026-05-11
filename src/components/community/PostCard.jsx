@@ -57,11 +57,11 @@ const profileBorderColorMap = {
           <div
             className={`w-12 h-12 ${profileBorderColor} bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0`}
           >
-            <img src={post.user?.avatar} alt="" />
+            <img src={post.user?.profile_picture} alt="profile_picture" />
           </div>
           <div className="flex-col-start">
             <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
-              {post.user?.first_name} {post.user?.last_name}
+              {post.user?.full_name}
             </p>
             <p className="text-[#808080] dark:text-gray-400 text-xs sm:text-sm">{relativeDate}</p>
           </div>
@@ -80,7 +80,7 @@ const profileBorderColorMap = {
       </div>
 
       {/* images section */}
-      <PostImages images={post?.post_media} />
+      <PostImages images={post?.images} />
 
       {/* post status section */}
       <div
@@ -102,7 +102,7 @@ const profileBorderColorMap = {
             )}
             <span className={`${like ? "text-red-600" : ""}`}>{formattedLikesCount}</span>
           </motion.button>
-          <button onClick={()=> navigate(`/community/:${post.id}`, { state: { post } })}
+          <button onClick={()=> navigate(`/community/${post.id}`, { state: { post } })}
           className="flex-center w-auto gap-2 text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-colors cursor-pointer">
             <FaRegComment className="w-5 h-5" />
             <span>{formattedCommentsCount}</span>

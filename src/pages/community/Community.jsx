@@ -4,6 +4,7 @@ import PostFeed from "../../components/community/PostsFeed";
 
 import { useState } from "react";
 
+// Community.jsx
 export default function Community() {
   const [category, setCategory] = useState("General");
 

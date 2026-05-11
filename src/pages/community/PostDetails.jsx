@@ -141,7 +141,7 @@ export default function PostDetails() {
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
 
             {post && (
               <PostCard post={post} />
