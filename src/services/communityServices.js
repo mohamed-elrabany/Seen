@@ -26,6 +26,13 @@ export function getPostById(postId){
 
 }
 
+export function getUserPosts(userId){
+    return handleRequest(
+        api.get(`/users/${userId}/posts`)
+    );
+
+}
+
 export function createPost(postData){
     return handleRequest(
         api.post("/posts", postData)
@@ -34,7 +41,11 @@ export function createPost(postData){
 
 export function editPost(postId, postData){
     return handleRequest(
-        api.put(`/posts/${postId}`, postData)
+        api.post(`/posts/${postId}`, postData,{
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
     );
 }
 

@@ -15,12 +15,12 @@ export default function CategorySidebar({
       value: t("communityPage.shared.categories.general"),
     },
     {
-      id: "Type 1 and LADA",
+      id: "Type1 / LADA",
       name: "type1",
       value: `${t("communityPage.shared.categories.type1")} / ${t("communityPage.shared.categories.lada")}`,
     },
     {
-      id: "Type 2",
+      id: "Type2",
       name: "type2",
       value: t("communityPage.shared.categories.type2"),
     },
@@ -30,12 +30,12 @@ export default function CategorySidebar({
       value: t("communityPage.shared.categories.mody"),
     },
     {
-      id: "gestational",
+      id: "Gestational",
       name: "Gestational",
       value: t("communityPage.shared.categories.gestational"),
     },
     {
-      id: "advices",
+      id: "Advices",
       name: "advices",
       value: t("communityPage.shared.categories.advices"),
     },

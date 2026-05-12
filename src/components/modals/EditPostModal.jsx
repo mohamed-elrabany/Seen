@@ -1,170 +1,45 @@
-import { GoImage } from "react-icons/go";
-import { IoArrowBack, IoClose } from "react-icons/io5";
-import { CgSpinner } from "react-icons/cg";
+import BaseModal from "../ui/BaseModal";
+import Button from "../ui/Button";
+import { FiEdit } from "react-icons/fi";
 
-import {
-  Form,
-  Link,
-  redirect,
-  useSubmit,
-  useNavigation,
-  useNavigate,
-  useParams,
-  useLocation,
-} from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import i18next from "i18next";
 import { motion, AnimatePresence } from "framer-motion";
-
-import { editPost, getPostById } from "../../services/communityServices";
-
-import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
-import RadioButton from "../../components/ui/RadioButton";
-import LoadingPage from "../loading/LoadingPage";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { editPost } from "../../services/communityServices";
 
-export default function EditPost() {
-  const user = useSelector((state) => state.user.user);
-  const { t } = useTranslation();
-  const submit = useSubmit();
-  const navigation = useNavigation();
-  const navigate = useNavigate();
-  const { postId } = useParams();
-  const location = useLocation();
+export default function EditPostModal({ postId, isOpen, onClose }) {
 
-  const cachedPost = location.state?.post;
-  const isSubmitting = navigation.state === "submitting";
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // State Management
-  const [post, setPost] = useState(
-    cachedPost || {
-      title: "",
-      content: "",
-      category: "",
-      images: [],
-    },
-  );
-  const [initialPost, setInitialPost] = useState(cachedPost || null);
-  const [checkedCategory, setCheckedCategory] = useState(post?.category || "");
-
-  // Security/Loading States
-  const [isLoading, setIsLoading] = useState(!cachedPost);
-  const [isAuthorized, setIsAuthorized] = useState(false);
-
-  const onCancel = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate("/community");
-    }
-  };
-
-  useEffect(() => {
-    const getPostDetails = async () => {
-      try {
-        const postData = cachedPost || (await getPostById(postId));
-
-        if (postData.user.id !== user?.id) {
-          toast.error("You are not authorized to edit this post.");
-          onCancel();
-          return;
+    async function handleEditPost(e) {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try{
+            const result= await editPost(postId, postData);
+            if(result){
+                toast.success("Post updated successfully!");
+                onClose();
+                navigate(`/community/${postId}`);
+            }else{
+                toast.error("Failed to update the post.");
+            }   
+        }catch(error){
+            console.error("Network error:", error);
+            toast.error("Network error. Please check your connection and try again.");
         }
-
-        setPost(postData);
-        setInitialPost(postData);
-        setCheckedCategory(postData.category);
-        setIsAuthorized(true);
-      } catch (error) {
-        toast.error("Something went wrong!");
-        console.error("Error fetching post details:", error);
-        onCancel();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getPostDetails();
-  }, [postId, user?.id, cachedPost]);
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-    }));
-    setPost((prev) => ({ ...prev, images: [...prev.images, ...newImages] }));
-    e.target.value = "";
-  };
-
-  const removeImage = (index) => {
-    setPost((prev) => {
-      if (prev.images[index].file) {
-        URL.revokeObjectURL(prev.images[index].url);
-      }
-      return { ...prev, images: prev.images.filter((_, i) => i !== index) };
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    // 1. Method Spoofing for Laravel
-    formData.append("_method", "PUT");
-
-    // 2. Clean up default file inputs
-    formData.delete("images[]");
-
-    // 3. Map state to FormData
-    post.images.forEach((img) => {
-      if (img.file instanceof File) {
-        // New uploaded file
-        formData.append("images[]", img.file);
-      } else {
-        // Existing image from backend — send its id
-        formData.append("existing_images[]", img.id);
-      }
-    });
-
-    // Temporary: inspect what's being sent
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+        finally{
+            setIsSubmitting(false);
+        }   
     }
 
-    submit(formData, {
-      method: "post",
-      encType: "multipart/form-data",
-    });
-  };
-
-  const postCategories = [
-    { id: "General", label: "communityPage.shared.categories.general" },
-    { id: "Type1 / LADA", label: "communityPage.shared.categories.type1" },
-    { id: "Type2", label: "communityPage.shared.categories.type2" },
-    { id: "Mody", label: "communityPage.shared.categories.mody" },
-    { id: "Gestational", label: "communityPage.shared.categories.gestational" },
-    { id: "Advices", label: "communityPage.shared.categories.advices" },
-  ];
-
-  const isChanged =
-    post.title !== (initialPost?.title || "") ||
-    post.content !== (initialPost?.content || "") ||
-    checkedCategory !== (initialPost?.category || "") ||
-    post.images.length !== (initialPost?.images?.length || 0) ||
-    post.images.some((img) => img.file);
-
-  if (isLoading || !isAuthorized) return <LoadingPage />;
-
-  const getCorrectImageUrl = (url) => {
-    if (!url) return "";
-    return url.replace("https://127.0.0.1", "http://127.0.0.1");
-  };
-
-  return (
-    <div className="min-h-screen max-w-3xl mx-auto px-6 py-8 mt-5">
+  return <BaseModal isOpen={isOpen} onClose={onClose} icon={FiEdit} title="Edit Post">
+    {/* Modal content goes here */}
+        <div className="min-h-screen max-w-3xl mx-auto px-6 py-8 mt-5">
+      {/* Header */}
       <div className="flex items-center gap-5">
         <Link to={"/community"} className="bg-white p-3 rounded-lg shadow-lg">
           <IoArrowBack
@@ -187,6 +62,7 @@ export default function EditPost() {
       </div>
 
       <Form onSubmit={handleSubmit} className="grid gap-6 mt-8">
+        {/* Images */}
         <div className="flex flex-col items-start gap-3">
           <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base">
             {t("communityPage.createPost.imagesLabel")}
@@ -208,7 +84,7 @@ export default function EditPost() {
                   className="relative rounded-xl overflow-hidden h-36 group"
                 >
                   <img
-                    src={getCorrectImageUrl(img.url)}
+                    src={img.preview || img}
                     alt={`preview ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
@@ -236,30 +112,20 @@ export default function EditPost() {
               id="images"
               type="file"
               className="hidden"
-              name="images[]"
+              name="images"
               multiple
               accept="image/*"
               onChange={handleImageChange}
             />
             <div
-              className={`rounded-full flex items-center justify-center shrink-0 ${
-                post.images.length === 0
-                  ? "w-16 h-16 bg-white/20"
-                  : "w-9 h-9 bg-[#6976EB]"
-              }`}
+              className={`rounded-full flex items-center justify-center shrink-0 ${post.images.length === 0 ? "w-16 h-16 bg-white/20" : "w-9 h-9 bg-[#6976EB]"}`}
             >
               <GoImage
-                className={`text-white ${
-                  post.images.length === 0 ? "w-10 h-10" : "w-6 h-6"
-                }`}
+                className={`text-white ${post.images.length === 0 ? "w-10 h-10" : "w-6 h-6"}`}
               />
             </div>
             <p
-              className={`font-bold ${
-                post.images.length === 0
-                  ? "text-white text-base"
-                  : "text-[#6976EB] text-sm"
-              }`}
+              className={`font-bold ${post.images.length === 0 ? "text-white text-base" : "text-[#6976EB] text-sm"}`}
             >
               {post.images.length === 0
                 ? t("communityPage.createPost.addImage")
@@ -268,6 +134,7 @@ export default function EditPost() {
           </label>
         </div>
 
+        {/* Title */}
         <Input
           label={t("communityPage.createPost.titleLabel")}
           name="title"
@@ -277,6 +144,7 @@ export default function EditPost() {
           onChange={(e) => setPost({ ...post, title: e.target.value })}
         />
 
+        {/* Content */}
         <div className="flex flex-col items-start gap-3">
           <label
             htmlFor="content"
@@ -296,6 +164,7 @@ export default function EditPost() {
           ></textarea>
         </div>
 
+        {/* Categories */}
         <div className="flex flex-col gap-3">
           <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer">
             {t("communityPage.createPost.categoryLabel")}
@@ -316,10 +185,11 @@ export default function EditPost() {
           </div>
         </div>
 
+        {/* Action Buttons */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
           <Button
             type="button"
-            onClick={onCancel}
+            onClick={onCancel} // restored onCancel trigger
             className="h-full order-2 sm:order-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-6 py-4 font-bold cursor-pointer rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all flex items-center justify-center"
           >
             Cancel
@@ -370,21 +240,6 @@ export default function EditPost() {
         </div>
       </Form>
     </div>
-  );
-}
 
-export async function action({ request, params }) {
-  const formData = await request.formData();
-  const { postId } = params;
-
-  try {
-    await editPost(postId, formData);
-    toast.success("Post updated successfully!");
-    return redirect("/community");
-  } catch (error) {
-    const errorMessage =
-      error?.response?.data?.message || "Failed to update post!";
-    toast.error(errorMessage);
-    return null;
-  }
+  </BaseModal>;
 }

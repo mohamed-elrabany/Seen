@@ -13,7 +13,7 @@ import Button from "../ui/Button";
 // Actions & Services
 import { userActions } from "../../store/slices/userSlice";
 import { notificationActions } from "../../store/slices/notificationSlice";
-import { deleteAccount } from "../../services/authService";
+import { deleteMe } from "../../services/authService";
 
 export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
   const [password, setPassword] = useState("");
@@ -45,7 +45,7 @@ export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
 
     setIsSubmitting(true);
     try {
-      const result = await deleteAccount({ password });
+      const result = await deleteMe({ password });
 
       if (result) {
         toast.success("Account deleted successfully.");

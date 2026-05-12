@@ -41,6 +41,7 @@ export default function PostDetails() {
   const [post, setPost] = useState(cachedPost);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  console.log("Cached post from location state:", cachedPost);
 
   const { postId } = useParams();
 

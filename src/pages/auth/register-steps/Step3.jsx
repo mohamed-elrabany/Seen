@@ -63,15 +63,6 @@ export default function Step3({data, setData, isStepValid}) {
         >
           <p>{t('registerPage.step3.options.gestational')}</p>
         </RadioButton>
-        <RadioButton
-          id="other"
-          name="diabetes_type"
-          value="other"
-          onChange={(e)=> setData({...data, diabetes_type: e.target.value})}
-          isChecked={data.diabetes_type === "other"}
-        >
-          <p>{t('registerPage.step3.options.other')}</p>
-        </RadioButton>
       </div>
     </div>
   );

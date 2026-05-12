@@ -7,17 +7,21 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 import { formatRelativeTime } from "../../util/formatRelativeTime";
 import {formatCount} from "../../util/formatPostStatus";
 
 import PostImages from "./PostImages";
+import DeletePostModal from "../modals/DeletePostModal";
 
 export default function PostCard({ post,...props
 }) {
   const [like, setLike] = useState(post.isLiked);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const navigate= useNavigate();
   const { t } = useTranslation();
+  const user = useSelector((state) => state.user.user);
 
   const relativeDate = formatRelativeTime(post.created_at);
   const formattedLikesCount = formatCount(post.likes_count, t);
@@ -25,9 +29,8 @@ export default function PostCard({ post,...props
 
 
 const categoryColorMap = {
-  type1: "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize",
+  "type1 / lada": "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize",
   type2: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6] capitalize",
-  lada: "bg-[#22c55e]/20 text-[#22c55e] border-[#22c55e] uppercase",
   mody: "bg-[#f97316]/20 text-[#f97316] border-[#f97316] uppercase",
   gestational: "bg-[#a855f7]/20 text-[#a855f7] border-[#a855f7] capitalize",
   general: "bg-[#eab308]/20 text-[#eab308] border-[#eab308] capitalize",
@@ -96,11 +99,11 @@ const profileBorderColorMap = {
             className="flex-center text-[#808080] dark:text-gray-400 w-auto gap-2 hover:text-[#6976EB] transition-colors cursor-pointer"
           >
             {like ? (
-              <FaHeart className="w-5 h-5 text-red-600" />
+              <FaHeart className="w-5 h-5 text-[#FB2C36]" />
             ) : (
               <FaRegHeart className="w-5 h-5" />
             )}
-            <span className={`${like ? "text-red-600" : ""}`}>{formattedLikesCount}</span>
+            <span className={`${like ? "text-[#FB2C36]" : ""}`}>{formattedLikesCount}</span>
           </motion.button>
           <button onClick={()=> navigate(`/community/${post.id}`, { state: { post } })}
           className="flex-center w-auto gap-2 text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-colors cursor-pointer">
@@ -109,17 +112,27 @@ const profileBorderColorMap = {
           </button>
         </div>
 
-        {post.isOwner && (
+        {post.user.id === user?.id && (
           <div className="flex gap-2 justify-center items-center">
-            <button className="cursor-pointer p-2 text-center rounded-md hover:bg-gray-300 dark:hover:bg-gray-900/30">
+            <button 
+            onClick={()=> navigate(`/community/edit/${post.id}`, { state: { post } })}
+            className="cursor-pointer p-2 text-center rounded-md hover:bg-gray-300 dark:hover:bg-gray-900/30">
               <FiEdit className="text-gray-700 dark:text-gray-300 w-5 h-5" />
             </button>
-            <button className="cursor-pointer p-2 text-center rounded-md hover:bg-red-100 dark:hover:bg-red-900/30">
-              <RiDeleteBin6Line className="text-red-600 w-5 h-5" />
+            <button
+              className="cursor-pointer p-2 text-center rounded-md hover:bg-red-100 dark:hover:bg-[#FB2C36]/20"
+              onClick={() => setIsDeleteModalOpen(true)}
+            >
+              <RiDeleteBin6Line className="text-[#FB2C36] w-5 h-5" />
             </button>
           </div>
         )}
       </div>
+      <DeletePostModal
+        postId={post.id}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 }

@@ -50,8 +50,8 @@ export function logout(){
     api.post("/logout")
   );
 }
-export function deleteAccount({ password }){
+export function deleteMe({ password }){
   return handleRequest(
-    api.post("/delete-account", { password })
+    api.delete("/delete-me", { password })
   );
 }

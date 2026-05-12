@@ -27,6 +27,12 @@ export default function PostImages({ images }) {
     setActiveIndex((i) => (i + 1) % images.length);
   };
 
+  const getCorrectImageUrl = (url) => {
+  if (!url) return '';
+  // Replaces https with http specifically for local development
+  return url.replace('https://127.0.0.1', 'http://127.0.0.1');
+};
+
   return (
     <>
       {/* Image Grid */}
@@ -45,14 +51,14 @@ export default function PostImages({ images }) {
 
           return (
             <div
-              key={index}
+              key={`${index}-${image?.id}`}
               className={`relative overflow-hidden rounded-xl cursor-pointer
                 ${isFirstOfThree ? "row-span-2" : ""}
               `}
               onClick={() => openLightbox(index)}
             >
               <img
-                src={image}
+                src={getCorrectImageUrl(image?.url)}
                 alt={`post image ${index + 1}`}
                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
               />
@@ -101,7 +107,7 @@ export default function PostImages({ images }) {
 
           {/* Image */}
           <img
-            src={images[activeIndex]}
+            src={images[activeIndex].url}
             alt={`image ${activeIndex + 1}`}
             className="w-full h-full max-h-[80vh] max-w-[80vw] object-cover rounded-2xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}

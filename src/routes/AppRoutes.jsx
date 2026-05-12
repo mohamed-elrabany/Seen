@@ -5,6 +5,7 @@ import { action as loginAction } from "../pages/auth/Login";
 import { action as registerAction } from "../pages/auth/Register";
 import { action as reminderAction } from "../pages/reminders/AddReminder";
 import { action as createPostAction } from "../pages/community/CreatePost";
+import { action as editPostAction } from "../pages/community/EditPost";
 
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
 const Home = lazy(() => import("../pages/dashboard/Home"));
@@ -87,6 +88,7 @@ const router = createBrowserRouter([
       {
         path: "community/edit/:postId",
         element: lazy_load(EditPost),
+        action: editPostAction,
       },
       {
         path: "community/:postId",

@@ -125,6 +125,7 @@ export default function Search() {
               <Input
                 type="text"
                 value={query}
+                autoFocus
                 placeholder="Search for posts or people..."
                 className="w-full pl-12 pr-4 py-3 border-2 rounded-lg outline-none transition-all focus:border-[#6976EB] dark:bg-transparent dark:text-white"
                 onChange={(e) => setQuery(e.target.value)}
