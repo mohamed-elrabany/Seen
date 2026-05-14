@@ -43,7 +43,7 @@ export default function PostFeed({ category }) {
     // setLoadedData(posts); // Temporary: Remove this line when API is ready
 
     fetchData();
-  }, [page]);
+  }, [page, category]);
 
   const handleScroll= useCallback(()=>{
     if(isLoading || !moreData) return;

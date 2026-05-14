@@ -48,7 +48,7 @@ const profileBorderColorMap = {
   const categoryColor =
     categoryColorMap[post.category.toLowerCase()] ?? "bg-gray-100 text-gray-700";
   const profileBorderColor =
-    profileBorderColorMap[post.user?.diabetes_type] ?? "border-2 border-gray-300";
+    profileBorderColorMap[post.user?.diabetes_type?.toLowerCase()] ?? "border-2 border-gray-300";
 
   return (
     <div className="w-full shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl

@@ -11,6 +11,8 @@ import {
   getPostById,
   addPostComment,
   likeComment,
+  editPostComment,
+  deletePostComment
 } from "../../services/communityServices";
 
 import toast from "react-hot-toast";
@@ -58,6 +60,7 @@ export default function PostDetails() {
     rejectEdit,
     deleteComment,
     restoreComment,
+    setPage,
     isLoading,
     moreComments,
   } = usePostComments(post?.id);
@@ -99,7 +102,6 @@ export default function PostDetails() {
 
     try {
       const newComment = await addPostComment(postId, comment_text);
-      console.log("Added comment:", newComment);
       confirmComment(tempId, newComment);
       toast.success("Comment added successfully!");
     } catch (error) {
@@ -116,7 +118,6 @@ export default function PostDetails() {
 
     try {
       const comment = await likeComment(commentId);
-      console.log("Toggled like:", comment);
     } catch (error) {
       toggleCommentLike(commentId);
       toast.error("Failed to toggle like!");
@@ -124,14 +125,16 @@ export default function PostDetails() {
   }
 
   async function handleEditComment(commentId, newText) {
-    if (newText.trim() === "") return;
+    console.log("Editing comment:", commentId, newText);
     const snapshot = editComment(commentId, newText); // Optimistic UI update
     try {
       const updatedComment = await editPostComment(commentId, newText);
-      confirmEdit(commentId);
+      console.log("Updated comment from server:", updatedComment);
+      confirmEdit(snapshot.id);
       toast.success("Comment edited successfully!");
     } catch (error) {
-      rejectEdit(commentId, snapshot);
+      rejectEdit(snapshot);
+      console.error("Failed to edit comment:", error);
       toast.error("Failed to edit comment!");
     }
   }
@@ -144,6 +147,7 @@ export default function PostDetails() {
     } catch (error) {
       restoreComment(snapshot);
       toast.error("Failed to delete comment!");
+      console.error("Failed to delete comment:", error);
     }
   }
 
@@ -204,6 +208,8 @@ export default function PostDetails() {
               isLoading={isLoading}
               moreComments={moreComments}
               onLikeComment={handleCommentLikeToggle}
+              onDeleteComment={handleDeleteComment}
+              onEditComment={handleEditComment}
             />
           </div>
 

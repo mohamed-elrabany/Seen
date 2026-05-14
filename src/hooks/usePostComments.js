@@ -16,8 +16,6 @@ export function usePostComments(postId) {
 
   // usePostComments.js corrections
 useEffect(() => {
-    let isMounted = true;
-
     const fetchComments = async () => {
       if (!moreComments || isLoading || !postId) return;
       setIsLoading(true);
@@ -25,8 +23,7 @@ useEffect(() => {
         const batch = await getPostComments(postId, page);
         console.log(`Fetched comments for post ${postId}, page ${page}:`, batch);
         
-        if (isMounted && batch) {
-          if (batch.length > 0) {
+          if (batch && batch.length > 0) {
             setComments((prev) => {
               // Prevent duplicates just in case
               const existingIds = new Set(prev.map(c => c.id));
@@ -36,17 +33,16 @@ useEffect(() => {
           } else {
             setMoreComments(false);
           }
-        }
+
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch comments!");
       } finally {
-        if (isMounted) setIsLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchComments();
-    return () => { isMounted = false; };
   }, [page, postId]); // Correctly triggers when page changes
 
   const handleScroll = useCallback(() => {
@@ -150,6 +146,7 @@ useEffect(() => {
     comments,
     isLoading,
     moreComments,
+    setPage,
     addComment,
     confirmComment,
     rejectComment,
