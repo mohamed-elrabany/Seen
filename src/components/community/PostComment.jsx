@@ -1,6 +1,6 @@
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { formatCount } from "../../util/formatPostStatus";
@@ -11,11 +11,14 @@ import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RiSendPlaneFill } from "react-icons/ri";
 
+import LikesModal from "../modals/LikesModal";
+
 export default function PostComment({ comment, onLike, onDelete, onEdit }) {
   const { t, i18n } = useTranslation();
   const user = useSelector((state) => state.user.user);
   const [editComment, setEditComment] = useState(comment.comment_text);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLikesModalOpen, setIsLikesModalOpen] = useState(false);
 
   // Use the correct keys from your console log
   const formattedLikesCount = formatCount(comment.likes_count, t);
@@ -71,7 +74,7 @@ export default function PostComment({ comment, onLike, onDelete, onEdit }) {
           ) : (
             <FaRegHeart className="w-5 h-5" />
           )}
-          <span className={`${comment.is_liked ? "text-red-600" : ""}`}>
+          <span onClick={()=>setIsLikesModalOpen(true)} className={`${comment.is_liked ? "text-red-600" : ""}`}>
             {formattedLikesCount}
           </span>
         </motion.button>
@@ -140,6 +143,12 @@ export default function PostComment({ comment, onLike, onDelete, onEdit }) {
           </button>
         </div>
       )}
+      <LikesModal
+        isOpen={isLikesModalOpen}
+        onClose={() => setIsLikesModalOpen(false)}
+        id={comment.id}
+        type="comment"
+      />
     </div>
   );
 }

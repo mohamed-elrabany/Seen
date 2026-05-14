@@ -1,8 +1,23 @@
-// BaseModal.jsx
 import { motion, AnimatePresence } from "framer-motion";
 import { MdClose } from "react-icons/md";
+import { useEffect } from "react"; // 1. Import useEffect
 
 export default function BaseModal({ isOpen, onClose, title, icon: Icon, children }) {
+  
+  // 2. Add side effect to lock scroll
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup function to ensure scroll is restored if component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -11,7 +26,7 @@ export default function BaseModal({ isOpen, onClose, title, icon: Icon, children
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 z-200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}

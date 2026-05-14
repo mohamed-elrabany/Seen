@@ -121,3 +121,15 @@ export function search(query, page){
         })
     );
 }
+
+export function getLikes(id, type, page){
+    const endPoint = type === "post" 
+    ? `/posts/${id}/likes` 
+    : `/comments/${id}/likes`;
+
+    return handleRequest(
+        api.get(endPoint, {
+            params: { page }
+        })
+    );
+}

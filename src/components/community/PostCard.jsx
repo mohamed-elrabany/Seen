@@ -14,11 +14,13 @@ import {formatCount} from "../../util/formatPostStatus";
 
 import PostImages from "./PostImages";
 import DeletePostModal from "../modals/DeletePostModal";
+import LikesModal from "../modals/LikesModal";
 
 export default function PostCard({ post,...props
 }) {
   const [like, setLike] = useState(post.isLiked);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isLikesModalOpen, setIsLikesModalOpen] = useState(false);
   const navigate= useNavigate();
   const { t } = useTranslation();
   const user = useSelector((state) => state.user.user);
@@ -103,7 +105,7 @@ const profileBorderColorMap = {
             ) : (
               <FaRegHeart className="w-5 h-5" />
             )}
-            <span className={`${like ? "text-[#FB2C36]" : ""}`}>{formattedLikesCount}</span>
+            <span onClick={()=>setIsLikesModalOpen(true)} className={`${like ? "text-[#FB2C36]" : ""}`}>{formattedLikesCount}</span>
           </motion.button>
           <button onClick={()=> navigate(`/community/${post.id}`, { state: { post } })}
           className="flex-center w-auto gap-2 text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-colors cursor-pointer">
@@ -132,6 +134,12 @@ const profileBorderColorMap = {
         postId={post.id}
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
+      />
+      <LikesModal
+        isOpen={isLikesModalOpen}
+        onClose={() => setIsLikesModalOpen(false)}
+        id={post.id}
+        type="post"
       />
     </div>
   );
