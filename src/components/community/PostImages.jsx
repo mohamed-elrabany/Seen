@@ -27,11 +27,11 @@ export default function PostImages({ images }) {
     setActiveIndex((i) => (i + 1) % images.length);
   };
 
+  // Helper to fix local development URL issues
   const getCorrectImageUrl = (url) => {
-  if (!url) return '';
-  // Replaces https with http specifically for local development
-  return url.replace('https://127.0.0.1', 'http://127.0.0.1');
-};
+    if (!url) return "";
+    return url.replace("https://127.0.0.1", "http://127.0.0.1");
+  };
 
   return (
     <>
@@ -87,6 +87,7 @@ export default function PostImages({ images }) {
             className="absolute top-5 right-5 text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
             onClick={closeLightbox}
           >
+            <title>Close</title>
             <IoClose className="w-6 h-6" />
           </button>
 
@@ -98,25 +99,25 @@ export default function PostImages({ images }) {
           {/* Left Arrow */}
           {images.length > 1 && (
             <button
-              className="absolute left-4 text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
+              className="absolute left-4 z-10 text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
               onClick={prev}
             >
               <IoChevronBack className="w-6 h-6" />
             </button>
           )}
 
-          {/* Image */}
+          {/* Main Lightbox Image - FIXED URL HERE */}
           <img
-            src={images[activeIndex].url}
+            src={getCorrectImageUrl(images[activeIndex]?.url)}
             alt={`image ${activeIndex + 1}`}
-            className="w-full h-full max-h-[80vh] max-w-[80vw] object-cover rounded-2xl shadow-2xl"
+            className="w-full h-full max-h-[80vh] max-w-[80vw] object-contain rounded-2xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
 
           {/* Right Arrow */}
           {images.length > 1 && (
             <button
-              className="absolute right-4 text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
+              className="absolute right-4 z-10 text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
               onClick={next}
             >
               <IoChevronForward className="w-6 h-6" />

@@ -50,7 +50,7 @@ export default function LogDetailsHeader({ logHeaderData, logId }) {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-auto">
+      <div className="flex flex-col sm:flex-row md:flex-col gap-4 w-full md:w-auto">
         <Button
           onClick={() => navigate(`/logs/edit/${logId}`)}
           className="cursor-pointer rounded-xl text-white

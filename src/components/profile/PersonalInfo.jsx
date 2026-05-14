@@ -60,7 +60,7 @@ export default function PersonalInfo() {
           <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/5">
             <div className="flex-start gap-2">
               <IoPersonOutline className="w-5 h-5 text-[#6976EB]" />
-              <span className="text-sm text-[#808080] dark:text-gray-400">
+              <span className="text-sm text-[#808080] dark:text-gray-400 uppercase">
                 {t("profilePage.personalInfo.fullName")}
               </span>
             </div>
@@ -73,23 +73,23 @@ export default function PersonalInfo() {
           <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/5">
             <div className="flex-start gap-2">
               <MdOutlineDateRange className="w-5 h-5 text-[#6976EB]" />
-              <span className="text-sm text-[#808080] dark:text-gray-400">
+              <span className="text-sm text-[#808080] dark:text-gray-400 uppercase">
                 {t("profilePage.personalInfo.birthDateLabel")}
               </span>
             </div>
             <p className="text-lg font-bold dark:text-white text-[#161A41]">
               {formatBirthDate(user?.birthDate)}
             </p>
-            <p className="text-sm text-[#808080] dark:text-gray-400">
+            <p className="text-sm text-[#808080] dark:text-gray-400 uppercase">
               {t("profilePage.personalInfo.ageValue", { count: calculateAge(user?.birthDate) || 34 })}
             </p>
           </div>
 
           {/* Weight */}
-          <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/5">
+          <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/10">
             <div className="flex-start gap-2">
               <FaWeightScale className="w-5 h-5 text-[#6976EB]" />
-              <span className="text-sm text-[#808080] dark:text-gray-400">
+              <span className="text-sm text-[#808080] dark:text-gray-400 uppercase">
                 {t("profilePage.personalInfo.weightLabel")}
               </span>
             </div>
@@ -102,7 +102,7 @@ export default function PersonalInfo() {
           <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/5">
             <div className="flex-start gap-2">
               <LuRuler className="w-5 h-5 text-[#6976EB]" />
-              <span className="text-sm text-[#808080] dark:text-gray-400">
+              <span className="text-sm text-[#808080] dark:text-gray-400 uppercase">
                 {t("profilePage.personalInfo.heightLabel")}
               </span>
             </div>
@@ -115,7 +115,7 @@ export default function PersonalInfo() {
           <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/5">
             <div className="flex-start gap-2">
               <LuDroplet className="w-5 h-5 text-[#6976EB]" />
-              <span className="text-sm text-[#808080] dark:text-gray-400">
+              <span className="text-sm text-[#808080] dark:text-gray-400 uppercase">
                 {t("profilePage.personalInfo.bloodSugarUnitLabel")}
               </span>
             </div>

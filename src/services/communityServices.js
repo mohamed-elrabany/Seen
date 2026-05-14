@@ -1,10 +1,21 @@
 import api from "../api/axios";
 
-async function handleRequest(request){
-    try{
+async function handleRequest(request) {
+    try {
         const response = await request;
-        return response.data.data;
-    }catch(error){
+        
+        // 1. Check if the backend used 'data' (Post style)
+        if (response.data.data !== undefined) return response.data.data;
+        
+        // 2. Check if the backend used 'comments' (Comment index style)
+        if (response.data.comments !== undefined) return response.data.comments;
+        
+        // 3. Check if the backend returned a single resource (Comment store/update style)
+        if (response.data.comment !== undefined) return response.data.comment;
+
+        // 4. Fallback: return the whole data object
+        return response.data;
+    } catch (error) {
         throw error.response?.data?.message || 'Something wrong happened!';
     }
 }
@@ -26,9 +37,11 @@ export function getPostById(postId){
 
 }
 
-export function getUserPosts(userId){
+export function getUserPosts(userId, page){
     return handleRequest(
-        api.get(`/users/${userId}/posts`)
+        api.get(`/users/${userId}/posts`, {
+            params: { page }
+        })
     );
 
 }
@@ -55,7 +68,7 @@ export function deletePost(postId){
     );
 }
 
-export function togglePostLikes(postId){
+export function likePost(postId){
     return handleRequest(
         api.post(`/posts/${postId}/like`)
     );
@@ -63,7 +76,8 @@ export function togglePostLikes(postId){
 
 // ==================== Comments ====================
 
-export function getPostComments(postId, page){
+// Add 'async' here!
+export function getPostComments(postId, page) {
     return handleRequest(
         api.get(`/posts/${postId}/comments`, {
             params: { page }
@@ -93,7 +107,7 @@ export function deletePostComment(commentId){
     );
 }
 
-export function toggleCommentLikes(commentId){
+export function likeComment(commentId){
     return handleRequest(
         api.post(`/comments/${commentId}/like`)
     );

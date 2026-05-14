@@ -96,7 +96,7 @@ export default function ProfileHeader() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 items-center justify-center md:justify-start gap-6 mb-4">
+          <div className="grid grid-cols-2 items-center justify-center md:justify-start gap-6 mb-4">
             <div className="flex-col-center">
               <p className="font-bold text-2xl text-[#161A41] dark:text-white">
                 122
@@ -113,14 +113,14 @@ export default function ProfileHeader() {
                 {t("profilePage.header.following")}
               </span>
             </div>
-            <div className="flex-col-center">
+            {/* <div className="flex-col-center">
               <p className="font-bold text-2xl text-[#161A41] dark:text-white">
                 37k
               </p>
               <span className="font-bold text-sm text-[#808080] dark:text-gray-400">
                 {t("profilePage.header.support")}
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -140,7 +140,7 @@ export default function ProfileHeader() {
 
         <Button
           onClick={() => navigate("/settings")}
-          className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer bg-[#F8F9FF] text-[#808080] hover:bg-[#ADB4F3]/20 dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-300 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+          className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer bg-[#808080]/10 text-[#808080] hover:bg-[#808080]/20 dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-400 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
         >
           <MdOutlineSettings className="w-5 h-5" />
           <p>{t("profilePage.header.settings")}</p>

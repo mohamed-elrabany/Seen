@@ -82,7 +82,7 @@ export default function CreatePost() {
     { id: "General", label: "communityPage.shared.categories.general" },
     { id: "Type1 / LADA", label: "communityPage.shared.categories.type1" },
     { id: "Type2", label: "communityPage.shared.categories.type2" },
-    { id: "Mody", label: "communityPage.shared.categories.mody" },
+    { id: "MODY", label: "communityPage.shared.categories.mody" },
     { id: "Gestational", label: "communityPage.shared.categories.gestational" },
     { id: "Advices", label: "communityPage.shared.categories.advices" },
   ];
