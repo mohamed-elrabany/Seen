@@ -86,7 +86,7 @@ export default function PersonalInfo() {
           </div>
 
           {/* Weight */}
-          <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/10">
+          <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/5">
             <div className="flex-start gap-2">
               <FaWeightScale className="w-5 h-5 text-[#6976EB]" />
               <span className="text-sm text-[#808080] dark:text-gray-400 uppercase">
@@ -128,7 +128,7 @@ export default function PersonalInfo() {
           <div className="rounded-xl p-4 space-y-2 bg-[#F8F9FF] dark:bg-white/5">
             <div className="flex-start gap-2">
               <TiFlashOutline className="w-5 h-5 text-[#6976EB]" />
-              <span className="text-sm text-[#808080] dark:text-gray-400">
+              <span className="text-sm text-[#808080] dark:text-gray-400 uppercase">
                 {t("profilePage.personalInfo.carbUnitLabel")}
               </span>
             </div>

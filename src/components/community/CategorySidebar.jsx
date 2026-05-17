@@ -44,7 +44,7 @@ export default function CategorySidebar({
   return (
     <aside
       className="
-      sticky top-8 z-10 w-full overflow-x-auto no-scrollbar
+      sticky top-32 lg:top-8 z-10 w-full overflow-x-auto no-scrollbar
       w-full h-fit shadow-lg gap-8 border p-4 md:p-6 rounded-2xl
         bg-white bg-none border-[#D9D9D9]/30
         dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"

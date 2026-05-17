@@ -309,7 +309,8 @@ export async function action({ request }) {
   console.log("images:", formData.getAll("images"));
 
   try {
-    await createPost(formData);
+    const response = await createPost(formData);
+    console.log("Post created:", response);
 
     toast.success("Post created successfully!");
     return redirect("/community");

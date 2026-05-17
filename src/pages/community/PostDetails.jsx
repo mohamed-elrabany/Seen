@@ -6,13 +6,14 @@ import { useState, useEffect, useRef } from "react";
 import { usePostComments } from "../../hooks/usePostComments";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getPostById,
   addPostComment,
   likeComment,
   editPostComment,
-  deletePostComment
+  deletePostComment,
+  likePost,
 } from "../../services/communityServices";
 
 import toast from "react-hot-toast";
@@ -28,25 +29,28 @@ export default function PostDetails() {
   const user = useSelector((state) => state.user.user);
   console.log("Redux User Object:", user);
   const location = useLocation();
+  const dispatch = useDispatch();
   const { postId } = useParams();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const scrollRef= useRef();
+  const scrollRef = useRef();
 
   const cachedPost = location.state?.post;
 
   const onScroll = () => {
-  if (scrollRef.current) {
-    const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-    if (scrollHeight - scrollTop <= clientHeight + 100) { // 100px buffer
-       if (!isLoading && moreComments) {
-         setPage(prev => prev + 1);
-       }
+    if (scrollRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+      if (scrollHeight - scrollTop <= clientHeight + 100) {
+        // 100px buffer
+        if (!isLoading && moreComments) {
+          setPage((prev) => prev + 1);
+        }
+      }
     }
-  }
-};
+  };
 
   const [post, setPost] = useState(cachedPost);
+  const reduxPosts = useSelector((state) => state.posts.posts);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [comment, setComment] = useState("");
   const {
@@ -66,40 +70,46 @@ export default function PostDetails() {
   } = usePostComments(post?.id);
 
   const onClose = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
+    // Check if we know exactly which page opened this modal
+    const returnPath = location.state?.from;
+
+    if (returnPath) {
+      navigate(returnPath);
     } else {
+      // Hard fallback if they refreshed the page while the modal was open
       navigate("/community");
     }
   };
 
   useEffect(() => {
-    if (cachedPost) return;
-
     const getPostDetails = async () => {
       try {
         const postData = await getPostById(postId);
 
         if (postData) {
           setPost(postData);
-        } else {
+        } else if (!post) {
           setPost(posts[5]);
         }
       } catch (error) {
         toast.error("Something went wrong!");
-
         console.error("Error fetching post details:", error);
       }
     };
 
     getPostDetails();
-  }, [postId, cachedPost]);
+  }, [postId]);
 
   async function handleCommentSubmit(comment_text) {
     const tempId = addComment(comment_text, user); // Optimistic UI update
     setIsSubmitting(true);
     setComment(""); // Clear input immediately for better UX
-
+    setPost((prev) => {
+      return {
+        ...prev,
+        comments_count: prev.comments_count + 1, // Optimistically increment comment count
+      };
+    });
     try {
       const newComment = await addPostComment(postId, comment_text);
       confirmComment(tempId, newComment);
@@ -107,6 +117,12 @@ export default function PostDetails() {
     } catch (error) {
       rejectComment(tempId);
       setComment(comment_text); // Restore text so user doesn't lose it
+      setPost((prev) => {
+        return {
+          ...prev,
+          comments_count: prev.comments_count - 1, // Rollback comment count
+        };
+      });
       toast.error("Failed to submit comment!");
     } finally {
       setIsSubmitting(false);
@@ -141,13 +157,75 @@ export default function PostDetails() {
 
   async function handleDeleteComment(commentId) {
     const snapshot = deleteComment(commentId); // Optimistic UI update
+    setPost((prev) => {
+      return {
+        ...prev,
+        comments_count: prev.comments_count - 1, // Optimistically decrement comment count
+      };
+    });
     try {
       await deletePostComment(commentId);
       toast.success("Comment deleted successfully!");
     } catch (error) {
+      setPost((prev) => {
+        return {
+          ...prev,
+          comments_count: prev.comments_count + 1, // Rollback comment count
+        };
+      });
       restoreComment(snapshot);
       toast.error("Failed to delete comment!");
       console.error("Failed to delete comment:", error);
+    }
+  }
+
+  function toggleMainPostLike() {
+    setPost((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        is_liked: !prev.is_liked,
+        likes_count: prev.is_liked ? Math.max(0, prev.likes_count - 1) : prev.likes_count + 1,
+      };
+    });
+  }
+
+  async function handleMainPostLike() {
+    console.log("Toggling like for post ID:", postId);
+    console.log("Redux posts:", reduxPosts);
+    
+    // Save previous state structure for exact manual rollback if necessary
+    const fallbackPost = { ...post };
+    
+    // 1. Fire local UI changes straight away
+    toggleMainPostLike(); 
+    
+    try {
+      const result = await likePost(postId);
+      console.log("Like post result:", result);
+      
+      // 2. Override local state explicitly using accurate status from backend payload
+      setPost((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          is_liked: result.liked,
+          likes_count: typeof result.likes_count === 'number' 
+            ? result.likes_count 
+            : (result.liked ? fallbackPost.likes_count + 1 : Math.max(0, fallbackPost.likes_count - 1))
+        };
+      });
+
+      // 3. Keep Redux post slice in sync with details changes
+      if (postActions && postActions.updatePostLike) {
+        dispatch(postActions.updatePostLike({ postId: Number(postId), is_liked: result.liked }));
+      }
+      
+    } catch (error) {
+      // Rollback to reliable historic data structure
+      setPost(fallbackPost);
+      console.error("Failed to toggle like:", error);
+      toast.error("Failed to toggle like!");
     }
   }
 
@@ -197,11 +275,12 @@ export default function PostDetails() {
           </div>
 
           {/* Scrollable Content */}
-          <div 
-          ref={scrollRef}
-          onScroll={onScroll}
-          className="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
-            {post && <PostCard post={post} />}
+          <div
+            ref={scrollRef}
+            onScroll={onScroll}
+            className="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"
+          >
+            {post && <PostCard post={post} onLike={handleMainPostLike} />}
 
             <CommentsFeed
               comments={comments}

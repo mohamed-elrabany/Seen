@@ -127,7 +127,7 @@ export default function Sidebar() {
         logoutRef={logoutRef}
       />
       {/* Sidebar navigation */}
-      <aside className="hidden w-1/3 lg:w-1/4 h-screen overflow-y-auto sticky top-0 shadow-2xl lg:flex flex-col gap-6 from-[#FFFFFF] via-[#FFFFFF] to-[#FFFFFF] bg-gradient-to-b  dark:from-[#1F1A5F] dark:via-[#161A41] dark:to-[#0A0E27]">
+      <aside className="hidden no-scrollbar w-1/3 lg:w-1/4 h-screen overflow-y-auto sticky top-0 shadow-2xl lg:flex flex-col gap-6 from-[#FFFFFF] via-[#FFFFFF] to-[#FFFFFF] bg-gradient-to-b  dark:from-[#1F1A5F] dark:via-[#161A41] dark:to-[#0A0E27]">
         {/* Header */}
         <div className="w-full">
           <div className="border-b border-[#D9D9D9]/30 p-6">
@@ -259,7 +259,7 @@ export default function Sidebar() {
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="w-2/3 h-screen shadow-2xl flex flex-col lg:hidden gap-6 
-              fixed top-0 right-0 z-100 overflow-y-auto
+              fixed top-0 right-0 z-100 overflow-y-auto no-scrollbar
               from-[#FFFFFF] via-[#FFFFFF] to-[#FFFFFF] bg-gradient-to-b  
               dark:from-[#1F1A5F] dark:via-[#161A41] dark:to-[#0A0E27]"
             >

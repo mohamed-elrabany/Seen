@@ -13,13 +13,13 @@ async function handleRequest(request){
 
 export async function addLog(logData){
     return handleRequest(
-        api.post("/add-log", { withCredentials: false }, logData)
+        api.post("/add-log", logData)
     );
 }
 
 export async function editLog(logId, logData){
     return handleRequest(
-        api.put(`/edit-log/${logId}`, { withCredentials: false }, logData)
+        api.put(`/edit-log/${logId}`, logData)
     );
 }
 

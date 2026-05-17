@@ -43,13 +43,13 @@ export default function LikesModal({ isOpen, onClose, id, type }) {
   }, [isOpen, id]);
 
   useEffect(() => {
-    if (!isOpen || !hasMore || isLoading) return;
-
+    if(!isOpen) return;
     const fetchLikes = async () => {
       setIsLoading(true);
       try {
         const response = await getLikes(id, type, page);
-        console.log("Fetched Likes Response:", response);
+        console.log("Fetch Likes Response:", response);
+
         const fetchedUsers = response.users || [];
         const total = response.total_likes || 0;
 
@@ -60,7 +60,6 @@ export default function LikesModal({ isOpen, onClose, id, type }) {
         } else {
           setLikes((prev) => {
             const combined = [...prev, ...fetchedUsers];
-            // Ensure hasMore is updated based on the actual result
             if (combined.length >= total || fetchedUsers.length < 10) {
               setHasMore(false);
             }

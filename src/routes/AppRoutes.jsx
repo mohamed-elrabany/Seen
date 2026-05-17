@@ -5,7 +5,6 @@ import { action as loginAction } from "../pages/auth/Login";
 import { action as registerAction } from "../pages/auth/Register";
 import { action as reminderAction } from "../pages/reminders/AddReminder";
 import { action as createPostAction } from "../pages/community/CreatePost";
-import { action as editPostAction } from "../pages/community/EditPost";
 
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
 const Home = lazy(() => import("../pages/dashboard/Home"));
@@ -13,7 +12,6 @@ const Community = lazy(() => import("../pages/community/Community"));
 const Search= lazy(() => import("../pages/community/Search"));
 const CreatePost = lazy(() => import("../pages/community/CreatePost"));
 const PostDetails = lazy(() => import("../pages/community/PostDetails"));
-const EditPost = lazy(() => import("../pages/community/EditPost"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
@@ -73,7 +71,7 @@ const router = createBrowserRouter([
         element: lazy_load(Home),
       },
       {
-        path: "community",
+        path: "community/:category?",
         element: lazy_load(Community),
       },
       {
@@ -86,12 +84,7 @@ const router = createBrowserRouter([
         action: createPostAction,
       },
       {
-        path: "community/edit/:postId",
-        element: lazy_load(EditPost),
-        action: editPostAction,
-      },
-      {
-        path: "community/:postId",
+        path: "community/posts/:postId",
         element: lazy_load(PostDetails),
       },
       {

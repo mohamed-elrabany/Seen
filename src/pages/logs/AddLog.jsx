@@ -59,8 +59,8 @@ export default function AddLog() {
     recordMeal: {
       meal_type: "",
       meal_description: "",
-      carbohydrate_estimation: "",
-      calories_estimation: "",
+      total_carb: "",
+      total_calories: "",
       notes: "",
     },
   });
@@ -203,7 +203,7 @@ export default function AddLog() {
               <motion.div
                 key={type.value}
                 variants={itemVariants}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center h-full"
               >
                 <RadioButton
                   name="reminderType"

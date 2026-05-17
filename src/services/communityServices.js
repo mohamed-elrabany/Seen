@@ -54,11 +54,7 @@ export function createPost(postData){
 
 export function editPost(postId, postData){
     return handleRequest(
-        api.post(`/posts/${postId}`, postData,{
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        })
+        api.put(`/posts/${postId}`, postData)
     );
 }
 

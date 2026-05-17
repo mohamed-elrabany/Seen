@@ -4,6 +4,9 @@ import Button from "../ui/Button";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 import { formatDisplayedDate } from "../../util/formatDiplayedDate";
 
 import { RiAddLargeLine } from "react-icons/ri";
@@ -78,6 +81,8 @@ const logsData = [
 export default function Logs({ date }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+
 
   return (
     <div

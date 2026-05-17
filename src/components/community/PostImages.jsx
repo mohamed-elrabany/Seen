@@ -28,10 +28,10 @@ export default function PostImages({ images }) {
   };
 
   // Helper to fix local development URL issues
-  const getCorrectImageUrl = (url) => {
-    if (!url) return "";
-    return url.replace("https://127.0.0.1", "http://127.0.0.1");
-  };
+  // const getCorrectImageUrl = (url) => {
+  //   if (!url) return "";
+  //   return url.replace("https://127.0.0.1", "http://127.0.0.1");
+  // };
 
   return (
     <>
@@ -58,7 +58,7 @@ export default function PostImages({ images }) {
               onClick={() => openLightbox(index)}
             >
               <img
-                src={getCorrectImageUrl(image?.url)}
+                src={image?.url}
                 alt={`post image ${index + 1}`}
                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
               />
@@ -108,7 +108,7 @@ export default function PostImages({ images }) {
 
           {/* Main Lightbox Image - FIXED URL HERE */}
           <img
-            src={getCorrectImageUrl(images[activeIndex]?.url)}
+            src={images[activeIndex]?.url}
             alt={`image ${activeIndex + 1}`}
             className="w-full h-full max-h-[80vh] max-w-[80vw] object-contain rounded-2xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}

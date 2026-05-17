@@ -66,15 +66,15 @@ export default function PostComment({ comment, onLike, onDelete, onEdit }) {
           // Animate based on the prop, not local state
           animate={comment.is_liked ? { scale: [1.2, 1] } : { scale: 1 }}
           transition={{ type: "spring", stiffness: 300 }}
-          onClick={onLike}
+          
           className="flex-col-center text-[#808080] dark:text-gray-400 w-auto gap-2 hover:text-[#6976EB] transition-colors cursor-pointer"
         >
           {comment.is_liked ? (
-            <FaHeart className="w-5 h-5 text-red-600" />
+            <FaHeart onClick={onLike} className="w-5 h-5 text-red-600" />
           ) : (
-            <FaRegHeart className="w-5 h-5" />
+            <FaRegHeart onClick={onLike} className="w-5 h-5" />
           )}
-          <span onClick={()=>setIsLikesModalOpen(true)} className={`${comment.is_liked ? "text-red-600" : ""}`}>
+          <span onClick={()=>setIsLikesModalOpen(true)} className={`w-5 ${comment.is_liked ? "text-red-600" : ""}`}>
             {formattedLikesCount}
           </span>
         </motion.button>

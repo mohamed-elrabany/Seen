@@ -1,79 +1,53 @@
 import PostCard from "./PostCard";
-
-import { posts } from "../../util/content";
-import { getPostsData } from "../../services/communityServices";
 import { CommunityPostSkeleton } from "./SkeletonLoading";
+import { useEffect, useRef } from "react";
+import { usePosts } from "../../hooks/usePosts";
 
-import { useState, useEffect, useCallback } from "react";
+// Store scroll position outside component so it survives unmount
+const scrollPositions = {};
 
-export default function PostFeed({ category }) {
-  const [loadedData, setLoadedData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [moreData, setMoreData] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+export default function PostFeed({ category = null, profileId = null }) {
+  const feedKey = `${category ?? "null"}::${profileId ?? "null"}`;
+  const { posts, isLoading, moreData, handlePostLike } = usePosts(category, profileId);
+  const containerRef = useRef(null);
+  const hasRestored = useRef(false);
 
-  // Reset everything when category changes
+  // Restore scroll after posts paint
   useEffect(() => {
-    setLoadedData([]);
-    setPage(1);
-    setMoreData(true);
-    setIsLoading(true);
-  }, [category]);
+    if (posts.length > 0 && !hasRestored.current && scrollPositions[feedKey]) {
+      // rAF ensures the DOM has painted the posts before we scroll
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollPositions[feedKey]);
+        hasRestored.current = true;
+      });
+    }
+  }, [posts, feedKey]);
 
-  // Fetch whenever page changes (page is set by scroll or category reset)
+  // Save scroll on unmount
   useEffect(() => {
-    if (!moreData) return;
-
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const posts = await getPostsData(category, page);
-        console.log("Fetched posts from feed:", posts);
-        if (posts?.length > 0) {
-          setLoadedData((prevData) => [...prevData, ...posts]);
-        } else {
-          setMoreData(false);
-        }
-      } catch (error) {
-        throw error.response?.data?.message || 'Failed to fetch posts!'; 
-      } finally {
-        setIsLoading(false);
-      }
+    return () => {
+      scrollPositions[feedKey] = window.scrollY;
+      hasRestored.current = false;
     };
-    // setLoadedData(posts); // Temporary: Remove this line when API is ready
-
-    fetchData();
-  }, [page, category]);
-
-  const handleScroll= useCallback(()=>{
-    if(isLoading || !moreData) return;
-
-    const isAtBottom= (window.innerHeight + document.documentElement.scrollTop) >=
-      (document.documentElement.offsetHeight - 100);
-
-      if(isAtBottom){
-        setPage( prev => prev + 1);
-      }
-  },[isLoading, moreData])
-
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  }, [feedKey]);
 
   return (
-    <div className="flex-col-center gap-8 overflow-y-auto w-full px-4 pb-4">
-      {loadedData.map((post, index) => (
+    <div ref={containerRef} className="flex-col-center gap-8 overflow-y-auto w-full px-4 pb-4">
+      {posts.map((post, index) => (
         <PostCard
           key={`${post.id}-${index}`}
           post={post}
+          onLike={() => handlePostLike(post.id)}
         />
       ))}
 
-       {isLoading && Array.from({ length: 2 }).map((_, index) => <CommunityPostSkeleton key={index} />)}
+      {isLoading && Array.from({ length: 2 }).map((_, i) => <CommunityPostSkeleton key={i} />)}
 
-      {!moreData && <p className="w-full bg-gradient-to-b from-[#6976EB] to-[#2B3695] text-white font-semibold text-center p-4 rounded-2xl shadow-lg">No more posts</p>}
+      {!moreData && (
+        <p className="w-full text-[#808080] dark:text-gray-400 font-semibold text-center p-4">
+          No more posts
+        </p>
+      )}
     </div>
   );
 }

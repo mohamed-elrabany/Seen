@@ -88,20 +88,20 @@ export default function MealForm({ mealData, setMealData }) {
       <motion.div variants={itemVariants}>
         <Input
           label="Carbohydrate Estimation (grams)"
-          name="carbohydrate_estimation"
+          name="total_carb"
           type="number"
           placeholder="Enter carbohydrate estimation"
-          defaultValue={mealData?.carbohydrate_estimation || ""}
+          defaultValue={mealData?.total_carb || ""}
           onChange={(e) => handleInputChange(e)}
         />
       </motion.div>
       <motion.div variants={itemVariants}>
         <Input
           label="Calories Estimation"
-          name="calories_estimation"
+          name="total_calories"
           type="number"
           placeholder="Enter calories estimation"
-          defaultValue={mealData?.calories_estimation || ""}
+          defaultValue={mealData?.total_calories || ""}
           onChange={(e) => handleInputChange(e)}
         />
       </motion.div>
