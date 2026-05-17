@@ -50,7 +50,7 @@ export default function PostDetails() {
   };
 
   const [post, setPost] = useState(cachedPost);
-  const reduxPosts = useSelector((state) => state.posts.posts);
+  // const reduxPosts = useSelector((state) => state.posts.posts);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [comment, setComment] = useState("");
   const {
