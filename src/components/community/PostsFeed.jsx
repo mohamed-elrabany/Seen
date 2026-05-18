@@ -1,31 +1,59 @@
 import PostCard from "./PostCard";
 import { CommunityPostSkeleton } from "./SkeletonLoading";
 import { useEffect, useRef } from "react";
-import { usePosts } from "../../hooks/usePosts";
 
-// Store scroll position outside component so it survives unmount
-const scrollPositions = {};
+import { useCommunityPosts } from "../../hooks/queries/useCommunityPosts";
+import { useProfilePosts } from "../../hooks/queries/useProfilePosts";
 
 export default function PostFeed({ category = null, profileId = null }) {
-  const { posts, isLoading, moreData } = usePosts({category, profileId});
+  useEffect(() => {
+    document.documentElement.scrollTop = 0; // Reset scroll position when category/profile changes
+  }, [category, profileId]);
+  const observerRef = useRef();
+
+  const query = profileId
+    ? useProfilePosts(profileId)
+    : useCommunityPosts(category);
+
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = query;
+
+  // flatten pages (array of arrays)
+  const posts = data?.pages.flat() || [];
+  console.log("PostsFeed rendered with posts:", posts);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
     <div className="flex-col-center gap-8 overflow-y-auto w-full px-4 pb-4">
-      {posts.map((post, index) => (
-        <PostCard
-          key={`${post.id}-${index}`}
-          post={post}
-          onLike={() => handlePostLike(post.id)}
-        />
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} />
       ))}
 
-      {isLoading && Array.from({ length: 2 }).map((_, i) => <CommunityPostSkeleton key={i} />)}
+      {(isLoading || isFetchingNextPage) &&
+        Array.from({ length: 2 }).map((_, i) => (
+          <CommunityPostSkeleton key={i} />
+        ))}
 
-      {!moreData && (
-        <p className="w-full text-[#808080] dark:text-gray-400 font-semibold text-center p-4">
-          No more posts
-        </p>
+      {!hasNextPage && (
+        <p className="text-center text-gray-400">No more posts</p>
       )}
+
+      <div ref={observerRef} className="h-10" />
     </div>
   );
 }

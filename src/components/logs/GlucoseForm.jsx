@@ -37,10 +37,10 @@ export default function GlucoseForm({ glucoseData, setGlucoseData }) {
     }
 
   const glucoseTypes = [
-    { value: "random", label: "Random" },
-    { value: "fasting", label: "Fasting" },
-    { value: "beforeMeal", label: "Before Meal" },
-    { value: "afterMeal", label: "After Meal" },
+    { value: "Random", label: "Random" },
+    { value: "Fasting", label: "Fasting" },
+    { value: "Before Meal", label: "Before Meal" },
+    { value: "After Meal", label: "After Meal" },
   ];
 
     const getGlucoseStatus = (value) => {

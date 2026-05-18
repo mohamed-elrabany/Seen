@@ -13,8 +13,8 @@ export default function LogCard({ logData }) {
   const isRTL = i18n.dir() === "rtl";
   // const navigate = useNavigate();
 
-  const displayedTime = logData.log_time
-    ? new Date(logData.log_time).toLocaleTimeString(i18n.language, {
+  const displayedTime = logData.logged_at
+    ? new Date(logData.logged_at).toLocaleTimeString(i18n.language, {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
@@ -38,7 +38,7 @@ export default function LogCard({ logData }) {
       "text-[#808080] dark:text-gray-400 bg-[#808080]/20 dark:bg-gray-400/20",
   };
 
-  const glucoseReading = logData?.recordGlucose?.glucose_level;
+  const glucoseReading = logData?.record_glucose?.glucose_level;
   const glucoseStatus = getGlucoseStatus(glucoseReading);
 
   return (
@@ -68,17 +68,17 @@ export default function LogCard({ logData }) {
       <div className="flex items-center justify-between">
         {/* Icons with white rings to create the overlap effect from Frame 34648.png */}
         <div className="flex items-center -space-x-2">
-          {logData.recordGlucose && (
+          {logData.record_glucose&& (
             <div className="bg-[#6976EB] p-2 rounded-full text-white ring-1 ring-white/5">
               <GlucoseIcon className="w-4 h-4" />
             </div>
           )}
-          {logData.medication && (
+          {logData.record_medication && (
             <div className="bg-[#6976EB] p-2 rounded-full text-white ring-1 ring-white/5">
               <BiSolidInjection className="w-4 h-4" />
             </div>
           )}
-          {logData.recordMeal && (
+          {logData?.record_meal && (
             <div className="bg-[#6976EB] p-2 rounded-full text-white ring-1 ring-white/5">
               <BsForkKnife className="w-4 h-4" />
             </div>

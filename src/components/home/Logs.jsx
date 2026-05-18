@@ -4,7 +4,7 @@ import Button from "../ui/Button";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { formatDisplayedDate } from "../../util/formatDiplayedDate";
@@ -12,6 +12,7 @@ import { formatDisplayedDate } from "../../util/formatDiplayedDate";
 import { RiAddLargeLine } from "react-icons/ri";
 
 import emptyLogs from "../../assets/empty-logs.svg";
+import { getLogs } from "../../services/logServices";
 
 const logsData = [
   {
@@ -81,7 +82,30 @@ const logsData = [
 export default function Logs({ date }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [logs, setLogs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
 
+  useEffect(() => {
+    const fetchLogs = async () => {
+      try{
+        const data = await getLogs(date);
+        console.log("Fetched logs:", data);
+        setLogs(data);
+      }catch(error){
+        console.error("Error fetching logs:", error);
+        toast.error("Failed to fetch logs. Please try again later.");
+        setLogs([]);
+      }finally{
+        setIsLoading(false);
+      }
+    };
+    fetchLogs();
+  },[date]);
+
+  useEffect(() => {
+    console.log("Logs updated:", logs);
+  }, [logs]);
 
 
   return (
@@ -95,14 +119,14 @@ export default function Logs({ date }) {
         <p className="card-text">{formatDisplayedDate(date)}</p>
       </div>
 
-      {logsData.length > 0 ? (
+      {logs.length > 0 ? (
         <motion.div
           className="space-y-4 w-full h-full flex flex-col justify-start items-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          {logsData.map((log) => (
+          {logs.map((log) => (
             <Link to={`/logs/${log.log_id}`} key={log.log_id} className="w-full">
               <LogCard key={log.log_id} logData={log} />
             </Link>

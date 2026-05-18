@@ -37,10 +37,10 @@ export default function MealForm({ mealData, setMealData }) {
     }
 
   const mealTypes = [
-    { value: "breakfast", label: "Breakfast" },
-    { value: "lunch", label: "Lunch" },
-    { value: "dinner", label: "Dinner" },
-    { value: "snack", label: "Snack" },
+    { value: "Breakfast", label: "Breakfast" },
+    { value: "Lunch", label: "Lunch" },
+    { value: "Dinner", label: "Dinner" },
+    { value: "Snack", label: "Snack" },
   ];
 
   return (
@@ -81,7 +81,7 @@ export default function MealForm({ mealData, setMealData }) {
           name="meal_description"
           type="text"
           placeholder="Enter meal description"
-          defaultValue={mealData?.meal_description || ""}
+          value={mealData?.meal_description || ""}
           onChange={(e) => handleInputChange(e)}
         />
       </motion.div>
@@ -91,7 +91,7 @@ export default function MealForm({ mealData, setMealData }) {
           name="total_carb"
           type="number"
           placeholder="Enter carbohydrate estimation"
-          defaultValue={mealData?.total_carb || ""}
+          value={mealData?.total_carb || ""}
           onChange={(e) => handleInputChange(e)}
         />
       </motion.div>
@@ -101,7 +101,7 @@ export default function MealForm({ mealData, setMealData }) {
           name="total_calories"
           type="number"
           placeholder="Enter calories estimation"
-          defaultValue={mealData?.total_calories || ""}
+          value={mealData?.total_calories || ""}
           onChange={(e) => handleInputChange(e)}
         />
       </motion.div>

@@ -22,8 +22,16 @@ const itemVariants = {
 
 export default function LogBasicInfo({ logData, setLogData }) {
   function handleInputChange(e) {
-    // Placeholder for handling input changes
-    setLogData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    let value = e.target.value;
+
+    if (e.target.name === "logged_at") {
+      value = value.replace("T", " ") + ":00";
+    }
+
+    setLogData((prev) => ({
+      ...prev,
+      [e.target.name]: value,
+    }));
   }
   return (
     <motion.div
@@ -61,6 +69,7 @@ export default function LogBasicInfo({ logData, setLogData }) {
           name={"logged_at"}
           type="datetime-local"
           placeholder={"Select log time"}
+          max={new Date().toISOString().slice(0, 16)}
           value={logData.logged_at || ""}
           onChange={(e) => handleInputChange(e)}
           required

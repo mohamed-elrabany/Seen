@@ -47,9 +47,9 @@ export default function AddLog() {
     log_description: "",
     logged_at: "",
     recordGlucose: {
-      glucose_level: "",
+      glucose_level: null,
       reading_type: "",
-      a1c_estimation: "",
+      a1c_estimation: null,
       notes: "",
     },
     recordMedication: {
@@ -59,8 +59,8 @@ export default function AddLog() {
     recordMeal: {
       meal_type: "",
       meal_description: "",
-      total_carb: "",
-      total_calories: "",
+      total_carb: null,
+      total_calories: null,
       notes: "",
     },
   });
@@ -146,6 +146,7 @@ export default function AddLog() {
     try {
       // Simulate API call delay
       const result = await addLog(data);
+      console.log("Add Log Result:", result); // Debugging log
       if (result.success) {
         toast.success("Log added successfully!");
         redirect("/home");

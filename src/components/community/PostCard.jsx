@@ -16,18 +16,24 @@ import PostImages from "./PostImages";
 import DeletePostModal from "../modals/DeletePostModal";
 import LikesModal from "../modals/LikesModal";
 import EditPostModal from "../modals/EditPostModal";
+import { useToggleLike } from "../../hooks/mutations/useTogglePostLike";
 
-export default function PostCard({ post, onLike }) {
+export default function PostCard({ post }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLikesModalOpen, setIsLikesModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const { t } = useTranslation();
-
+  
   const relativeDate = formatRelativeTime(post.created_at);
   const formattedLikesCount = formatCount(post.likes_count, t);
   const formattedCommentsCount = formatCount(post.comments_count, t);
+  
+  const togglePostLike = useToggleLike();
+  function handleLike() {
+    togglePostLike.mutate(post.id);
+  }
 
   const categoryColorMap = {
     "type1 / lada":
@@ -108,9 +114,12 @@ export default function PostCard({ post, onLike }) {
             className="flex-center text-[#808080] dark:text-gray-400 w-auto gap-2 hover:text-[#6976EB] transition-colors cursor-pointer"
           >
             {post.is_liked ? (
-              <FaHeart onClick={onLike} className="w-5 h-5 text-[#FB2C36]" />
+              <FaHeart
+                onClick={handleLike}
+                className="w-5 h-5 text-[#FB2C36]"
+              />
             ) : (
-              <FaRegHeart onClick={onLike} className="w-5 h-5" />
+              <FaRegHeart onClick={handleLike} className="w-5 h-5" />
             )}
             <span
               onClick={() => setIsLikesModalOpen(true)}
@@ -136,8 +145,7 @@ export default function PostCard({ post, onLike }) {
         {post.user.id === user?.id && (
           <div className="flex gap-2 justify-center items-center">
             <button
-              onClick={ () => setIsEditModalOpen(true) }
-              
+              onClick={() => setIsEditModalOpen(true)}
               className="cursor-pointer p-2 text-center rounded-md hover:bg-gray-300 dark:hover:bg-gray-900/30"
             >
               <FiEdit className="text-gray-700 dark:text-gray-300 w-5 h-5" />
