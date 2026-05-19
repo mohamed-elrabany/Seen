@@ -9,13 +9,6 @@ import { useState, useEffect } from "react";
 import { getMedications } from "../../services/medicationServices";
 import toast from "react-hot-toast";
 
-const medicationNames = [
-  "Insulin Glargine (Lantus)",
-  "Metformin",
-  "Semaglutide (Ozempic)",
-  "Empagliflozin (Jardiance)",
-];
-
 // Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -39,6 +32,7 @@ export default function MedicationForm({
   medicationData, // This is your 'logData' object
   setMedicationData, // This is your 'setLogData' function
   setIsModalOpen,
+  refetchMedications, // New prop to trigger medication list refresh
 }) {
   const [openMedicationDropdown, setOpenMedicationDropdown] = useState(false);
   const [medicationList, setMedicationList] = useState([]);
@@ -47,21 +41,15 @@ useEffect(() => {
   const fetchMedications = async () => {
     try {
       const data = await getMedications();
-      
-      // If it's an array, use it. If it's an object, convert it. 
-      // If it's null/undefined, use medicationNames.
-      const formattedList = Array.isArray(data) 
-        ? data 
-        : (data ? Object.values(data) : medicationNames);
-        
-      setMedicationList(formattedList);
+      console.log("Raw medication data:", data);
+      setMedicationList(data);
     } catch (error) {
       toast.error("Failed to fetch medications. Using default list.");
-      setMedicationList(medicationNames);
+      setMedicationList([]);
     }
   };
   fetchMedications();
-}, []);
+}, [refetchMedications]);
 
   // 1. Correct access to the medications array inside recordMedication
   const selectedMeds = medicationData?.medications || [];
@@ -69,7 +57,7 @@ useEffect(() => {
   // 2. Logic to toggle medications while preserving the recordMedication object structure
   const handleMedicationToggle = (medName) => {
     setMedicationData((prevData) => {
-      const currentMeds = prevData?.recordMedication?.medications || [];
+      const currentMeds = prevData?.record_medication?.medications || [];
       const isAlreadySelected = currentMeds.includes(medName);
 
       const updatedMeds = isAlreadySelected
@@ -78,8 +66,8 @@ useEffect(() => {
 
       return {
         ...prevData,
-        recordMedication: {
-          ...prevData.recordMedication,
+        record_medication: {
+          ...prevData.record_medication,
           medications: updatedMeds,
         },
       };
@@ -91,8 +79,8 @@ useEffect(() => {
     const { name, value } = e.target;
     setMedicationData((prevData) => ({
       ...prevData,
-      recordMedication: {
-        ...prevData.recordMedication,
+      record_medication: {
+        ...prevData.record_medication,
         [name]: value,
       },
     }));
@@ -149,8 +137,8 @@ useEffect(() => {
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute top-full left-0 w-full bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mt-1 text-sm text-[#161A41] dark:text-white shadow-xl overflow-hidden z-[60]"
                   >
-                    {medicationList.map((name) => {
-                      const isSelected = selectedMeds.includes(name);
+                    {medicationList.map((med) => {
+                      const isSelected = selectedMeds.includes(med.medication_name);
                       return (
                         <li
                           className={`px-4 py-3 hover:bg-[#6976EB]/10 cursor-pointer flex items-center justify-between transition-colors ${
@@ -158,11 +146,11 @@ useEffect(() => {
                               ? "bg-[#6976EB] hover:bg-[#6976EB]/80 text-white"
                               : ""
                           }`}
-                          key={name}
-                          onClick={() => handleMedicationToggle(name)}
+                          key={med.medication_name}
+                          onClick={() => handleMedicationToggle(med.medication_name)}
                         >
                           <p className={isSelected ? "font-bold" : ""}>
-                            {name}
+                            {med.medication_name}
                           </p>
                           {isSelected && (
                             <FaCircleCheck className="w-5 h-5 text-white" />

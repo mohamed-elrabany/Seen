@@ -3,7 +3,7 @@ import api from "../api/axios";
 async function handleRequest(request){
     try{
         const response = await request;
-        return response.data;
+        return response.data.data;
     }catch(error){
         return {
             error: error || "Something wrong happened!"
@@ -11,16 +11,14 @@ async function handleRequest(request){
     }
 }
 
-export async function getMedications(){
-    const result = await handleRequest(
-        api.get("/medications", { withCredentials: false })
-    );
-    return result.medications;
+export async function getMedications() {
+  return handleRequest(api.get("/selected-medications"));
 }
 
-
-export async function addMedication(medicineData) {
-    return handleRequest(
-    api.post("/add-medicine", { withCredentials: false }, medicineData)
-  );
+export async function addMedications(medicationName) {
+  return handleRequest(
+    api.post("/selected-medications", {
+      medication_name: medicationName,
+    }),
+  );    
 }

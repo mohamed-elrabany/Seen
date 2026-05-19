@@ -29,8 +29,8 @@ export default function MealForm({ mealData, setMealData }) {
       const { name, value } = e.target;
       setMealData((prevData) => ({
         ...prevData,
-        recordMeal:{
-          ...prevData.recordMeal,
+        record_meal:{
+          ...prevData.record_meal,
           [name]: value
         }
       }));

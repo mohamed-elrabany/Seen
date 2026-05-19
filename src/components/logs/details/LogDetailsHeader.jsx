@@ -6,24 +6,28 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import DeleteLogModal from "../../modals/DeleteLogModal";
 
 export default function LogDetailsHeader({ logHeaderData, logId }) {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const title = logHeaderData?.log_title || "Untitled Log";
-  const description = logHeaderData?.log_description || "No description provided for this log.";
+  const description =
+    logHeaderData?.log_description || "No description provided for this log.";
   const time = logHeaderData?.logged_at
-  ? new Date(logHeaderData.logged_at).toLocaleString(i18n.language, {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-      numberingSystem: 'latn' // Ensures numbers are 1, 2, 3 even in Arabic/Hindi locales
-    })
-  : "Time not recorded";
+    ? new Date(logHeaderData.logged_at).toLocaleString(i18n.language, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        numberingSystem: "latn", // Ensures numbers are 1, 2, 3 even in Arabic/Hindi locales
+      })
+    : "Time not recorded";
 
   return (
     <motion.div
@@ -62,8 +66,9 @@ export default function LogDetailsHeader({ logHeaderData, logId }) {
           <FiEdit className="w-5 h-5" />
           <p className="font-bold">Edit Log</p>
         </Button>
-        
+
         <Button
+          onClick={() => setIsDeleteModalOpen(true)}
           className="w-full flex items-center justify-center gap-4 p-4 rounded-xl cursor-pointer
             text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 transition-colors"
         >
@@ -71,6 +76,11 @@ export default function LogDetailsHeader({ logHeaderData, logId }) {
           <p className="font-bold">Delete Log</p>
         </Button>
       </div>
+      <DeleteLogModal
+        logId={logId}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </motion.div>
   );
 }

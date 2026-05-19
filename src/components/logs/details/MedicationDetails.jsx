@@ -41,7 +41,7 @@ export default function MedicationDetails({ medicationRecordData }) {
                   key={index} 
                   className="rounded-full bg-[#6976EB]/10 px-4 py-1 text-sm font-medium text-[#6976EB] dark:bg-[#6976EB]/20 dark:text-white"
                 >
-                  {med}
+                  {med.medication_name}
                 </span>
               ))
             ) : (

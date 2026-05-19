@@ -29,8 +29,8 @@ export default function GlucoseForm({ glucoseData, setGlucoseData }) {
       const { name, value } = e.target;
       setGlucoseData((prevData) => ({
         ...prevData,
-        recordGlucose:{
-          ...prevData.recordGlucose,
+        record_glucose:{
+          ...prevData.record_glucose,
           [name]: value
         }
       }));

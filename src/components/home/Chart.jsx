@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { getGlucoseReadings } from "../../services/analysisServices";
+import { getGlucoseReadings } from "../../services/logServices";
 import { formatDisplayedDate } from "../../util/formatDiplayedDate";
 
 import { CgSpinner } from "react-icons/cg"; 
@@ -70,16 +70,15 @@ export default function Chart({ setDate }) {
       if (selectedYear >= 2026 && selectedYear <= currentYear) {
         setDateValue(inputValue); // Update the visual "Source of Truth"
         setDate(inputValue); // Update the parent component's date state
+        setIsLoading(true);
         const fetchGlucoseReadings = async () => {
-          setIsLoading(true);
           try {
-            const readings = await getGlucoseReadings(inputValue);
+            const readings = await getGlucoseReadings(dateValue);
+            console.log("Fetched readings:", readings);
             setGlucoseReadings(readings && readings.length > 0 ? readings : emptyStateWithLabels);
           } catch (error) {
             console.error("Fetch error:", error);
             toast.error(t("toasts.home.fetchError"));
-            
-            setGlucoseReadings(emptyStateWithLabels);
           } finally {
             setIsLoading(false);
           }

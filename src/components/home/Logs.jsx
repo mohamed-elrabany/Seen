@@ -114,10 +114,20 @@ export default function Logs({ date }) {
       flex flex-col justify-between items-center
         bg-white bg-none dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] border-[#D9D9D9]/30 dark:border-white/10"
     >
-      <div className="w-full space-y-2 text-start">
-        <h3>Logs</h3>
-        <p className="card-text">{formatDisplayedDate(date)}</p>
+      <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="space-y-2 text-start">
+          <h3>Logs</h3>
+          <p className="card-text">{formatDisplayedDate(date)}</p>
+        </div>
+        <Button
+        onClick={() => navigate("/add-log")}
+        className=" p-3 bg-[#6976EB] cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
+      >
+        <RiAddLargeLine className="w-5 h-5" />
+        <p className="w-auto">Add Log</p>
+      </Button>
       </div>
+      
 
       {logs.length > 0 ? (
         <motion.div
@@ -146,14 +156,6 @@ export default function Logs({ date }) {
           </div>
         </motion.div>
       )}
-
-      <Button
-        onClick={() => navigate("/add-log")}
-        className="w-full mt-6 bg-[#6976EB] px-6 py-3 cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
-      >
-        <RiAddLargeLine className="w-5 h-5" />
-        <p>Add Log</p>
-      </Button>
     </div>
   );
 }

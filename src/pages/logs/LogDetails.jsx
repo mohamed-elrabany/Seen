@@ -69,22 +69,12 @@ export default function LogDetails({ logId: propLogId }) {
 useEffect(() => {
     const fetchLogData = async () => {
       // If no logId is present, we can't fetch anything
-      if (!logId) {
-        setLogData(dummyLogData);
-        setLoading(false);
-        return;
-      }
 
       setLoading(true);
       try {
         const data = await getLogDetails(logId);
-        if (data) {
-          setLogData(data);
-        } else {
-          // Server returned empty or 404
-          setLogData(dummyLogData);
-          console.warn("No data from server, using dummy.");
-        }
+        console.log("Fetched Log Data:", data); // Debugging log
+        setLogData(data);
       } catch (error) {
         // Server is closed or network error
         console.error("Server is unreachable:", error);
@@ -115,21 +105,21 @@ useEffect(() => {
         variants={containerVariants}
         className="space-y-4"
       >
-        {logData?.recordGlucose && (
+        {logData?.record_glucose && (
           <GlucoseDetails
-            glucoseRecordData={logData.recordGlucose}
+            glucoseRecordData={logData.record_glucose}
           />
         )}
         
-        {logData?.recordMedication && (
+        {logData?.record_medication && (
           <MedicationDetails
-            medicationRecordData={logData.recordMedication}
+            medicationRecordData={logData.record_medication}
           />
         )}
         
-        {logData?.recordMeal && (
+        {logData?.record_meal && (
           <MealDetails
-            mealRecordData={logData.recordMeal}
+            mealRecordData={logData.record_meal}
           />
         )}
       </motion.div>

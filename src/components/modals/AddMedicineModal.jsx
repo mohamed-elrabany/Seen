@@ -13,9 +13,9 @@ import Button from "../ui/Button";
 
 
 // Services
-import { addMedication } from "../../services/medicationServices";
+import { addMedications } from "../../services/medicationServices";
 
-export default function AddMedicineModal({ isOpen, onClose, formRef }) {
+export default function AddMedicineModal({ isOpen, onClose, formRef, setRefreshMedications }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [medicationName, setMedicationName] = useState("");
 
@@ -23,29 +23,22 @@ export default function AddMedicineModal({ isOpen, onClose, formRef }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Extract data from the form
-    const formData = new FormData(e.currentTarget);
-    const medicineName = formData.get("medicineName");
 
-    // Simple validation
-    if (!medicineName?.trim()) {
-      return toast.error("Please enter a medicine name");
-    }
+    const formData = new FormData(e.currentTarget);
+    const medicineName = formData.get("medication_name");
+    console.log("Form submitted with medication name:", medicineName);
 
     setIsSubmitting(true);
 
      try {
       // Simulate API call delay
-      const result = await addMedication({ medicineName });
-      if (result.success) {
+      const result = await addMedications(medicationName);
+      console.log("API response:", result);
         toast.success("Medication added successfully!");
-        redirect("/home");
-      } else {
-        toast.error("Failed to add medication. Please try again.");
-      }
+        onClose();
+        setRefreshMedications((prev) => prev + 1);
     } catch (error) {
-      toast.error("An error occurred while adding the medication.");
+      toast.error("Failed to add medication. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -55,7 +48,7 @@ export default function AddMedicineModal({ isOpen, onClose, formRef }) {
     <BaseModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Add Medicine"
+      title="Add Medication"
       icon={MdMedication}
     >
       <form 
@@ -64,10 +57,10 @@ export default function AddMedicineModal({ isOpen, onClose, formRef }) {
         className="space-y-6"
       >
         <Input
-          name="medicineName"
-          id="medicineName"
-          label="Medicine Name"
-          placeholder="Enter medicine name"
+          name="medication_name"
+          id="medication_name"
+          label="Medication Name"
+          placeholder="Enter medication name"
           onChange={(e) => setMedicationName(e.target.value)}
           required
           autoFocus
@@ -90,7 +83,7 @@ export default function AddMedicineModal({ isOpen, onClose, formRef }) {
                 : "bg-[#6976EB] text-white hover:bg-[#2B3695] shadow-lg shadow-[#6976EB]/20"
             }`}
           >
-            {isSubmitting ? "Adding..." : "Add Medicine"}
+            {isSubmitting ? "Adding..." : "Add Medication"}
           </Button>
         </div>
       </form>

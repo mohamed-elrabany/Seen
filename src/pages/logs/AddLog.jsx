@@ -9,7 +9,7 @@ import { CgSpinner } from "react-icons/cg";
 import { MdError } from "react-icons/md";
 
 import { useState, useRef } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { addLog } from "../../services/logServices";
@@ -42,21 +42,23 @@ const itemVariants = {
 };
 
 export default function AddLog() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [logData, setLogData] = useState({
     log_title: "",
     log_description: "",
     logged_at: "",
-    recordGlucose: {
+    record_glucose: {
       glucose_level: null,
       reading_type: "",
       a1c_estimation: null,
       notes: "",
     },
-    recordMedication: {
+    record_medication: {
       medications: [],
       notes: "",
     },
-    recordMeal: {
+    record_meal: {
       meal_type: "",
       meal_description: "",
       total_carb: null,
@@ -70,6 +72,7 @@ export default function AddLog() {
     meal: false,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refrshMedications, setRefreshMedications] = useState(0); // New state to trigger medication list refresh
   const [isSubmitting, setIsSubmitting] = useState(false);
   const modalRef = useRef();
   const [activeType, setActiveType] = useState("glucose");
@@ -116,20 +119,20 @@ export default function AddLog() {
   }
 
   const glucoseIntended =
-    hasAnyData(logData.recordGlucose) && isVisited.glucose;
+    hasAnyData(logData.record_glucose) && isVisited.glucose;
   const medicationIntended =
-    hasAnyData(logData.recordMedication) && isVisited.medications;
-  const mealIntended = hasAnyData(logData.recordMeal) && isVisited.meal;
+    hasAnyData(logData.record_medication) && isVisited.medications;
+  const mealIntended = hasAnyData(logData.record_meal) && isVisited.meal;
 
   const isFormValid =
     logData.log_title.trim() !== "" &&
     logData.log_description.trim() !== "" &&
     logData.logged_at.trim() !== "" &&
-    (glucoseIntended ? isGlucoseComplete(logData.recordGlucose) : true) &&
+    (glucoseIntended ? isGlucoseComplete(logData.record_glucose) : true) &&
     (medicationIntended
-      ? isMedicationComplete(logData.recordMedication)
+      ? isMedicationComplete(logData.record_medication)
       : true) &&
-    (mealIntended ? isMealComplete(logData.recordMeal) : true);
+    (mealIntended ? isMealComplete(logData.record_meal) : true);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -138,21 +141,17 @@ export default function AddLog() {
       log_title: logData.log_title,
       log_description: logData.log_description,
       logged_at: logData.logged_at,
-      recordGlucose: glucoseIntended ? logData.recordGlucose : null,
-      recordMedication: medicationIntended ? logData.recordMedication : null,
-      recordMeal: mealIntended ? logData.recordMeal : null,
+      record_glucose: glucoseIntended ? logData.record_glucose : null,
+      record_medication: medicationIntended ? logData.record_medication : null,
+      record_meal: mealIntended ? logData.record_meal : null,
     };
 
     try {
       // Simulate API call delay
       const result = await addLog(data);
       console.log("Add Log Result:", result); // Debugging log
-      if (result.success) {
-        toast.success("Log added successfully!");
-        redirect("/home");
-      } else {
-        toast.error("Failed to add log. Please try again.");
-      }
+      navigate('/home');
+      toast.success("Log added successfully!");
     } catch (error) {
       toast.error("An error occurred while adding the log.");
     } finally {
@@ -187,15 +186,15 @@ export default function AddLog() {
 
             if (type.value === "glucose") {
               isIntended =
-                hasAnyData(logData.recordGlucose) && isVisited.glucose;
-              isComplete = isGlucoseComplete(logData.recordGlucose);
+                hasAnyData(logData.record_glucose) && isVisited.glucose;
+              isComplete = isGlucoseComplete(logData.record_glucose);
             } else if (type.value === "medication") {
               isIntended =
-                hasAnyData(logData.recordMedication) && isVisited.medication;
-              isComplete = isMedicationComplete(logData.recordMedication);
+                hasAnyData(logData.record_medication) && isVisited.medication;
+              isComplete = isMedicationComplete(logData.record_medication);
             } else if (type.value === "meal") {
-              isIntended = hasAnyData(logData.recordMeal) && isVisited.meal;
-              isComplete = isMealComplete(logData.recordMeal);
+              isIntended = hasAnyData(logData.record_meal) && isVisited.meal;
+              isComplete = isMealComplete(logData.record_meal);
             }
 
             const showIncompleteError = isIntended && !isComplete && activeType !== type.value;
@@ -250,20 +249,21 @@ export default function AddLog() {
           >
             {activeType === "glucose" && (
               <GlucoseForm
-                glucoseData={logData.recordGlucose}
+                glucoseData={logData.record_glucose}
                 setGlucoseData={setLogData}
               />
             )}
             {activeType === "medication" && (
               <MedicationForm
-                medicationData={logData.recordMedication}
+                medicationData={logData.record_medication}
                 setMedicationData={setLogData}
                 setIsModalOpen={setIsModalOpen}
+                refetchMedications={refrshMedications}
               />
             )}
             {activeType === "meal" && (
               <MealForm
-                mealData={logData.recordMeal}
+                mealData={logData.record_meal}
                 setMealData={setLogData}
               />
             )}
@@ -314,6 +314,7 @@ export default function AddLog() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         formRef={modalRef}
+        setRefreshMedications={setRefreshMedications} // Pass the state updater to the modal
       />
     </div>
   );

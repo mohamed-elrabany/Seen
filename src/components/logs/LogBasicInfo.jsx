@@ -69,10 +69,9 @@ export default function LogBasicInfo({ logData, setLogData }) {
           name={"logged_at"}
           type="datetime-local"
           placeholder={"Select log time"}
-          max={new Date().toISOString().slice(0, 16)}
+          max={new Date().toISOString().slice(0, 0)}
           value={logData.logged_at || ""}
           onChange={(e) => handleInputChange(e)}
-          required
         />
       </motion.div>
     </motion.div>

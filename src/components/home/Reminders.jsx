@@ -27,33 +27,6 @@ const remindersData = [
     medication: "Metformin",
     status: "Still",
   },
-  {
-    reminder_id: 3,
-    user_id: 101,
-    message_type: "meal",
-    message: "Lunch time! Remember to log your carbs.",
-    time: "2026-05-03T13:00:00Z",
-    medication: null,
-    status: "Skipped",
-  },
-  {
-    reminder_id: 4,
-    user_id: 101,
-    message_type: "medication",
-    message: "Evening dose of Atorvastatin.",
-    time: "2026-05-03T20:00:00Z",
-    medication: "Atorvastatin",
-    status: "Still",
-  },
-  {
-    reminder_id: 5,
-    user_id: 101,
-    message_type: "meal",
-    message: "Post-dinner glucose reading.",
-    time: "2026-05-03T21:30:00Z",
-    medication: null,
-    status: "Still",
-  },
 ];
 
 export default function Reminders() {
@@ -65,10 +38,20 @@ export default function Reminders() {
       flex flex-col justify-between items-center
         bg-white bg-none dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] border-[#D9D9D9]/30 dark:border-white/10"
     >
-      <div className="w-full space-y-2 text-start">
-        <h3>Reminders</h3>
-        <p className="card-text">This is the reminders section.</p>
+      <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="space-y-2 text-start">
+          <h3>Reminders</h3>
+          <p className="card-text">This is the reminders section.</p>
+        </div>
+        <Button
+          onClick={() => navigate("/add-reminder")}
+          className="bg-[#6976EB] p-3 cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
+        >
+          <RiAddLargeLine className="w-5 h-5" />
+          <p>Add Reminder</p>
+        </Button>
       </div>
+      
 
       {remindersData.length > 0 ? (
         <motion.div
@@ -97,14 +80,6 @@ export default function Reminders() {
           </div>
         </motion.div>
       )}
-
-      <Button
-        onClick={() => navigate("/add-reminder")}
-        className="w-full mt-6 bg-[#6976EB] px-6 py-3 cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
-      >
-        <RiAddLargeLine className="w-5 h-5" />
-        <p>Add Reminder</p>
-      </Button>
     </div>
   );
 }

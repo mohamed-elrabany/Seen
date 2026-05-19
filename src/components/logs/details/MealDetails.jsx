@@ -14,8 +14,8 @@ export default function MealDetails({ mealRecordData }) {
     const mealDataArray = [
         { label: "Meal Type", value: mealRecordData.meal_type },
         { label: "Description", value: mealRecordData.meal_description },
-        { label: "Carbohydrate Estimation", value: `${mealRecordData.carbohydrate_estimation} g` || "N/A" },
-        { label: "Calories Estimation", value: `${mealRecordData.calories_estimation} kcal` || "N/A" },
+        { label: "Carbohydrate Estimation", value: `${mealRecordData.total_carb} g` || "N/A" },
+        { label: "Calories Estimation", value: `${mealRecordData.total_calories} kcal` || "N/A" },
         { label: "Notes", value: mealRecordData.notes || "No notes provided" },
     ];
   return (
