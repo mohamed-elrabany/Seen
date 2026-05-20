@@ -1,27 +1,28 @@
-//Assets & UI
-import GlucoseIcon from "../../components/ui/GlucoseIcon";
-import IconHeader from "../../components/ui/IconHeader";
-import RadioButton from "../../components/ui/RadioButton";
-import Button from "../../components/ui/Button";
+import GlucoseIcon from "../ui/GlucoseIcon";
+import Button from "../ui/Button";
+import RadioButton from "../ui/RadioButton";
+import BaseModal from "../ui/BaseModal";
+
 import { BiSolidInjection } from "react-icons/bi";
 import { BsForkKnife } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { MdError } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
 
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
-import { editLog } from "../../services/logServices";
 
-//Forms
-import LogBasicInfo from "../../components/logs/LogBasicInfo";
-import GlucoseForm from "../../components/logs/GlucoseForm";
-import MedicationForm from "../../components/logs/MedicationForm";
-import MealForm from "../../components/logs/MealForm";
-import EmptyLogType from "../../components/logs/EmptyLogType";
-import AddMedicineModal from "../../components/modals/AddMedicineModal";
+import LogBasicInfo from "../logs/LogBasicInfo";
+import GlucoseForm from "../logs/GlucoseForm";
+import MedicationForm from "../logs/MedicationForm";
+import MealForm from "../logs/MealForm";
+import EmptyLogType from "../logs/EmptyLogType";
+import AddMedicineModal from "./AddMedicineModal";
+
+import { editLog } from "../../services/logServices";
 
 // Animation Variants
 const containerVariants = {
@@ -41,10 +42,10 @@ const itemVariants = {
   },
 };
 
-export default function EditLog({ logDetails, onClose }) {
+export default function EditLogModal({ logDetails, isOpen, onClose }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const initialLogData= useRef(logDetails);
+  const initialLogData = useRef(logDetails);
   const [logData, setLogData] = useState(logDetails);
   const [isVisited, setIsVisited] = useState({
     glucose: !!logDetails.record_glucose,
@@ -56,8 +57,11 @@ export default function EditLog({ logDetails, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const modalRef = useRef();
   const [activeType, setActiveType] = useState(
-    logDetails.record_glucose ? "glucose" :
-    logDetails.record_medication ? "medication" : "meal"
+    logDetails.record_glucose
+      ? "glucose"
+      : logDetails.record_medication
+        ? "medication"
+        : "meal",
   );
   const logTypes = [
     { value: "glucose", label: "Glucose Check", icon: GlucoseIcon },
@@ -85,15 +89,15 @@ export default function EditLog({ logDetails, onClose }) {
   }
 
   function isGlucoseComplete(data) {
-    return (data.glucose_level && data.reading_type) || false;
+    return (data?.glucose_level && data?.reading_type) || false;
   }
 
   function isMedicationComplete(data) {
-    return data.medications.length > 0 || false;
+    return Array.isArray(data?.medications) && data?.medications.length > 0;
   }
 
   function isMealComplete(data) {
-    return (data.meal_type && data.meal_description) || false;
+    return (data?.meal_type && data?.meal_description) || false;
   }
 
   function handleSelectedType(type) {
@@ -117,8 +121,9 @@ export default function EditLog({ logDetails, onClose }) {
       : true) &&
     (mealIntended ? isMealComplete(logData.record_meal) : true);
 
-    const isDirty = JSON.stringify(logData) !== JSON.stringify(initialLogData.current);
-    const isButtomDisabled = !isFormValid  || !isDirty || isSubmitting;
+  const isDirty =
+    JSON.stringify(logData) !== JSON.stringify(initialLogData.current);
+  const isButtomDisabled = !isFormValid || !isDirty || isSubmitting;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -144,11 +149,8 @@ export default function EditLog({ logDetails, onClose }) {
       setIsSubmitting(false);
     }
   }
-
   return (
-    <div className="space-y-8">
-      <IconHeader icon={GlucoseIcon} title="Edit Log" />
-
+    <BaseModal isOpen={isOpen} onClose={onClose} title="Edit Log" icon={FiEdit}>
       <form
         method="post"
         className="space-y-8 max-w-5xl mx-auto"
@@ -183,7 +185,8 @@ export default function EditLog({ logDetails, onClose }) {
               isComplete = isMealComplete(logData.record_meal);
             }
 
-            const showIncompleteError = isIntended && !isComplete && activeType !== type.value;
+            const showIncompleteError =
+              isIntended && !isComplete && activeType !== type.value;
 
             return (
               <motion.div
@@ -235,65 +238,80 @@ export default function EditLog({ logDetails, onClose }) {
           >
             {activeType === "glucose" && (
               <GlucoseForm
-                glucoseData={logData.record_glucose}
+                glucoseData={logData?.record_glucose}
                 setGlucoseData={setLogData}
               />
             )}
             {activeType === "medication" && (
               <MedicationForm
-                medicationData={logData.record_medication}
+                medicationData={logData?.record_medication}
                 setMedicationData={setLogData}
                 setIsModalOpen={setIsModalOpen}
                 refetchMedications={refrshMedications}
+                editMode={true}
               />
             )}
             {activeType === "meal" && (
               <MealForm
-                mealData={logData.record_meal}
+                mealData={logData?.record_meal}
                 setMealData={setLogData}
               />
             )}
           </motion.div>
         </AnimatePresence>
         {/* Submit Button with Smooth Content Switch */}
-        <Button
-          disabled={!isFormValid || isSubmitting}
-          type="submit"
-          className={`w-full mt-8 px-6 py-4 transition-all flex items-center justify-center gap-2 ${
-            !isFormValid || isSubmitting
-              ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
-              : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
-          }`}
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            {isSubmitting ? (
-              <motion.div
-                key="loading"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="flex gap-4 items-center justify-center"
-              >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                >
-                  <CgSpinner className="text-white w-8 h-8" />
-                </motion.div>
-                <p>Adding Log</p>
-              </motion.div>
-            ) : (
-              <motion.p
-                key="static"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-              >
-                Add Log
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </Button>
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+            <Button
+              type="button"
+              onClick={onClose} // <-- Fixed from onCancel
+              className="h-full order-2 sm:order-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-6 py-4 font-bold cursor-pointer rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all flex items-center justify-center"
+            >
+              Cancel
+            </Button>
+
+            <Button
+              disabled={isButtomDisabled}
+              type="submit"
+              className={`order-1 sm:order-2 w-full px-6 py-4 transition-all flex items-center justify-center gap-2 rounded-xl ${
+                isButtomDisabled || isSubmitting
+                  ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
+                  : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
+              }`}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {isSubmitting ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex gap-4 items-center justify-center"
+                  >
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 1,
+                        ease: "linear",
+                      }}
+                    >
+                      <CgSpinner className="text-white w-6 h-6" />
+                    </motion.div>
+                    <p>Updating Log</p>
+                  </motion.div>
+                ) : (
+                  <motion.p
+                    key="static"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                  >
+                    Update Log
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </Button>
+          </div>
       </form>
 
       <AddMedicineModal
@@ -302,6 +320,6 @@ export default function EditLog({ logDetails, onClose }) {
         formRef={modalRef}
         setRefreshMedications={setRefreshMedications} // Pass the state updater to the modal
       />
-    </div>
+    </BaseModal>
   );
 }

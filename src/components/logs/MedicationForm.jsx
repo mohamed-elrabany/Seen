@@ -33,23 +33,24 @@ export default function MedicationForm({
   setMedicationData, // This is your 'setLogData' function
   setIsModalOpen,
   refetchMedications, // New prop to trigger medication list refresh
+  editMode = false, // Flag to indicate if we're in edit mode
 }) {
   const [openMedicationDropdown, setOpenMedicationDropdown] = useState(false);
   const [medicationList, setMedicationList] = useState([]);
 
-useEffect(() => {
-  const fetchMedications = async () => {
-    try {
-      const data = await getMedications();
-      console.log("Raw medication data:", data);
-      setMedicationList(data);
-    } catch (error) {
-      toast.error("Failed to fetch medications. Using default list.");
-      setMedicationList([]);
-    }
-  };
-  fetchMedications();
-}, [refetchMedications]);
+  useEffect(() => {
+    const fetchMedications = async () => {
+      try {
+        const data = await getMedications();
+        console.log("Raw medication data:", data);
+        setMedicationList(data);
+      } catch (error) {
+        toast.error("Failed to fetch medications. Using default list.");
+        setMedicationList([]);
+      }
+    };
+    fetchMedications();
+  }, [refetchMedications]);
 
   // 1. Correct access to the medications array inside recordMedication
   const selectedMeds = medicationData?.medications || [];
@@ -138,7 +139,9 @@ useEffect(() => {
                     className="absolute top-full left-0 w-full bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mt-1 text-sm text-[#161A41] dark:text-white shadow-xl overflow-hidden z-[60]"
                   >
                     {medicationList.map((med) => {
-                      const isSelected = selectedMeds.includes(med.medication_name);
+                      const isSelected = selectedMeds.includes(
+                        med.medication_name,
+                      );
                       return (
                         <li
                           className={`px-4 py-3 hover:bg-[#6976EB]/10 cursor-pointer flex items-center justify-between transition-colors ${
@@ -147,7 +150,9 @@ useEffect(() => {
                               : ""
                           }`}
                           key={med.medication_name}
-                          onClick={() => handleMedicationToggle(med.medication_name)}
+                          onClick={() =>
+                            handleMedicationToggle(med.medication_name)
+                          }
                         >
                           <p className={isSelected ? "font-bold" : ""}>
                             {med.medication_name}
@@ -164,26 +169,39 @@ useEffect(() => {
             </div>
 
             {/* Desktop Add Button */}
-            <motion.button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-4 py-3 sm:py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg hidden md:flex items-center justify-center shadow-md"
-            >
-              Add Medication
-            </motion.button>
-
+            {!editMode ? (
+              <motion.button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-4 py-3 sm:py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg hidden md:flex items-center justify-center shadow-md"
+              >
+                Add Medication
+              </motion.button>
+            ) : (
+              <motion.button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-3 py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg flex items-center justify-center shadow-md"
+              >
+                <RiAddLargeLine className="w-5 h-5" />
+              </motion.button>
+            )}
             {/* Mobile Add Button */}
-            <motion.button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-3 py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg flex md:hidden items-center justify-center shadow-md"
+            {!editMode && (
+              <motion.button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-3 py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg flex md:hidden items-center justify-center shadow-md"
             >
               <RiAddLargeLine className="w-5 h-5" />
-            </motion.button>
+            </motion.button>)
+            }
           </div>
         </div>
       </motion.div>

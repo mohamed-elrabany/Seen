@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import DeleteLogModal from "../../modals/DeleteLogModal";
 
-export default function LogDetailsHeader({ logHeaderData, logId }) {
+export default function LogDetailsHeader({ logHeaderData, logId, setOpenModal }) {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -56,7 +56,7 @@ export default function LogDetailsHeader({ logHeaderData, logId }) {
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row md:flex-col gap-4 w-full md:w-auto">
         <Button
-          onClick={() => navigate(`/logs/edit/${logId}`)}
+          onClick={() => setOpenModal(true)}
           className="cursor-pointer rounded-xl text-white
             flex items-center justify-center gap-4 p-4 min-w-[160px]
             bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695]

@@ -121,7 +121,7 @@ export default function AddLog() {
   const glucoseIntended =
     hasAnyData(logData.record_glucose) && isVisited.glucose;
   const medicationIntended =
-    hasAnyData(logData.record_medication) && isVisited.medications;
+    hasAnyData(logData.record_medication) && isVisited.medication;
   const mealIntended = hasAnyData(logData.record_meal) && isVisited.meal;
 
   const isFormValid =
@@ -148,6 +148,7 @@ export default function AddLog() {
 
     try {
       // Simulate API call delay
+      console.log("Submitting Log Data:", data); // Debugging log to check final data being submitted
       const result = await addLog(data);
       console.log("Add Log Result:", result); // Debugging log
       navigate('/home');
@@ -158,6 +159,7 @@ export default function AddLog() {
       setIsSubmitting(false);
     }
   }
+  console.log("Current Log Data:", logData); // Debugging log to check form data in real-time
 
   return (
     <div className="space-y-8">

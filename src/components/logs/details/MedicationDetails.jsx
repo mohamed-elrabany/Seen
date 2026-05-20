@@ -11,7 +11,7 @@ const itemVariants = {
 };
 
 export default function MedicationDetails({ medicationRecordData }) {
-  // Assuming medicationRecordData.medications is an array like ["Oxycodone", "Ibuprofen"]
+  // Assuming medicationRecordData.selected_medication_ids is an array like ["Oxycodone", "Ibuprofen"]
   const meds = medicationRecordData?.medications || [];
 
   return (
@@ -41,7 +41,7 @@ export default function MedicationDetails({ medicationRecordData }) {
                   key={index} 
                   className="rounded-full bg-[#6976EB]/10 px-4 py-1 text-sm font-medium text-[#6976EB] dark:bg-[#6976EB]/20 dark:text-white"
                 >
-                  {med.medication_name}
+                  {med}
                 </span>
               ))
             ) : (

@@ -17,7 +17,7 @@ export default function CategorySidebar({
     {
       id: "Type1 / LADA",
       name: "type1",
-      value: `${t("communityPage.shared.categories.type1")} / ${t("communityPage.shared.categories.lada")}`,
+      value: t("communityPage.shared.categories.type1"),
     },
     {
       id: "Type2",
