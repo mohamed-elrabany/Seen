@@ -43,13 +43,13 @@ export default function DeletePostModal({
       isOpen={isOpen}
       onClose={onClose}
       icon={RiDeleteBin6Line}
-      title="Delete Post"
+      title={t("modals.delete-post.title")}
     >
       <form onSubmit={handleDeletePost} className="space-y-6">
         {/* Warning Message */}
         <div className="bg-[#FF0404]/5 border-l-4 border-[#FF0404] p-4 rounded-r-lg">
           <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-            Are you sure you want to delete this post? This action cannot be undone.
+            {t("modals.delete-post.description")}
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export default function DeletePostModal({
             onClick={onClose}
             className="order-2 sm:order-1 flex-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-4 py-3 sm:py-3.5 font-bold cursor-pointer rounded-lg hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
           >
-            Cancel
+            {t("modals.delete-post.cancel")}
           </Button>
 
           {/* Delete Button - Danger Style */}
@@ -73,7 +73,7 @@ export default function DeletePostModal({
                 : "text-[#FF0404] border-[#FF0404]/30 hover:border-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 cursor-pointer"
             }`}
           >
-            {isSubmitting ? "Deleting..." : "Delete Post"}
+            {isSubmitting ? t("modals.delete-post.submitting") : t("modals.delete-post.delete")}
           </Button>
         </div>
       </form>

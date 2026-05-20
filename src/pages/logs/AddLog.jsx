@@ -72,14 +72,14 @@ export default function AddLog() {
     meal: false,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [refrshMedications, setRefreshMedications] = useState(0); // New state to trigger medication list refresh
+  const [refreshMedications, setRefreshMedications] = useState(0); // New state to trigger medication list refresh
   const [isSubmitting, setIsSubmitting] = useState(false);
   const modalRef = useRef();
   const [activeType, setActiveType] = useState("glucose");
   const logTypes = [
-    { value: "glucose", label: "Glucose Check", icon: GlucoseIcon },
-    { value: "medication", label: "Medication", icon: BiSolidInjection },
-    { value: "meal", label: "Meal", icon: BsForkKnife },
+    { value: "glucose", label: t("logs.add-edit-log.types.glucose"), icon: GlucoseIcon },
+    { value: "medication", label: t("logs.add-edit-log.types.medication"), icon: BiSolidInjection },
+    { value: "meal", label: t("logs.add-edit-log.types.meal") , icon: BsForkKnife },
   ];
 
   function hasAnyData(data) {
@@ -163,7 +163,7 @@ export default function AddLog() {
 
   return (
     <div className="space-y-8">
-      <IconHeader icon={GlucoseIcon} title="Add Logs" />
+      <IconHeader icon={GlucoseIcon} title={t("logs.add-edit-log.add-title")} />
 
       <form
         method="post"
@@ -208,7 +208,7 @@ export default function AddLog() {
                 className="flex flex-col items-center h-full"
               >
                 <RadioButton
-                  name="reminderType"
+                  name="logType"
                   value={type.value}
                   isChecked={activeType === type.value}
                   onChange={() => handleSelectedType(type.value)}
@@ -231,7 +231,7 @@ export default function AddLog() {
                       className="flex items-center justify-center gap-1 text-[#6976EB] mt-2 text-center text-xs sm:text-sm"
                     >
                       <MdError className=" w-4 h-4" />
-                      <p className="font-medium leading-tight">Incomplete</p>
+                      <p className="font-medium leading-tight">{t("logs.add-edit-log.types.incomplete")}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -260,7 +260,7 @@ export default function AddLog() {
                 medicationData={logData.record_medication}
                 setMedicationData={setLogData}
                 setIsModalOpen={setIsModalOpen}
-                refetchMedications={refrshMedications}
+                refetchMedications={refreshMedications}
               />
             )}
             {activeType === "meal" && (
@@ -296,7 +296,7 @@ export default function AddLog() {
                 >
                   <CgSpinner className="text-white w-8 h-8" />
                 </motion.div>
-                <p>Adding Log</p>
+                <p>{t("logs.add-edit-log.add-submitting")}</p>
               </motion.div>
             ) : (
               <motion.p
@@ -305,7 +305,7 @@ export default function AddLog() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                Add Log
+                {t("logs.add-edit-log.add-button")}
               </motion.p>
             )}
           </AnimatePresence>

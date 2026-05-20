@@ -7,6 +7,7 @@ import { FaAngleDown, FaCircleCheck, FaXmark } from "react-icons/fa6";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { getMedications } from "../../services/medicationServices";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
 // Animation Variants
@@ -35,6 +36,7 @@ export default function MedicationForm({
   refetchMedications, // New prop to trigger medication list refresh
   editMode = false, // Flag to indicate if we're in edit mode
 }) {
+  const { t } = useTranslation();
   const [openMedicationDropdown, setOpenMedicationDropdown] = useState(false);
   const [medicationList, setMedicationList] = useState([]);
 
@@ -101,7 +103,7 @@ export default function MedicationForm({
             htmlFor="medications"
             className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
           >
-            Medication (select one or more)
+            {t("logs.add-edit-log.record_medication.medications.title")}
           </label>
 
           <div className="grid grid-cols-5 gap-4 items-start justify-center">
@@ -117,8 +119,8 @@ export default function MedicationForm({
               >
                 <p>
                   {selectedMeds.length > 0
-                    ? `${selectedMeds.length} Selected`
-                    : "Select Medication"}
+                    ? t("logs.add-edit-log.record_medication.medications.amount-selected", { count: selectedMeds.length })
+                    : t("logs.add-edit-log.record_medication.medications.placeholder")}
                 </p>
                 <FaAngleDown
                   className={`w-5 h-5 transition-transform duration-200 ${
@@ -177,7 +179,7 @@ export default function MedicationForm({
                 whileTap={{ scale: 0.98 }}
                 className="px-4 py-3 sm:py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg hidden md:flex items-center justify-center shadow-md"
               >
-                Add Medication
+                {t("logs.add-edit-log.record_medication.button")}
               </motion.button>
             ) : (
               <motion.button
@@ -237,7 +239,7 @@ export default function MedicationForm({
             htmlFor="medication-notes"
             className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
           >
-            Notes
+            {t("logs.add-edit-log.record_medication.notes.title")}
           </label>
 
           <textarea
@@ -245,7 +247,7 @@ export default function MedicationForm({
             name="notes"
             id="medication-notes"
             value={medicationData?.notes || ""}
-            placeholder="Add any additional notes about this medication..."
+            placeholder={t("logs.add-edit-log.record_medication.notes.placeholder")}
             className="w-full bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400 border-2 border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all min-h-[100px]"
           />
         </div>

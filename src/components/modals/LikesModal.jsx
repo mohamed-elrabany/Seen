@@ -106,7 +106,7 @@ export default function LikesModal({ isOpen, onClose, id, type }) {
           className="flex flex-col gap-2 w-full"
         >
           <p className="text-center uppercase text-gray-400 font-bold text-[10px] tracking-widest py-2">
-            {totalLikes} {t("like(s)")}
+            {t("modals.likes.total-likes", { count: totalLikes })}
           </p>
 
           {/* If likes has data, map it. If not and not loading, show empty state */}
@@ -138,7 +138,7 @@ export default function LikesModal({ isOpen, onClose, id, type }) {
             ))
           ) : !isLoading && (
             <div className="text-center py-10 text-gray-400 text-sm">
-               No users found
+              {t("modals.likes.empty")}
             </div>
           )}
 

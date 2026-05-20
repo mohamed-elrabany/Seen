@@ -116,7 +116,7 @@ export default function Logs({ date }) {
     >
       <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="space-y-2 text-start">
-          <h3>Logs</h3>
+          <h3>{t("logs.home.display.title")}</h3>
           <p className="card-text">{formatDisplayedDate(date)}</p>
         </div>
         <Button
@@ -124,7 +124,7 @@ export default function Logs({ date }) {
         className=" p-3 bg-[#6976EB] cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
       >
         <RiAddLargeLine className="w-5 h-5" />
-        <p className="w-auto">Add Log</p>
+        <p className="w-auto">{t("logs.home.display.button")}</p>
       </Button>
       </div>
       
@@ -151,8 +151,8 @@ export default function Logs({ date }) {
         >
           <img src={emptyLogs} alt="No logs available" />
           <div className="text-center">
-            <h4>No logs available</h4>
-            <p className="meta-text">Please add some logs to see them here.</p>
+            <h4>{t("logs.empty.title")}</h4>
+            <p className="meta-text">{t("logs.empty.description")}</p>
           </div>
         </motion.div>
       )}

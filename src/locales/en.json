@@ -432,6 +432,12 @@
       "add-submitting": "Adding Log",
       "edit-submitting": "Updating Log",
       "cancel-button": "Cancel",
+      "types":{
+        "glucose": "Glucose Check",
+        "medication": "Medication",
+        "meal": "Meal",
+        "incomplete": "Incomplete Log"
+      },
       "logDetails": {
         "title": "Title",
         "titlePlaceholder": "Enter log title",
@@ -575,6 +581,7 @@
       }
     },
     "danger": {
+      "title": "Danger Zone",
       "logout": {
         "title": "Logout Account",
         "description": "Sign out of your account and end your session."

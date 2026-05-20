@@ -40,15 +40,15 @@ export default function Reminders() {
     >
       <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="space-y-2 text-start">
-          <h3>Reminders</h3>
-          <p className="card-text">This is the reminders section.</p>
+          <h3>{t("reminder.home.title")}</h3>
+          <p className="card-text">{t("reminder.home.description")}</p>
         </div>
         <Button
           onClick={() => navigate("/add-reminder")}
           className="bg-[#6976EB] p-3 cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
         >
           <RiAddLargeLine className="w-5 h-5" />
-          <p>Add Reminder</p>
+          <p>{t("reminder.home.addButton")}</p>
         </Button>
       </div>
       
@@ -73,9 +73,9 @@ export default function Reminders() {
         >
           <img src={emptyReminders} alt="No reminders available" />
           <div className="text-center">
-            <h4>No reminders available</h4>
+            <h4>{t("reminder.empty.title")}</h4>
             <p className="meta-text">
-              Please add some reminders to see them here.
+              {t("reminder.empty.description")}
             </p>
           </div>
         </motion.div>

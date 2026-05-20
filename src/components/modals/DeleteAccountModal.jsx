@@ -71,16 +71,15 @@ export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
     <BaseModal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Delete Account"
+      title={t("modals.delete-account.title")}
       icon={BsTrash}
     >
       <form ref={deleteRef} onSubmit={handleDeleteAccount} className="space-y-6">
         {/* Warning Information Box */}
         <div className="bg-[#FF0404]/5 border-l-4 border-[#FF0404] p-4 rounded-r-lg">
-          <h4 className="text-[#FF0404] font-bold mb-1">Warning: Irreversible Action</h4>
+          <h4 className="text-[#FF0404] font-bold mb-1">{t("modals.delete-account.warning-title")}</h4>
           <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-            This will permanently delete your account and all associated data. 
-            This action cannot be undone. Please enter your password to confirm.
+            {t("modals.delete-account.warning-description")}
           </p>
         </div>
 
@@ -88,8 +87,8 @@ export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
         <Input
           type="password"
           name="password"
-          label="Confirm Password"
-          placeholder="Enter your password"
+          label={t("modals.delete-account.password-label")}
+          placeholder={t("modals.delete-account.password-placeholder")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -103,7 +102,7 @@ export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
             onClick={handleClose}
             className="order-2 sm:order-1 flex-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-4 py-3 sm:py-3.5 font-bold cursor-pointer rounded-lg hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
           >
-            Cancel
+            {t("modals.delete-account.cancel")}
           </Button>
 
           {/* Delete Action (Danger Style) */}
@@ -116,7 +115,7 @@ export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
                 : "text-[#FF0404] border-[#FF0404]/30 hover:border-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 cursor-pointer"
             }`}
           >
-            {isSubmitting ? "Deleting..." : "Delete Permanently"}
+            {isSubmitting ? t("modals.delete-account.submitting") : t("modals.delete-account.delete")}
           </Button>
         </div>
       </form>

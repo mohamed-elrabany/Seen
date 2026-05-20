@@ -1,9 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function BaseModal({ isOpen, onClose, title, icon: Icon, children }) {
-  
+  const { t, i18n } = useTranslation();
+  const isLTR = i18n.dir() === "ltr";
+
   // Side effect to lock background body scroll when modal is active
   useEffect(() => {
     if (isOpen) {
@@ -45,7 +48,7 @@ export default function BaseModal({ isOpen, onClose, title, icon: Icon, children
                 )}
                 <h3 className="text-lg font-bold text-[#161A41] dark:text-white mb-0">{title}</h3>
               </div>
-              <button onClick={onClose} className="absolute cursor-pointer top-6 right-6 text-gray-400 hover:scale-110 transition-all">
+              <button onClick={onClose} className={`absolute cursor-pointer top-6 ${isLTR ? "right-6" : "left-6"} text-gray-400 hover:scale-110 transition-all`}>
                 <MdClose className="w-6 h-6" />
               </button>
             </div>

@@ -409,12 +409,18 @@
       "add-submitting": "جاري إضافة السجل",
       "edit-submitting": "جاري تحديث السجل",
       "cancel-button": "إلغاء",
+      "types": {
+          "glucose": "فحص السكر",
+          "medication": "الدواء",
+          "meal": "الوجبة",
+          "incomplete": "سجل غير مكتمل"
+        },
       "logDetails": {
         "title": "العنوان",
         "titlePlaceholder": "أدخل عنوان السجل",
         "description": "الوصف",
         "descriptionPlaceholder": "أدخل وصف السجل",
-        "date": "التاريخ والوقت"
+        "date": "التاريخ و الوقت"
       },
       "record_glucose": {
         "measurement": {
@@ -503,7 +509,7 @@
       "data": {
         "title": "العنوان",
         "titlePlaceholder": "أدخل عنوان التذكير",
-        "date": "التاريخ والوقت",
+        "date": "التاريخ و الوقت",
         "medication": {
           "title": "الدواء",
           "placeholder": "اختر الدواء",
@@ -552,6 +558,7 @@
       }
     },
     "danger": {
+      "title": "المنطقة الخطرة",
       "logout": {
         "title": "تسجيل الخروج من الحساب",
         "description": "تسجيل الخروج وإنهاء جلستك الحالية."

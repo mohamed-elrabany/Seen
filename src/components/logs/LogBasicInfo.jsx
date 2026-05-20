@@ -1,5 +1,6 @@
 import Input from "../ui/Input";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 // Animation Variants
 const containerVariants = {
@@ -21,6 +22,7 @@ const itemVariants = {
 };
 
 export default function LogBasicInfo({ logData, setLogData }) {
+  const { t } = useTranslation();
   function handleInputChange(e) {
     let value = e.target.value;
 
@@ -46,18 +48,18 @@ export default function LogBasicInfo({ logData, setLogData }) {
           autoFocus={true}
           name="log_title"
           type="text"
-          label="Title"
-          placeholder="Enter log title"
+          label={t("logs.add-edit-log.logDetails.title")}
+          placeholder={t("logs.add-edit-log.logDetails.titlePlaceholder")}
           value={logData.log_title || ""}
           onChange={(e) => handleInputChange(e)}
         />
       </motion.div>
       <motion.div variants={itemVariants}>
         <Input
-          label={"Description"}
+          label={t("logs.add-edit-log.logDetails.description")}
           name={"log_description"}
           type={"text"}
-          placeholder={"Enter log description"}
+          placeholder={t("logs.add-edit-log.logDetails.descriptionPlaceholder")}
           value={logData.log_description || ""}
           onChange={(e) => handleInputChange(e)}
           required
@@ -65,7 +67,7 @@ export default function LogBasicInfo({ logData, setLogData }) {
       </motion.div>
       <motion.div variants={itemVariants}>
         <Input
-          label={"Time"}
+          label={t("logs.add-edit-log.logDetails.date")}
           name={"logged_at"}
           type="datetime-local"
           placeholder={"Select log time"}

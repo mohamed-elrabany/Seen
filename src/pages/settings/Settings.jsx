@@ -57,8 +57,8 @@ export default function Settings() {
   const preferenceItems = [
     {
       id: "theme",
-      title: "Display Theme",
-      desc: "Switch between light and dark mode appearance.",
+      title: t("settings.preferences.theme.title"),
+      desc: t("settings.preferences.theme.description"),
       icon: <MdOutlineDarkMode className="h-5 w-5 text-[#6976EB]" />,
       action: () => dispatch(toggleTheme()),
       btnIcon:
@@ -74,8 +74,8 @@ export default function Settings() {
     },
     {
       id: "language",
-      title: "Language",
-      desc: "Choose your preferred language for the interface.",
+      title: t("settings.preferences.language.title"),
+      desc: t("settings.preferences.language.description"),
       icon: <MdOutlineLanguage className="h-5 w-5 text-[#6976EB]" />,
       action: () => i18n.changeLanguage(i18n.language === "ar" ? "en" : "ar"),
       btnIcon: <MdOutlineLanguage className="w-5 h-5" />,
@@ -83,8 +83,8 @@ export default function Settings() {
     },
     {
       id: "notifications",
-      title: "Notifications",
-      desc: "Configure how you receive alerts and updates.",
+      title: t("settings.preferences.notification.title"),
+      desc: t("settings.preferences.notification.description"),
       icon: <MdOutlineNotifications className="h-5 w-5 text-[#6976EB]" />,
       action: () => dispatch(toggleEnabled()),
       btnIcon: isEnabled ? (
@@ -92,7 +92,7 @@ export default function Settings() {
       ) : (
         <MdOutlineNotificationsOff className="w-5 h-5" />
       ),
-      btnText: isEnabled ? "Disable" : "Enable",
+      btnText: isEnabled ? t("settings.preferences.notification.disable") : t("settings.preferences.notification.enable"),
     },
   ];
 
@@ -106,9 +106,9 @@ export default function Settings() {
     >
       <Header className="flex-col-between">
         <div className="w-full flex-col-start gap-4 mb-6">
-          <h1 className="text-white">Settings</h1>
+          <h1 className="text-white">{t("settings.title")}</h1>
           <p className="text-white">
-            Customize your experience and manage your account settings here.
+            {t("settings.description")}
           </p>
         </div>
       </Header>
@@ -121,7 +121,7 @@ export default function Settings() {
         dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
       >
         <div className="p-6 w-full flex items-center justify-start bg-gray-50/50 dark:bg-white/5">
-          <h2 className="mb-0">Account</h2>
+          <h2 className="mb-0">{t("settings.account.title")}</h2>
         </div>
 
         <div
@@ -132,9 +132,9 @@ export default function Settings() {
             <BsPerson className="h-5 w-5 text-[#6976EB]" />
           </div>
           <div>
-            <h4 className="mb-0 font-bold">Edit Profile</h4>
+            <h4 className="mb-0 font-bold">{t("settings.account.edit.title")}</h4>
             <p className="meta-text">
-              Update your personal information and preferences.
+              {t("settings.account.edit.description")}
             </p>
           </div>
         </div>
@@ -144,9 +144,9 @@ export default function Settings() {
             <GoLock className="h-5 w-5 text-[#6976EB]" />
           </div>
           <div>
-            <h4 className="mb-0 font-bold">Security and Privacy</h4>
+            <h4 className="mb-0 font-bold">{t("settings.account.security.title")}</h4>
             <p className="meta-text">
-              Manage your security settings and privacy preferences.
+              {t("settings.account.security.description")}
             </p>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default function Settings() {
   dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
       >
         <div className="p-6 w-full flex items-center justify-start bg-gray-50/50 dark:bg-white/5">
-          <h2 className="mb-0">Preferences</h2>
+          <h2 className="mb-0">{t("settings.preferences.title")}</h2>
         </div>
 
         {preferenceItems.map((item) => (
@@ -198,7 +198,7 @@ export default function Settings() {
         dark:bg-gradient-to-br dark:from-[#2a1a1a] dark:to-[#161A41] dark:border-[#FF0404]/20"
       >
         <div className="p-6 w-full flex items-center justify-start bg-[#FF0404]/5">
-          <h2 className="mb-0 text-[#FF0404]">Danger Zone</h2>
+          <h2 className="mb-0 text-[#FF0404]">{t("settings.danger.title")}</h2>
         </div>
 
         <div className="p-6 border-t border-[#FF0404]/20 space-y-4">
@@ -208,10 +208,10 @@ export default function Settings() {
             onClick={() => setShowLogoutConfirm(true)}
           >
             <MdOutlineLogout className="w-5 h-5" />
-            <div className="text-left">
-              <h4 className="mb-0 font-bold text-[#FF0404]">Logout Account</h4>
+            <div className="text-start">
+              <h4 className="mb-0 font-bold text-[#FF0404]">{t("settings.danger.logout.title")}</h4>
               <p className="text-sm opacity-80">
-                Sign out of your current session.
+                {t("settings.danger.logout.description")}
               </p>
             </div>
           </Button>
@@ -222,10 +222,10 @@ export default function Settings() {
             onClick={() => setShowDeleteAccountConfirm(true)}
           >
             <BsTrash className="w-5 h-5" />
-            <div className="text-left">
-              <h4 className="mb-0 font-bold text-[#FF0404]">Delete Account</h4>
+            <div className="text-start">
+              <h4 className="mb-0 font-bold text-[#FF0404]">{t("settings.danger.delete.title")}</h4>
               <p className="text-sm opacity-80">
-                Permanently remove your account and data.
+                {t("settings.danger.delete.description")}
               </p>
             </div>
           </Button>

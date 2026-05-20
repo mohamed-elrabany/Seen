@@ -34,11 +34,11 @@ export default function AddMedicineModal({ isOpen, onClose, formRef, setRefreshM
       // Simulate API call delay
       const result = await addMedications(medicationName);
       console.log("API response:", result);
-        toast.success("Medication added successfully!");
+        toast.success(t("modals.medicine.alert.success"));
         onClose();
         setRefreshMedications((prev) => prev + 1);
     } catch (error) {
-      toast.error("Failed to add medication. Please try again.");
+      toast.error(t("modals.medicine.alert.error"));
     } finally {
       setIsSubmitting(false);
     }
@@ -48,7 +48,7 @@ export default function AddMedicineModal({ isOpen, onClose, formRef, setRefreshM
     <BaseModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Add Medication"
+      title={t("modals.medicine.title")}
       icon={MdMedication}
     >
       <form 
@@ -59,8 +59,8 @@ export default function AddMedicineModal({ isOpen, onClose, formRef, setRefreshM
         <Input
           name="medication_name"
           id="medication_name"
-          label="Medication Name"
-          placeholder="Enter medication name"
+          label={t("modals.medicine.input-title")}
+          placeholder={t("modals.medicine.input-placeholder")}
           onChange={(e) => setMedicationName(e.target.value)}
           required
           autoFocus
@@ -72,18 +72,18 @@ export default function AddMedicineModal({ isOpen, onClose, formRef, setRefreshM
             onClick={onClose}
             className="order-2 sm:order-1 flex-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-4 py-3 sm:py-3.5 font-bold cursor-pointer rounded-lg hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
           >
-            Cancel
+            {t("modals.medicine.cancel")}
           </Button>
           <Button
             type="submit"
             disabled={isSubmitting || !medicationName.trim()}
-            className={`cursor-pointer order-1 sm:order-2 flex-1 px-4 py-3 sm:py-3.5 font-bold rounded-lg transition-colors ${
+            className={`order-1 sm:order-2 flex-1 px-4 py-3 sm:py-3.5 font-bold rounded-lg transition-colors ${
               isSubmitting || !medicationName.trim()
                 ? "bg-gray-300 cursor-not-allowed" 
-                : "bg-[#6976EB] text-white hover:bg-[#2B3695] shadow-lg shadow-[#6976EB]/20"
+                : "bg-[#6976EB] text-white hover:bg-[#2B3695] shadow-lg shadow-[#6976EB]/20 cursor-pointer"
             }`}
           >
-            {isSubmitting ? "Adding..." : "Add Medication"}
+            {isSubmitting ? t("modals.medicine.submit") : t("modals.medicine.add")}
           </Button>
         </div>
       </form>

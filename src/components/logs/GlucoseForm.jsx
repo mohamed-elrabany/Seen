@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import Input from "../ui/Input";
 import RadioButton from "../ui/RadioButton";
 import { motion } from "framer-motion";
@@ -37,10 +38,10 @@ export default function GlucoseForm({ glucoseData, setGlucoseData }) {
     }
 
   const glucoseTypes = [
-    { value: "Random", label: "Random" },
-    { value: "Fasting", label: "Fasting" },
-    { value: "Before Meal", label: "Before Meal" },
-    { value: "After Meal", label: "After Meal" },
+    { value: "Random", label: t("logs.add-edit-log.record_glucose.measurement.types.random") },
+    { value: "Fasting", label: t("logs.add-edit-log.record_glucose.measurement.types.fasting") },
+    { value: "Before Meal", label: t("logs.add-edit-log.record_glucose.measurement.types.preMeal") },
+    { value: "After Meal", label: t("logs.add-edit-log.record_glucose.measurement.types.postMeal") },
   ];
 
     const getGlucoseStatus = (value) => {
@@ -71,7 +72,7 @@ const glucoseReadingTag = {
           className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base"
           htmlFor={id}
         >
-          Measurement Type
+          {t("logs.add-edit-log.record_glucose.measurement.title")}
         </label>
         
         <div className="w-full md:col-span-3 grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -92,10 +93,10 @@ const glucoseReadingTag = {
 
       <motion.div variants={itemVariants}>
         <Input
-          label="Glucose Reading (mg/dL)"
+          label={t("logs.add-edit-log.record_glucose.glucose-level.title")}
           name="glucose_level"
           type="number"
-          placeholder="Enter glucose reading"
+          placeholder={t("logs.add-edit-log.record_glucose.glucose-level.placeholder")}
           value={glucoseData?.glucose_level || ""}
           onChange={(e) => handleInputChange(e)}
           className={glucoseTagClasses}
@@ -103,10 +104,10 @@ const glucoseReadingTag = {
       </motion.div>
       <motion.div variants={itemVariants}>
         <Input
-          label="A1C Estimation"
+          label={t("logs.add-edit-log.record_glucose.a1c.title")}
           name="a1c_estimation"
           type="number"
-          placeholder="Enter A1C estimation"
+          placeholder={t("logs.add-edit-log.record_glucose.a1c.placeholder")}
           value={glucoseData?.a1c_estimation || ""}
           onChange={(e) => handleInputChange(e)}
         />
@@ -117,14 +118,14 @@ const glucoseReadingTag = {
             htmlFor="glucose-notes"
             className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
           >
-            Notes
+            {t("logs.add-edit-log.record_glucose.notes.title")}
           </label>
 
           <textarea
             onChange={(e)=> handleInputChange(e)}
             name="notes"
             id="glucose-notes"
-            placeholder={"Add any additional notes about this glucose measurement..."}
+            placeholder={t("logs.add-edit-log.record_glucose.notes.placeholder")}
             className="w-full bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400
             border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"
           >{glucoseData?.notes || ""}</textarea>

@@ -100,7 +100,7 @@ export default function AddReminder() {
 
   return (
     <div className="space-y-8">
-      <IconHeader icon={MdNotificationAdd} title="Add Reminder" />
+      <IconHeader icon={MdNotificationAdd} title={t("reminder.add-reminder.title")} />
       <Form method="post" className="space-y-8 max-w-5xl mx-auto">
         {/* Radio Group with Micro-interactions */}
         <div className="grid grid-cols-3 gap-4 items-center justify-center">
@@ -115,7 +115,7 @@ export default function AddReminder() {
             >
               <GlucoseIcon className="w-8 h-8" />
             </motion.div>
-            <p className="text-xs md:text-base">Glucose Check</p>
+            <p className="text-xs md:text-base">{t("reminder.add-reminder.data.types.glucose")}</p>
           </RadioButton>
 
           <RadioButton
@@ -129,7 +129,7 @@ export default function AddReminder() {
             >
               <BiSolidInjection className="w-8 h-8" />
             </motion.div>
-            <p className="text-xs md:text-base">Medication</p>
+            <p className="text-xs md:text-base">{t("reminder.add-reminder.data.types.medication")}</p>
           </RadioButton>
 
           <RadioButton
@@ -141,7 +141,7 @@ export default function AddReminder() {
             <motion.div animate={{ scale: reminderType === "meal" ? 1.1 : 1 }}>
               <BsForkKnife className="w-8 h-8" />
             </motion.div>
-            <p className="text-xs md:text-base">Meal</p>
+            <p className="text-xs md:text-base">{t("reminder.add-reminder.data.types.meal")}</p>
           </RadioButton>
         </div>
 
@@ -157,9 +157,9 @@ export default function AddReminder() {
             >
               <img src={emptyImg} alt="No reminders available" />
               <div className="text-center">
-                <h4>Select a reminder type</h4>
+                <h4>{t("reminder.empty.title")}</h4>
                 <p className="meta-text">
-                  Please select a reminder type to get started.
+                  {t("reminder.empty.description")}
                 </p>
               </div>
             </motion.div>
@@ -179,17 +179,17 @@ export default function AddReminder() {
                 <Input
                   name="title"
                   type="text"
-                  label="Title"
-                  placeholder="Reminder title"
+                  label={t("reminder.add-reminder.data.title")}
+                  placeholder={t("reminder.add-reminder.data.titlePlaceholder")}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </motion.div>
 
               <motion.div variants={itemVariants}>
                 <Input
-                  label="Time"
+                  label={t("reminder.add-reminder.data.date")}
                   name="time"
-                  placeholder="Select time"
+                  placeholder={t("reminder.add-reminder.data.timePlaceholder")}
                   type="datetime-local"
                   min={new Date().toISOString().slice(0, 16)}
                   onChange={(e) => setTime(e.target.value)}
@@ -206,7 +206,7 @@ export default function AddReminder() {
                       htmlFor="medication"
                       className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
                     >
-                      Medication
+                      {t("reminder.add-reminder.data.medication.title")}
                     </label>
 
                     {/* Custom Dropdown Header */}
@@ -220,7 +220,7 @@ export default function AddReminder() {
                     >
                       <p className="truncate ">
                         {/* medication is the state variable for the single selected value */}
-                        {medication ? medication : "Select medication..."}
+                        {medication ? medication : t("reminder.add-reminder.data.medication.placeholder")}
                       </p>
                       <FaAngleDown
                         className={`w-5 h-5 transition-transform duration-200 ${
@@ -278,7 +278,8 @@ export default function AddReminder() {
                     whileTap={{ scale: 0.98 }}
                     className="px-4 py-3 sm:py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg hidden md:flex items-center justify-center shadow-md h-[46px] sm:h-[52px]"
                   >
-                    Add Medication
+                    <RiAddLargeLine className="w-5 h-5 ml-1" />
+                    <p>{t("reminder.add-reminder.data.medication.button")}</p>
                   </motion.button>
 
                   {/* Mobile Add Button */}
@@ -322,7 +323,7 @@ export default function AddReminder() {
                 >
                   <CgSpinner className="text-white w-8 h-8" />
                 </motion.div>
-                <p>Adding Reminder</p>
+                <p>{t("reminder.add-reminder.submit")}</p>
               </motion.div>
             ) : (
               <motion.p
@@ -331,7 +332,7 @@ export default function AddReminder() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                Add Reminder
+                {t("reminder.add-reminder.button")}
               </motion.p>
             )}
           </AnimatePresence>
