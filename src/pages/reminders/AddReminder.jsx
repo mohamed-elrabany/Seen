@@ -24,13 +24,7 @@ import IconHeader from "../../components/ui/IconHeader";
 // Services
 import { addReminder } from "../../services/reminderServices";
 import { getMedications } from "../../services/medicationServices";
-
-const medicationNames = [
-  "Insulin Glargine (Lantus)",
-  "Metformin",
-  "Semaglutide (Ozempic)",
-  "Empagliflozin (Jardiance)",
-];
+import { formatForBackendDateTime } from "../../util/formatDiplayedDate";
 
 // Animation Variants
 const containerVariants = {
@@ -70,22 +64,14 @@ export default function AddReminder() {
     const fetchMedications = async () => {
       try {
         const data = await getMedications();
-        console.log("Fetched Medications:", data); // Debugging log
-
-        // If it's an array, use it. If it's an object, convert it.
-        // If it's null/undefined, use medicationNames.
-        const formattedList = Array.isArray(data)
-          ? data
-          : data
-            ? Object.values(data)
-            : medicationNames;
-
+        console.log("Fetched Medications:", data);
         setMedicationList(data);
       } catch (error) {
-        toast.error("Failed to fetch medications. Using default list.");
-        setMedicationList(medicationNames);
+        toast.error("Failed to fetch medications.");
+        setMedicationList([]);
       }
     };
+
     fetchMedications();
   }, []);
 
@@ -101,22 +87,29 @@ export default function AddReminder() {
 
   return (
     <div className="space-y-8">
-      <IconHeader icon={MdNotificationAdd} title={t("reminder.add-reminder.title")} />
+      <IconHeader
+        icon={MdNotificationAdd}
+        title={t("reminder.add-reminder.title")}
+      />
+
       <Form method="post" className="space-y-8 max-w-5xl mx-auto">
-        {/* Radio Group with Micro-interactions */}
+        {/* Radio Group */}
         <div className="grid grid-cols-3 gap-4 items-center justify-center">
           <RadioButton
             name="message_type"
-            value="glucose"
-            isChecked={reminderType === "glucose"}
+            value="glucose_check"
+            isChecked={reminderType === "glucose_check"}
             onChange={handleReminderTypeChange}
           >
             <motion.div
-              animate={{ scale: reminderType === "glucose" ? 1.1 : 1 }}
+              animate={{ scale: reminderType === "glucose_check" ? 1.1 : 1 }}
             >
               <GlucoseIcon className="w-8 h-8" />
             </motion.div>
-            <p className="text-xs md:text-base">{t("reminder.add-reminder.data.types.glucose")}</p>
+
+            <p className="text-xs md:text-base">
+              {t("reminder.add-reminder.data.types.glucose")}
+            </p>
           </RadioButton>
 
           <RadioButton
@@ -130,7 +123,10 @@ export default function AddReminder() {
             >
               <BiSolidInjection className="w-8 h-8" />
             </motion.div>
-            <p className="text-xs md:text-base">{t("reminder.add-reminder.data.types.medication")}</p>
+
+            <p className="text-xs md:text-base">
+              {t("reminder.add-reminder.data.types.medication")}
+            </p>
           </RadioButton>
 
           <RadioButton
@@ -142,7 +138,10 @@ export default function AddReminder() {
             <motion.div animate={{ scale: reminderType === "meal" ? 1.1 : 1 }}>
               <BsForkKnife className="w-8 h-8" />
             </motion.div>
-            <p className="text-xs md:text-base">{t("reminder.add-reminder.data.types.meal")}</p>
+
+            <p className="text-xs md:text-base">
+              {t("reminder.add-reminder.data.types.meal")}
+            </p>
           </RadioButton>
         </div>
 
@@ -157,8 +156,10 @@ export default function AddReminder() {
               transition={{ duration: 0.3 }}
             >
               <img src={emptyImg} alt="No reminders available" />
+
               <div className="text-center">
                 <h4>{t("reminder.empty.title")}</h4>
+
                 <p className="meta-text">
                   {t("reminder.empty.description")}
                 </p>
@@ -166,7 +167,6 @@ export default function AddReminder() {
             </motion.div>
           )}
 
-          {/* Combined Form Logic with Staggered Children */}
           {reminderType && (
             <motion.div
               key={reminderType}
@@ -181,7 +181,9 @@ export default function AddReminder() {
                   name="title"
                   type="text"
                   label={t("reminder.add-reminder.data.title")}
-                  placeholder={t("reminder.add-reminder.data.titlePlaceholder")}
+                  placeholder={t(
+                    "reminder.add-reminder.data.titlePlaceholder"
+                  )}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </motion.div>
@@ -190,7 +192,9 @@ export default function AddReminder() {
                 <Input
                   label={t("reminder.add-reminder.data.date")}
                   name="time"
-                  placeholder={t("reminder.add-reminder.data.timePlaceholder")}
+                  placeholder={t(
+                    "reminder.add-reminder.data.timePlaceholder"
+                  )}
                   type="datetime-local"
                   min={new Date().toISOString().slice(0, 16)}
                   onChange={(e) => setTime(e.target.value)}
@@ -202,6 +206,13 @@ export default function AddReminder() {
                   variants={itemVariants}
                   className="grid grid-cols-5 gap-4 items-end justify-center"
                 >
+                  {/* FIX */}
+                  <input
+                    type="hidden"
+                    name="medication"
+                    value={medication}
+                  />
+
                   <div className="flex flex-col gap-2 w-full col-span-4 relative">
                     <label
                       htmlFor="medication"
@@ -210,19 +221,28 @@ export default function AddReminder() {
                       {t("reminder.add-reminder.data.medication.title")}
                     </label>
 
-                    {/* Custom Dropdown Header */}
+                    {/* Dropdown Header */}
                     <div
-                      onClick={() => setOpenMedicationDropdown((prev) => !prev)}
+                      onClick={() =>
+                        setOpenMedicationDropdown((prev) => !prev)
+                      }
                       className={`w-full flex justify-between items-center text-base rounded-lg px-4 py-2.5 sm:py-3 border-2 transition-all bg-transparent cursor-pointer ${
                         openMedicationDropdown
                           ? "border-[#6976EB] text-[#161A41] dark:text-white"
-                          : "border-[#D9D9D9]/30 " + (medication ? "text-[#161A41] dark:text-white" : "text-[#808080] dark:text-gray-400")
+                          : "border-[#D9D9D9]/30 " +
+                            (medication
+                              ? "text-[#161A41] dark:text-white"
+                              : "text-[#808080] dark:text-gray-400")
                       } `}
                     >
-                      <p className="truncate ">
-                        {/* medication is the state variable for the single selected value */}
-                        {medication ? medication : t("reminder.add-reminder.data.medication.placeholder")}
+                      <p className="truncate">
+                        {medication
+                          ? medication
+                          : t(
+                              "reminder.add-reminder.data.medication.placeholder"
+                            )}
                       </p>
+
                       <FaAngleDown
                         className={`w-5 h-5 transition-transform duration-200 ${
                           openMedicationDropdown
@@ -232,34 +252,40 @@ export default function AddReminder() {
                       />
                     </div>
 
-                    {/* Custom Dropdown List */}
+                    {/* Dropdown List */}
                     <AnimatePresence>
                       {openMedicationDropdown && (
                         <motion.ul
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute bottom-full left-0 w-full max-h-32 overflow-y-auto no-scrollbar bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mb-1 text-sm text-[#161A41] dark:text-white shadow-xl z-[60]"
+                          className="absolute top-full left-0 w-full max-h-32 overflow-y-auto no-scrollbar bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mt-1 text-sm text-[#161A41] dark:text-white shadow-xl z-[60]"
                         >
                           {medicationList.map((med) => {
                             const name =
-                              typeof med === "string" ? med : med.medication_name;
+                              typeof med === "string"
+                                ? med
+                                : med.medication_name;
+
                             const isSelected = medication === name;
 
                             return (
                               <li
                                 key={name}
                                 className={`px-4 py-3 hover:bg-[#6976EB]/10 cursor-pointer flex items-center justify-between transition-colors ${
-                                  isSelected ? "bg-[#6976EB] hover:bg-[#6976EB]/80 text-white" : ""
+                                  isSelected
+                                    ? "bg-[#6976EB] hover:bg-[#6976EB]/80 text-white"
+                                    : ""
                                 }`}
                                 onClick={() => {
-                                  setMedication(name); // Set single value
-                                  setOpenMedicationDropdown(false); // Close on select
+                                  setMedication(name);
+                                  setOpenMedicationDropdown(false);
                                 }}
                               >
                                 <p className={isSelected ? "font-bold" : ""}>
                                   {name}
                                 </p>
+
                                 {isSelected && (
                                   <FaCircleCheck className="w-5 h-5 text-white" />
                                 )}
@@ -271,7 +297,7 @@ export default function AddReminder() {
                     </AnimatePresence>
                   </div>
 
-                  {/* Desktop Add Button */}
+                  {/* Desktop Button */}
                   <motion.button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
@@ -280,10 +306,13 @@ export default function AddReminder() {
                     className="px-4 py-3 sm:py-3.5 font-bold cursor-pointer col-span-1 w-full bg-[#6976EB] text-white rounded-lg hidden md:flex items-center justify-center shadow-md h-[46px] sm:h-[52px]"
                   >
                     <RiAddLargeLine className="w-5 h-5 ml-1" />
-                    <p>{t("reminder.add-reminder.data.medication.button")}</p>
+
+                    <p>
+                      {t("reminder.add-reminder.data.medication.button")}
+                    </p>
                   </motion.button>
 
-                  {/* Mobile Add Button */}
+                  {/* Mobile Button */}
                   <motion.button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
@@ -299,7 +328,7 @@ export default function AddReminder() {
           )}
         </AnimatePresence>
 
-        {/* Submit Button with Smooth Content Switch */}
+        {/* Submit Button */}
         <Button
           disabled={isFormInvalid || isSubmitting}
           type="submit"
@@ -320,10 +349,15 @@ export default function AddReminder() {
               >
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 1,
+                    ease: "linear",
+                  }}
                 >
                   <CgSpinner className="text-white w-8 h-8" />
                 </motion.div>
+
                 <p>{t("reminder.add-reminder.submit")}</p>
               </motion.div>
             ) : (
@@ -351,20 +385,26 @@ export default function AddReminder() {
 
 export async function action({ request }) {
   const formData = await request.formData();
+  const time = formatForBackendDateTime(formData.get("time"));
+
   const data = {
     title: formData.get("title"),
-    time: formData.get("time"),
-    reminderType: formData.get("reminderType"),
-    medication: formData.get("medication") || null,
+    time,
+    message_type: formData.get("message_type"),
+    medication_name: formData.get("medication") || null,
   };
+
+  console.log("Reminder Data to be submitted:", data);
 
   try {
     await addReminder(data);
     toast.success("Reminder added successfully!");
     return redirect("/home");
+
   } catch (error) {
     toast.error("Failed to add reminder. Please try again.");
     console.error("Error adding reminder:", error);
+
     return { error: true };
   }
 }

@@ -15,11 +15,8 @@ export async function addLog(logData) {
   return handleRequest(api.post("/logs", logData));
 }
 
-// export async function editLog(logId, logData) {
-//   return handleRequest(api.put(`/logs/${logId}`, logData));
-// }
-export async function editLog(logData) {
-  return handleRequest(api.post("/logs/android", logData));
+export async function editLog(logId, logData) {
+  return handleRequest(api.put(`/logs/${logId}`, logData));
 }
 
 export async function deleteLog(logId) {

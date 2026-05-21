@@ -108,7 +108,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
   const glucoseIntended =
     hasAnyData(logData.record_glucose) && isVisited.glucose;
   const medicationIntended =
-    hasAnyData(logData.record_medication) && isVisited.medications;
+    hasAnyData(logData.record_medication) && isVisited.medication;
   const mealIntended = hasAnyData(logData.record_meal) && isVisited.meal;
 
   const isFormValid =
@@ -129,7 +129,6 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
     e.preventDefault();
     setIsSubmitting(true);
     const data = {
-      log_id: logDetails.log_id,
       log_title: logData.log_title,
       log_description: logData.log_description,
       logged_at: logData.logged_at,
@@ -141,7 +140,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
     try {
       // Simulate API call delay
       console.log("Submitting updated log data:", data); // Debugging log
-      const result = await editLog(data);
+      const result = await editLog(logData.log_id, data); // Pass log ID and updated data
       console.log("Update Log Result:", result); // Debugging log
       onClose();
       refresh(); 

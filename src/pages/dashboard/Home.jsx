@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
-import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"; // Added this
+import toast from "react-hot-toast";
 
 import HomeHeader from "../../components/home/HomeHeader";
 import Chart from "../../components/home/Chart";

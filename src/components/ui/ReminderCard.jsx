@@ -7,15 +7,16 @@ import GlucoseIcon from "./GlucoseIcon";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import Button from "./Button";
+import { formatDisplayedTime } from "../../util/formatDiplayedDate";
 
-export default function ReminderCard({ reminderData }) {
+export default function ReminderCard({ reminderData, onDelete }) {
     const {t, i18n} = useTranslation();
 
 
   const displayedIcon = () => {
     // Keeping your logic: result is an element
     switch (reminderData.message_type) {
-      case "glucose":
+      case "glucose_check":
         return <GlucoseIcon className="w-6 h-6" />;
       case "medication":
         return <BiSolidInjection className="w-6 h-6" />;
@@ -26,16 +27,10 @@ export default function ReminderCard({ reminderData }) {
     }
   };
   const Icon = displayedIcon();
-
-
+            
 
   const scheduleTime = reminderData?.time
-    ? new Date(reminderData.time).toLocaleTimeString(i18n.language, {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        numberingSystem: "latn",
-      })
+    ? formatDisplayedTime(reminderData.time)
     : "";
 
   return (
@@ -45,14 +40,18 @@ export default function ReminderCard({ reminderData }) {
         <div className="bg-[#6976EB] p-2 rounded-xl text-white flex items-center justify-center">
           {Icon}
         </div>
-        <div className="w-full">
-          <h4 className="font-bold">{reminderData.message}</h4>
+        <div className="w-full space-x-2">
+          <h4 className="font-bold">{reminderData.title}</h4>
+          {reminderData.medication_name && (
+            <p className="text-[#6976EB] text-sm mb-2">{reminderData.medication_name}</p>
+          )}
           <p className="meta-text text-sm">Scheduled for: {scheduleTime}</p>
         </div>
       </div>
 
       {/* Delete Button */}
       <motion.button 
+      onClick={onDelete}
       whileHover={{ scale: 1.05, boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)" }}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2, ease:'linear' }}
