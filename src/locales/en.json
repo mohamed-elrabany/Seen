@@ -319,6 +319,8 @@
       "placeholder": "Share something with the community..."
     },
     "add-edit-post": {
+      "edit-title": "Edit Post",
+      "add-title": "Create New Post",
       "imagesLabel": "Images",
       "addImage": "Add Image",
       "addMore": "Add More Images",
@@ -507,6 +509,31 @@
           "title": "Notes",
           "placeholder": "Additional notes about your meal..."
         }
+      }
+    },
+    "details":{
+      "edit": "Edit Log",
+      "delete": "Delete Log",
+      "notes": "Notes",
+      "empty": "N/A",
+      "glucose": {
+        "title": "Glucose Record",
+        "glucose-level": "Glucose Level",
+        "type":"Reading type",
+        "a1c": "A1C Estimation"
+      },
+      "medication": {
+        "title": "Medication Record",
+        "medications": "Medications"
+      },
+      "meal":{
+        "title": "Meal Record",
+        "type":"Meal Type",
+        "description": "Description",
+        "carbs": "Carbohydrate Estimation",
+        "carb-amount":"{{value}} g",
+        "cal": "Calorie Estimation",
+        "cal-amount": "{{value}} kcal"
       }
     }
   },

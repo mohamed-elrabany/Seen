@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { formatDisplayedDate } from "../../util/formatDiplayedDate";
 
 import { IoPersonOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
@@ -78,7 +79,7 @@ export default function PersonalInfo() {
               </span>
             </div>
             <p className="text-lg font-bold dark:text-white text-[#161A41]">
-              {formatBirthDate(user?.birthDate)}
+              {formatDisplayedDate(user?.birthDate)}
             </p>
             <p className="text-sm text-[#808080] dark:text-gray-400 uppercase">
               {t("profilePage.personalInfo.ageValue", { count: calculateAge(user?.birthDate) || 34 })}

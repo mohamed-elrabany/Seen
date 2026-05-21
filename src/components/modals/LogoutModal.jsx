@@ -16,7 +16,8 @@ export default function LogoutModal({ isOpen, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Added navigate for redirection
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isLtr = i18n.dir() === "ltr";
 
   async function handleLogout(e) {
     e.preventDefault();
@@ -50,7 +51,7 @@ export default function LogoutModal({ isOpen, onClose }) {
     >
       <form onSubmit={handleLogout} className="space-y-6">
         {/* Warning Message */}
-        <div className="bg-[#FF0404]/5 border-l-4 border-[#FF0404] p-4 rounded-r-lg">
+        <div className={`bg-[#FF0404]/5 ${isLtr ? "border-l-4" : "border-r-4"} border-[#FF0404] p-4 rounded-lg`}>
           <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
             {t("modals.logout-account.description")}
           </p>

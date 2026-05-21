@@ -16,6 +16,11 @@ export async function addReminder(data){
         api.post("/reminders", data)
     );
 }
+export async function deleteReminder(id){
+    return handleRequest(
+        api.delete(`/reminders/${id}`)
+    );
+}
 
 export async function updateReminderStatus(reminderId, status){
     return handleRequest(

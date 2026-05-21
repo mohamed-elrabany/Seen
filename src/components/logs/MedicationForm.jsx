@@ -138,7 +138,7 @@ export default function MedicationForm({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full left-0 w-full bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mt-1 text-sm text-[#161A41] dark:text-white shadow-xl overflow-hidden z-[60]"
+                    className="absolute top-full left-0 w-full max-h-32 overflow-y-auto no-scrollbar bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mt-1 text-sm text-[#161A41] dark:text-white shadow-xl overflow-hidden z-[60]"
                   >
                     {medicationList.map((med) => {
                       const isSelected = selectedMeds.includes(

@@ -2,6 +2,8 @@ import Input from "../ui/Input";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
+import { formatForDateTimeInput } from "../../util/formatDiplayedDate";
+
 // Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,6 +25,8 @@ const itemVariants = {
 
 export default function LogBasicInfo({ logData, setLogData }) {
   const { t } = useTranslation();
+
+  const logDate = formatForDateTimeInput(logData?.logged_at);
   function handleInputChange(e) {
     let value = e.target.value;
 
@@ -35,6 +39,14 @@ export default function LogBasicInfo({ logData, setLogData }) {
       [e.target.name]: value,
     }));
   }
+
+  const maxDateTime = (() => {
+    const now = new Date();
+    // For UTC+3, this converts minutes to milliseconds correctly without inversion
+    const offset = now.getTimezoneOffset() * 60000;
+    return new Date(now.getTime() - offset).toISOString().slice(0, 16);
+  })();
+
   return (
     <motion.div
       variants={containerVariants}
@@ -71,8 +83,8 @@ export default function LogBasicInfo({ logData, setLogData }) {
           name={"logged_at"}
           type="datetime-local"
           placeholder={"Select log time"}
-          max={new Date().toISOString().slice(0, 0)}
-          value={logData.logged_at || ""}
+          max={maxDateTime}
+          value={logDate}
           onChange={(e) => handleInputChange(e)}
         />
       </motion.div>

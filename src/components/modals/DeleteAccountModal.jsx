@@ -21,7 +21,8 @@ export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isLtr = i18n.dir() === "ltr";
 
   // Reset input state when the modal closes (via backdrop, ESC, or Cancel)
   useEffect(() => {
@@ -76,7 +77,7 @@ export default function DeleteAccountModal({ isOpen, onClose, deleteRef }) {
     >
       <form ref={deleteRef} onSubmit={handleDeleteAccount} className="space-y-6">
         {/* Warning Information Box */}
-        <div className="bg-[#FF0404]/5 border-l-4 border-[#FF0404] p-4 rounded-r-lg">
+        <div className={`bg-[#FF0404]/5 ${isLtr ? "border-l-4" : "border-r-4"} border-[#FF0404] p-4 rounded-lg`}>
           <h4 className="text-[#FF0404] font-bold mb-1">{t("modals.delete-account.warning-title")}</h4>
           <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
             {t("modals.delete-account.warning-description")}

@@ -66,6 +66,7 @@ export default function LogDetails({ logId: propLogId }) {
   const [logData, setLogData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0); // Used to trigger re-fetch after edit
 
   useEffect(() => {
     const fetchLogData = async () => {
@@ -88,7 +89,7 @@ export default function LogDetails({ logId: propLogId }) {
     };
 
     fetchLogData();
-  }, [logId]);
+  }, [logId, refreshKey]); // Re-fetch when logId changes or after an edit
 
   if (loading) return <LoadingPage />;
   if (!logData) return null;
@@ -96,7 +97,7 @@ export default function LogDetails({ logId: propLogId }) {
 
   return (
     <div className="space-y-8">
-      <LogDetailsHeader logHeaderData={logData} logId={logId} setOpenModal={setIsEditModalOpen}/>
+      <LogDetailsHeader logHeaderData={logData} logId={logId} setOpenModal={setIsEditModalOpen} />
 
       <motion.div
         initial="hidden"
@@ -122,6 +123,7 @@ export default function LogDetails({ logId: propLogId }) {
         logDetails={logData || dummyLogData}
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
+        refresh={() => setRefreshKey((prev) => prev + 1)} // Trigger re-fetch after edit
       />
     </div>
   );

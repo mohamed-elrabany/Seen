@@ -70,6 +70,7 @@ export default function AddReminder() {
     const fetchMedications = async () => {
       try {
         const data = await getMedications();
+        console.log("Fetched Medications:", data); // Debugging log
 
         // If it's an array, use it. If it's an object, convert it.
         // If it's null/undefined, use medicationNames.
@@ -79,7 +80,7 @@ export default function AddReminder() {
             ? Object.values(data)
             : medicationNames;
 
-        setMedicationList(formattedList);
+        setMedicationList(data);
       } catch (error) {
         toast.error("Failed to fetch medications. Using default list.");
         setMedicationList(medicationNames);
@@ -105,7 +106,7 @@ export default function AddReminder() {
         {/* Radio Group with Micro-interactions */}
         <div className="grid grid-cols-3 gap-4 items-center justify-center">
           <RadioButton
-            name="reminderType"
+            name="message_type"
             value="glucose"
             isChecked={reminderType === "glucose"}
             onChange={handleReminderTypeChange}
@@ -119,7 +120,7 @@ export default function AddReminder() {
           </RadioButton>
 
           <RadioButton
-            name="reminderType"
+            name="message_type"
             value="medication"
             isChecked={reminderType === "medication"}
             onChange={handleReminderTypeChange}
@@ -133,7 +134,7 @@ export default function AddReminder() {
           </RadioButton>
 
           <RadioButton
-            name="reminderType"
+            name="message_type"
             value="meal"
             isChecked={reminderType === "meal"}
             onChange={handleReminderTypeChange}
@@ -238,11 +239,11 @@ export default function AddReminder() {
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute top-full left-0 w-full bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mt-1 text-sm text-[#161A41] dark:text-white shadow-xl max-h-60 overflow-y-auto z-[60]"
+                          className="absolute bottom-full left-0 w-full max-h-32 overflow-y-auto no-scrollbar bg-white dark:bg-[#1e224f] border-2 border-[#6976EB] rounded-lg mb-1 text-sm text-[#161A41] dark:text-white shadow-xl z-[60]"
                         >
                           {medicationList.map((med) => {
                             const name =
-                              typeof med === "string" ? med : med.name;
+                              typeof med === "string" ? med : med.medication_name;
                             const isSelected = medication === name;
 
                             return (

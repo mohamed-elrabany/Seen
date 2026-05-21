@@ -15,8 +15,11 @@ export async function addLog(logData) {
   return handleRequest(api.post("/logs", logData));
 }
 
-export async function editLog(logId, logData) {
-  return handleRequest(api.put(`/logs/${logId}`, logData));
+// export async function editLog(logId, logData) {
+//   return handleRequest(api.put(`/logs/${logId}`, logData));
+// }
+export async function editLog(logData) {
+  return handleRequest(api.post("/logs/android", logData));
 }
 
 export async function deleteLog(logId) {
@@ -29,15 +32,14 @@ export async function getLogDetails(logId) {
 
 export async function getLogs(date) {
   return handleRequest(
-    api.get(`/logs/user`, {
-      params: { date },
-    }),
+    api.get(`/logs/${date}`)
   );
 }
 
 export async function getGlucoseReadings(date) {
-    console.log("Fetching glucose readings for date:", date);
   return handleRequest(
-    api.get(`/glucose/history?date=${date}`),
+    api.get(`/glucose/history`, {
+      params: { date },
+    }),
   );
 }

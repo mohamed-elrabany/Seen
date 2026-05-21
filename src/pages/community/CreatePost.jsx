@@ -118,7 +118,7 @@ export default function CreatePost() {
         {/* Image Upload Area */}
         <div className="flex flex-col items-start gap-3">
           <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base">
-            {t("communityPage.createPost.imagesLabel")}
+            {t("communityPage.add-edit-post.imagesLabel")}
           </label>
 
           {/* Previews Grid */}
@@ -195,17 +195,17 @@ export default function CreatePost() {
               }`}
             >
               {post.images.length === 0
-                ? t("communityPage.createPost.addImage")
-                : t("communityPage.createPost.addMore")}
+                ? t("communityPage.add-edit-post.addImage")
+                : t("communityPage.add-edit-post.addMore")}
             </p>
           </label>
         </div>
 
         {/* Title */}
         <Input
-          label={t("communityPage.createPost.titleLabel")}
+          label={t("communityPage.add-edit-post.titleLabel")}
           name="title"
-          placeholder={t("communityPage.createPost.titlePlaceholder")}
+          placeholder={t("communityPage.add-edit-post.titlePlaceholder")}
           required
           value={post.title}
           onChange={(e) => setPost({ ...post, title: e.target.value })}
@@ -217,7 +217,7 @@ export default function CreatePost() {
             htmlFor="content"
             className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer"
           >
-            {t("communityPage.createPost.contentLabel")}
+            {t("communityPage.add-edit-post.contentLabel")}
           </label>
 
           <textarea
@@ -227,7 +227,7 @@ export default function CreatePost() {
             value={post.content}
             rows={5}
             onChange={(e) => setPost({ ...post, content: e.target.value })}
-            placeholder={t("communityPage.createPost.contentPlaceholder")}
+            placeholder={t("communityPage.add-edit-post.contentPlaceholder")}
             className="w-full no-scrollbar bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400 border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"
           ></textarea>
         </div>
@@ -235,7 +235,7 @@ export default function CreatePost() {
         {/* Categories */}
         <div className="flex flex-col gap-3">
           <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base cursor-pointer">
-            {t("communityPage.createPost.categoryLabel")}
+            {t("communityPage.add-edit-post.categoryLabel")}
           </label>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -279,7 +279,7 @@ export default function CreatePost() {
                 >
                   <CgSpinner className="text-white w-8 h-8" />
                 </motion.div>
-                <p>Adding Post</p>
+                <p>{t("communityPage.add-edit-post.add-submit")}</p>
               </motion.div>
             ) : (
               <motion.p
@@ -288,7 +288,7 @@ export default function CreatePost() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                Add Post
+                {t("communityPage.add-edit-post.button")}
               </motion.p>
             )}
           </AnimatePresence>

@@ -14,7 +14,8 @@ export default function DeleteLogModal({
   isOpen,
   onClose,
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isLtr = i18n.dir() === "ltr";
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -43,7 +44,7 @@ export default function DeleteLogModal({
     >
       <form onSubmit={handleDeleteLog} className="space-y-6">
         {/* Warning Message */}
-        <div className="bg-[#FF0404]/5 border-l-4 border-[#FF0404] p-4 rounded-r-lg">
+        <div className={`bg-[#FF0404]/5 ${isLtr ? "border-l-4" : "border-r-4"} border-[#FF0404] p-4 rounded-lg`}>
           <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
             {t("modals.delete-log.description")}
           </p>

@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { replace, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import {formatDisplayedTime} from "../../util/formatDiplayedDate";
 
 export default function LogCard({ logData }) {
   const { t, i18n } = useTranslation();
@@ -14,12 +15,7 @@ export default function LogCard({ logData }) {
   // const navigate = useNavigate();
 
   const displayedTime = logData.logged_at
-    ? new Date(logData.logged_at).toLocaleTimeString(i18n.language, {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        numberingSystem: 'latn'
-      })
+    ? formatDisplayedTime(logData.logged_at)
     : "No time";
 
   const getGlucoseStatus = (value) => {

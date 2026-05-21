@@ -9,31 +9,19 @@ import {
 } from "recharts";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { formatDisplayedTime } from "../../util/formatDiplayedDate";
 
 export default function LineChartComponent({ glucoseReadings }) {
   const darkMode = useSelector((state) => state.theme.theme);
   const isDark = darkMode === "dark";
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.dir() === "rtl"; // Arabic
+  const isRTL = i18n.dir() === "rtl";
 
-  const formatChartTime = (timeStr, lng) => {
-    // 1. Create a dummy date (today + the time from backend)
-    const [hours, minutes] = timeStr.split(":");
-    const date = new Date();
-    date.setHours(parseInt(hours), parseInt(minutes));
+  // Identical clean logic to your LogCard
 
-    // 2. Use the same logic we used for cards
-    return date.toLocaleTimeString(lng, {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-      numberingSystem: "latn", // Keeps digits as 1, 2, 3
-    });
-  };
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      {/* Increased left margin slightly to make room for the Y-Axis label */}
       <LineChart
         data={glucoseReadings}
         margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
@@ -45,8 +33,8 @@ export default function LineChartComponent({ glucoseReadings }) {
         />
 
         <XAxis
-          tickFormatter={(time) => formatChartTime(time, i18n.language)}
-          dataKey="time"
+          tickFormatter={(time) => formatDisplayedTime(time)}
+          dataKey="time" // Reads the "2026-05-21 00:58:00" key directly
           stroke={!isDark ? "#808080" : "#D9D9D9"}
           dy={5}
           tick={{ fill: !isDark ? "#808080" : "#D9D9D9", fontSize: 12 }}
@@ -59,7 +47,7 @@ export default function LineChartComponent({ glucoseReadings }) {
         />
 
         <Tooltip
-          content={<CustomTooltip />}
+          content={<CustomTooltip formatChartTime={formatDisplayedTime} />}
           cursor={{ stroke: "#6976EB", strokeWidth: 1 }}
         />
 
@@ -76,16 +64,18 @@ export default function LineChartComponent({ glucoseReadings }) {
   );
 }
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, formatChartTime }) => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl";
 
   if (active && payload && payload.length) {
+    const formattedTooltipTime = formatChartTime(label);
+
     return (
       <div className="bg-white dark:bg-[#1F1A5F] border border-[#D9D9D9]/30 dark:border-white/10 p-3 rounded-xl shadow-xl">
         {/* Time Row */}
         <p className="text-sm font-medium text-gray-400 mb-1">
-          {t("homePage.chart.tooltip.date", { date: label })}
+          {t("homePage.chart.tooltip.date", { date: formattedTooltipTime })}
         </p>
 
         {/* Glucose Value Row */}

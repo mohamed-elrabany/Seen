@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import DeleteLogModal from "../../modals/DeleteLogModal";
+import {formatDateTimeString} from "../../../util/formatDiplayedDate";
 
 export default function LogDetailsHeader({ logHeaderData, logId, setOpenModal }) {
   const { t, i18n } = useTranslation();
@@ -18,15 +19,7 @@ export default function LogDetailsHeader({ logHeaderData, logId, setOpenModal })
   const description =
     logHeaderData?.log_description || "No description provided for this log.";
   const time = logHeaderData?.logged_at
-    ? new Date(logHeaderData.logged_at).toLocaleString(i18n.language, {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        numberingSystem: "latn", // Ensures numbers are 1, 2, 3 even in Arabic/Hindi locales
-      })
+    ? formatDateTimeString(logHeaderData.logged_at)
     : "Time not recorded";
 
   return (
@@ -64,7 +57,7 @@ export default function LogDetailsHeader({ logHeaderData, logId, setOpenModal })
             hover:bg-right active:scale-[0.98]"
         >
           <FiEdit className="w-5 h-5" />
-          <p className="font-bold">Edit Log</p>
+          <p className="font-bold">{t("logs.details.edit")}</p>
         </Button>
 
         <Button
@@ -73,7 +66,7 @@ export default function LogDetailsHeader({ logHeaderData, logId, setOpenModal })
             text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 transition-colors"
         >
           <RiDeleteBin6Line className="w-5 h-5" />
-          <p className="font-bold">Delete Log</p>
+          <p className="font-bold">{t("logs.details.delete")}</p>
         </Button>
       </div>
       <DeleteLogModal

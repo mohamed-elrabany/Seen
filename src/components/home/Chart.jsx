@@ -34,27 +34,26 @@ const emptyStateWithLabels = [
   { time: "22:00", value: null },
 ];
 
+// Helper function to get correct YYYY-MM-DD in the user's local timezone
+const getLocalYYYYMMDD = (dateInput = new Date()) => {
+  const d = new Date(dateInput);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 export default function Chart({ setDate }) {
   const { t } = useTranslation();
   
-  // 1. inputValue: Changes instantly as user types/picks
-  const [inputValue, setInputValue] = useState(new Date().toISOString().split('T')[0]);
+  // 1. inputValue: Initialized to local date instead of UTC
+  const [inputValue, setInputValue] = useState(getLocalYYYYMMDD());
   
   // 2. dateValue: Only updates when inputValue is valid (Source of Truth for UI)
   const [dateValue, setDateValue] = useState(inputValue);
   
   const [glucoseReadings, setGlucoseReadings] = useState(readingsData);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Pretty format for the <h3> area
-  // const formatDisplayDate = (dateStr) => {
-  //   if (!dateStr) return "";
-  //   const d = new Date(dateStr);
-  //   const day = d.getDate();
-  //   const month = t(`profilePage.personalInfo.months.${d.getMonth()}`);
-  //   const year = d.getFullYear();
-  //   return `${day} ${month} ${year}`;
-  // };
 
   useEffect(() => {
     if (!inputValue) return;
@@ -66,14 +65,14 @@ export default function Chart({ setDate }) {
       const currentYear = new Date().getFullYear();
 
       // LOGICAL VALIDATION
-      // Prevent fetching or UI updates if year is unrealistic (e.g., 0014)
       if (selectedYear >= 2026 && selectedYear <= currentYear) {
         setDateValue(inputValue); // Update the visual "Source of Truth"
         setDate(inputValue); // Update the parent component's date state
         setIsLoading(true);
+        
         const fetchGlucoseReadings = async () => {
           try {
-            const readings = await getGlucoseReadings(dateValue);
+            const readings = await getGlucoseReadings(inputValue); // Pass current inputValue directly
             console.log("Fetched readings:", readings);
             setGlucoseReadings(readings && readings.length > 0 ? readings : emptyStateWithLabels);
           } catch (error) {
@@ -89,12 +88,11 @@ export default function Chart({ setDate }) {
         // If the date is format-valid but logically invalid
         setInputValue(dateValue); // Revert to last valid date in input field
         toast.error(t("toasts.home.dateError"));
-        // We do NOT update dateValue here, so the Header and Chart stay on the previous valid state
       }
     }, 1000);
 
     return () => clearTimeout(handler);
-  }, [inputValue, t]);
+  }, [inputValue, t, dateValue, setDate]);
 
   return (
     <section className="w-full h-fit shadow-lg gap-8 border p-4 md:p-6 rounded-2xl bg-white bg-none dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] border-[#D9D9D9]/30 dark:border-white/10">
@@ -103,7 +101,6 @@ export default function Chart({ setDate }) {
           <h3>
             {t("homePage.chart.title")}
           </h3>
-          {/* Display logic linked to dateValue, so it doesn't flicker while typing */}
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {formatDisplayedDate(dateValue)}
           </p>
@@ -122,7 +119,7 @@ export default function Chart({ setDate }) {
           <Input 
             type="date"
             min="2026-01-01" 
-            max={new Date().toISOString().split('T')[0]}
+            max={getLocalYYYYMMDD()} // Bound max to local calendar date
             value={inputValue} 
             onChange={(e) => setInputValue(e.target.value)}
             className="max-w-[200px]"

@@ -42,7 +42,7 @@ const itemVariants = {
   },
 };
 
-export default function EditLogModal({ logDetails, isOpen, onClose }) {
+export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const initialLogData = useRef(logDetails);
@@ -64,9 +64,9 @@ export default function EditLogModal({ logDetails, isOpen, onClose }) {
         : "meal",
   );
   const logTypes = [
-    { value: "glucose", label: "Glucose Check", icon: GlucoseIcon },
-    { value: "medication", label: "Medication", icon: BiSolidInjection },
-    { value: "meal", label: "Meal", icon: BsForkKnife },
+    { value: "glucose", label: t("logs.add-edit-log.types.glucose"), icon: GlucoseIcon },
+    { value: "medication", label: t("logs.add-edit-log.types.medication"), icon: BiSolidInjection },
+    { value: "meal", label: t("logs.add-edit-log.types.meal") , icon: BsForkKnife },
   ];
 
   function hasAnyData(data) {
@@ -129,6 +129,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose }) {
     e.preventDefault();
     setIsSubmitting(true);
     const data = {
+      log_id: logDetails.log_id,
       log_title: logData.log_title,
       log_description: logData.log_description,
       logged_at: logData.logged_at,
@@ -139,9 +140,11 @@ export default function EditLogModal({ logDetails, isOpen, onClose }) {
 
     try {
       // Simulate API call delay
-      const result = await editLog(log_id, data);
+      console.log("Submitting updated log data:", data); // Debugging log
+      const result = await editLog(data);
       console.log("Update Log Result:", result); // Debugging log
-      navigate(`/logs/${log_id}`);
+      onClose();
+      refresh(); 
       toast.success("Log updated successfully!");
     } catch (error) {
       toast.error("An error occurred while updating the log.");
@@ -150,7 +153,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose }) {
     }
   }
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title="Edit Log" icon={FiEdit}>
+    <BaseModal isOpen={isOpen} onClose={onClose} title={t("logs.add-edit-log.edit-title")} icon={FiEdit}>
       <form
         method="post"
         className="space-y-8 max-w-5xl mx-auto"
@@ -266,7 +269,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose }) {
               onClick={onClose} // <-- Fixed from onCancel
               className="h-full order-2 sm:order-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-6 py-4 font-bold cursor-pointer rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all flex items-center justify-center"
             >
-              Cancel
+              {t("logs.add-edit-log.cancel-button")}
             </Button>
 
             <Button
@@ -297,7 +300,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose }) {
                     >
                       <CgSpinner className="text-white w-6 h-6" />
                     </motion.div>
-                    <p>Updating Log</p>
+                    <p>{t("logs.add-edit-log.edit-submitting")}</p>
                   </motion.div>
                 ) : (
                   <motion.p
@@ -306,7 +309,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                   >
-                    Update Log
+                    {t("logs.add-edit-log.edit-button")}
                   </motion.p>
                 )}
               </AnimatePresence>

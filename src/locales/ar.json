@@ -410,11 +410,11 @@
       "edit-submitting": "جاري تحديث السجل",
       "cancel-button": "إلغاء",
       "types": {
-          "glucose": "فحص السكر",
-          "medication": "الدواء",
-          "meal": "الوجبة",
-          "incomplete": "سجل غير مكتمل"
-        },
+        "glucose": "فحص السكر",
+        "medication": "الدواء",
+        "meal": "الوجبة",
+        "incomplete": "سجل غير مكتمل"
+      },
       "logDetails": {
         "title": "العنوان",
         "titlePlaceholder": "أدخل عنوان السجل",
@@ -484,6 +484,31 @@
           "title": "ملاحظات",
           "placeholder": "ملاحظات إضافية حول وجبتك..."
         }
+      }
+    },
+    "details": {
+      "edit": "تعديل السجل",
+      "delete": "حذف السجل",
+      "notes": "ملاحظات",
+      "empty": "غير متوفر",
+      "glucose": {
+        "title": "سجل السكر",
+        "glucose-level": "مستوى السكر",
+        "type": "نوع القراءة",
+        "a1c": "تقدير التراكمي (A1C)"
+      },
+      "medication": {
+        "title": "سجل الأدوية",
+        "medications": "الأدوية"
+      },
+      "meal": {
+        "title": "سجل الوجبة",
+        "type": "نوع الوجبة",
+        "description": "الوصف",
+        "carbs": "تقدير الكربوهيدرات",
+        "carb-amount": "{{value}} غرام",
+        "cal": "تقدير السعرات الحرارية",
+        "cal-amount": "{{value}} سعرة حرارية"
       }
     }
   },

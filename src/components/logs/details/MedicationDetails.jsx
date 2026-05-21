@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { BiSolidInjection } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
@@ -11,6 +12,7 @@ const itemVariants = {
 };
 
 export default function MedicationDetails({ medicationRecordData }) {
+  const { t } = useTranslation();
   // Assuming medicationRecordData.selected_medication_ids is an array like ["Oxycodone", "Ibuprofen"]
   const meds = medicationRecordData?.medications || [];
 
@@ -24,7 +26,7 @@ export default function MedicationDetails({ medicationRecordData }) {
         <div className="rounded-lg bg-white p-2 text-[#6976EB]">
           <BiSolidInjection className="h-6 w-6" />  
         </div>
-        <p className="text-2xl font-bold">Medication Record</p>
+        <p className="text-2xl font-bold">{t("logs.details.medication.title")}</p>
       </div>
 
       {/* Details List */} 
@@ -32,7 +34,7 @@ export default function MedicationDetails({ medicationRecordData }) {
         {/* Medications List Section */}
         <li className="border-b border-[#D9D9D9]/30 px-6 py-4">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#808080] dark:text-gray-400">
-            Medications
+            {t("logs.details.medication.medications")}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {meds.length > 0 ? (
@@ -53,10 +55,10 @@ export default function MedicationDetails({ medicationRecordData }) {
         {/* Notes Section */}
         <li className="px-6 py-4">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#808080] dark:text-gray-400">
-            Notes
+            {t("logs.details.notes")}
           </p>
           <p className="text-lg font-medium">
-            {medicationRecordData.notes || "No notes provided"}
+            {medicationRecordData.notes || t("logs.details.empty")}
           </p>
         </li>
       </ul>
