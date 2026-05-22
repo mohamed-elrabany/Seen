@@ -39,7 +39,7 @@ export default function PostFeed({ category = null, profileId = null }) {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <div className="flex-col-center gap-8 overflow-y-auto w-full px-4 pb-4">
+    <div className="flex-col-center gap-8 overflow-y-auto w-full pb-4">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
@@ -50,7 +50,7 @@ export default function PostFeed({ category = null, profileId = null }) {
         ))}
 
       {!hasNextPage && (
-        <p className="text-center text-gray-400">No more posts</p>
+        <p className="w-full text-center text-gray-400">No more posts</p>
       )}
 
       <div ref={observerRef} className="h-10" />
