@@ -2,7 +2,7 @@ export function getGlucoseStatusStyles(value, isInput = false) {
   if (value === null || value === undefined || value === "") return "";
   
   const num = Number(value);
-  const status = (num >= 70 && num <= 140) ? "normal" : "danger";
+  const status = (num >= 70 && num <= 220) ? "normal" : "danger";
 
   const glucoseReadingTag = {
     normal: `text-[#17CE92] bg-[#17CE92]/10 ${isInput ? "border-[#17CE92] focus:border-[#17CE92]" : ""} font-semibold`,
