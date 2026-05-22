@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { likePost } from "../../services/communityServices";
-import { updateAllPostCaches } from "../../util/updateAllPostCaches";
+import { updateAllPostCaches } from "../../util/community/updateAllPostCaches";
 
 export function useToggleLike() {
   const queryClient = useQueryClient();

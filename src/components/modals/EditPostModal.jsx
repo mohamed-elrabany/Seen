@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgSpinner } from "react-icons/cg";
 import { FiEdit } from "react-icons/fi";
 
-import { editPost } from "../../services/communityServices";
+import { useEditPost } from "../../hooks/mutations/useEditPost";
 
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 export default function EditPostModal({ postData, isOpen, onClose }) {
   const { t } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const editPostMutation = useEditPost();
 
   // State Management
   const [post, setPost] = useState(postData);
@@ -43,8 +43,6 @@ export default function EditPostModal({ postData, isOpen, onClose }) {
     }
 
     try {
-      setIsSubmitting(true);
-
       // Create update payload ensuring the correct category is bundled
       const updatedData = {
         title: post.title,
@@ -52,14 +50,16 @@ export default function EditPostModal({ postData, isOpen, onClose }) {
         category: checkedCategory,
         images: post.images || [], // Preserve existing images if any
       };
+      console.log("Submitting update with data:", updatedData);
 
-      await editPost(postData.id, updatedData);
+      await editPostMutation.mutateAsync({
+        postId: postData.id,
+        postData: updatedData,
+      });
       toast.success("Post updated successfully.");
       onClose();
     } catch (error) {
       toast.error("Failed to update post.");
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -156,16 +156,16 @@ export default function EditPostModal({ postData, isOpen, onClose }) {
             </Button>
 
             <Button
-              disabled={!isChanged || isSubmitting}
+              disabled={!isChanged || editPostMutation.isPending}
               type="submit"
               className={`order-1 sm:order-2 w-full px-6 py-4 transition-all flex items-center justify-center gap-2 rounded-xl ${
-                !isChanged || isSubmitting
+                !isChanged || editPostMutation.isPending
                   ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
                   : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
               }`}
             >
               <AnimatePresence mode="wait" initial={false}>
-                {isSubmitting ? (
+                {editPostMutation.isPending ? (
                   <motion.div
                     key="loading"
                     initial={{ opacity: 0, y: 10 }}

@@ -23,6 +23,7 @@ import EmptyLogType from "../logs/EmptyLogType";
 import AddMedicineModal from "./AddMedicineModal";
 
 import { editLog } from "../../services/logServices";
+import {formatForBackendDateTime} from "../../util/formatDiplayedDate";
 
 // Animation Variants
 const containerVariants = {
@@ -131,7 +132,7 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
     const data = {
       log_title: logData.log_title,
       log_description: logData.log_description,
-      logged_at: logData.logged_at,
+      logged_at: formatForBackendDateTime(logData.logged_at),
       record_glucose: glucoseIntended ? logData.record_glucose : null,
       record_medication: medicationIntended ? logData.record_medication : null,
       record_meal: mealIntended ? logData.record_meal : null,

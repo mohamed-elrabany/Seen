@@ -25,11 +25,11 @@ export default function PostCard({ post }) {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  
+
   const relativeDate = formatRelativeTime(post.created_at);
   const formattedLikesCount = formatCount(post.likes_count, t);
   const formattedCommentsCount = formatCount(post.comments_count, t);
-  
+
   const togglePostLike = useToggleLike();
   function handleLike() {
     togglePostLike.mutate(post.id);
@@ -62,7 +62,7 @@ export default function PostCard({ post }) {
 
   return (
     <div
-      className="w-full shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl
+      className="w-full shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl overflow-hidden
     bg-white bg-none border-[#D9D9D9]/30
         dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
     >
@@ -91,9 +91,12 @@ export default function PostCard({ post }) {
       </div>
 
       {/* content section */}
-      <div>
-        <h3 className="text-[#161A41] dark:text-white">{post.title}</h3>
-        <p className="text-[#3B3D53] dark:text-gray-300 text-sm sm:text-base">
+      <div className="gap-4 w-full text-start">
+        <h3 className="text-[#161A41] dark:text-white break-words">
+          {post.title}
+        </h3>
+
+        <p className="text-[#3B3D53] dark:text-gray-300 text-sm sm:text-base break-words">
           {post.content}
         </p>
       </div>

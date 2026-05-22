@@ -2,7 +2,7 @@ import { MdClose } from "react-icons/md";
 import { RiSendPlaneFill } from "react-icons/ri";
 
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { usePostComments } from "../../hooks/usePostComments";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -22,9 +22,11 @@ import CommentsFeed from "../../components/community/CommentsFeed";
 import Button from "../../components/ui/Button";
 
 import { usePost } from "../../hooks/queries/usePost";
+import { useCommentCount } from "../../hooks/mutations/useCommentsCount";
 
 export default function PostDetails() {
   const user = useSelector((state) => state.user.user);
+  const { incrementCommentCount, decrementCommentCount } = useCommentCount();
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -35,6 +37,19 @@ export default function PostDetails() {
 
   // ✅ SINGLE SOURCE OF TRUTH (TanStack Query)
   const { data: post, isLoading } = usePost(Number(postId));
+
+  // If post was optimistically deleted, close the overlay.
+  useEffect(() => {
+    if (!isLoading && !post) {
+      const returnPath = location.state?.from;
+
+      if (returnPath) {
+        navigate(returnPath);
+      } else {
+        navigate("/community");
+      }
+    }
+  }, [isLoading, post, location.state, navigate]);
 
   const onScroll = () => {
     if (scrollRef.current) {
@@ -82,6 +97,7 @@ export default function PostDetails() {
 
     setIsSubmitting(true);
     setComment("");
+    incrementCommentCount(Number(postId));
 
     try {
       const newComment = await addPostComment(postId, comment_text);
@@ -90,6 +106,7 @@ export default function PostDetails() {
     } catch (error) {
       rejectComment(tempId);
       setComment(comment_text);
+      decrementCommentCount(Number(postId));
       toast.error("Failed to submit comment!");
     } finally {
       setIsSubmitting(false);
@@ -122,12 +139,14 @@ export default function PostDetails() {
 
   async function handleDeleteComment(commentId) {
     const snapshot = deleteComment(commentId);
+    decrementCommentCount(Number(postId));
 
     try {
       await deletePostComment(commentId);
       toast.success("Comment deleted successfully!");
     } catch (error) {
       restoreComment(snapshot);
+      incrementCommentCount(Number(postId));
       toast.error("Failed to delete comment!");
     }
   }
@@ -139,7 +158,7 @@ export default function PostDetails() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+        className="fixed inset-0 z-200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
       >
         <motion.div
           initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -150,7 +169,7 @@ export default function PostDetails() {
           className="bg-white dark:bg-[#161A41] w-full max-w-2xl h-[90dvh] rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-white/10 flex flex-col"
         >
           {/* Header */}
-          <div className="relative p-6 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5 flex-shrink-0">
+          <div className="relative p-6 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5 shrink-0">
             <div className="flex items-center justify-center gap-3">
               <h3 className="text-lg font-bold text-[#161A41] dark:text-white mb-0">
                 {post?.user?.first_name || "Unknown User"}'s post
@@ -184,7 +203,7 @@ export default function PostDetails() {
           </div>
 
           {/* Comment Input */}
-          <div className="border-t border-gray-200 dark:border-white/10 p-4 bg-white dark:bg-[#161A41] flex-shrink-0">
+          <div className="border-t border-gray-200 dark:border-white/10 p-4 bg-white dark:bg-[#161A41] shrink-0">
             <div className="grid grid-cols-6 items-end justify-center gap-3">
               <textarea
                 value={comment}

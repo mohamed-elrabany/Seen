@@ -2,12 +2,9 @@ import BaseModal from "../ui/BaseModal";
 import Button from "../ui/Button";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { deletePost } from "../../services/communityServices";
+import { useDeletePost } from "../../hooks/mutations/useDeletePost";
 
 export default function DeletePostModal({
   postId,
@@ -16,26 +13,17 @@ export default function DeletePostModal({
 }) {
     const { t, i18n } = useTranslation();
     const isLTR = i18n.dir() === "ltr";
-    const navigate = useNavigate();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const deletePostMutation = useDeletePost();
 
     async function handleDeletePost(e) {
         e.preventDefault();
-        setIsSubmitting(true);
         try{
-            const result= await deletePost(postId);
-            if(result){
-                toast.success("Post deleted successfully!");
-                onClose();
-                navigate("/community");
-            }else{
-                toast.error("Failed to delete the post.");
-            }
+        await deletePostMutation.mutateAsync(postId);
+        toast.success("Post deleted successfully!");
+        onClose();
         }catch(error){
             console.error("Network error:", error);
             toast.error("Network error. Please check your connection and try again.");
-        }finally{
-            setIsSubmitting(false);
         }
     }
 
@@ -67,14 +55,14 @@ export default function DeletePostModal({
           {/* Delete Button - Danger Style */}
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={deletePostMutation.isPending}
             className={`order-1 sm:order-2 flex-1 px-4 py-3 sm:py-3.5 font-bold rounded-lg transition-all border ${
-              isSubmitting
+              deletePostMutation.isPending
                 ? "bg-gray-300 border-gray-300 text-gray-500 cursor-not-allowed"
                 : "text-[#FF0404] border-[#FF0404]/30 hover:border-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 cursor-pointer"
             }`}
           >
-            {isSubmitting ? t("modals.delete-post.submitting") : t("modals.delete-post.delete")}
+            {deletePostMutation.isPending ? t("modals.delete-post.submitting") : t("modals.delete-post.delete")}
           </Button>
         </div>
       </form>
