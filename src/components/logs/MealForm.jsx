@@ -27,16 +27,18 @@ export default function MealForm({ mealData, setMealData }) {
   const id = useId(); // Generates a unique ID for the label/input association
   const { t } = useTranslation();
 
-    function handleInputChange(e) {
-      const { name, value } = e.target;
-      setMealData((prevData) => ({
+  function handleRadioClick(value) {
+    setMealData((prevData) => {
+      const currentType = prevData?.record_meal?.meal_type;
+      return {
         ...prevData,
-        record_meal:{
+        record_meal: {
           ...prevData.record_meal,
-          [name]: value
+          meal_type: currentType === value ? "" : value
         }
-      }));
-    }
+      };
+    });
+  }
 
   const mealTypes = [
     { value: "Breakfast", label: t("logs.add-edit-log.record_meal.meal.types.breakfast") },
@@ -68,7 +70,7 @@ export default function MealForm({ mealData, setMealData }) {
                 name="meal_type"
                 value={type.value}
                 isChecked={mealData?.meal_type === type.value}
-                onChange={(e) => handleInputChange(e)}
+                onClick={() => handleRadioClick(type.value)}
               >
                 {type.label}
               </RadioButton>

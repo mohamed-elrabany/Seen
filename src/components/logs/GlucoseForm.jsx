@@ -3,6 +3,7 @@ import Input from "../ui/Input";
 import RadioButton from "../ui/RadioButton";
 import { motion } from "framer-motion";
 import { useState, useId } from "react";
+import { getGlucoseStatusStyles } from "../../util/logs/glucoseStatus";
 
 // Animation Variants
 const containerVariants = {
@@ -26,16 +27,29 @@ const itemVariants = {
 export default function GlucoseForm({ glucoseData, setGlucoseData }) {
   const id = useId(); // Generates a unique ID for the label/input association
 
-    function handleInputChange(e) {
-      const { name, value } = e.target;
-      setGlucoseData((prevData) => ({
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setGlucoseData((prevData) => ({
+      ...prevData,
+      record_glucose:{
+        ...prevData.record_glucose,
+        [name]: value
+      }
+    }));
+  }
+
+  function handleRadioClick(value) {
+    setGlucoseData((prevData) => {
+      const currentType = prevData?.record_glucose?.reading_type;
+      return {
         ...prevData,
-        record_glucose:{
+        record_glucose: {
           ...prevData.record_glucose,
-          [name]: value
+          reading_type: currentType === value ? "" : value
         }
-      }));
-    }
+      };
+    });
+  }
 
   const glucoseTypes = [
     { value: "Random", label: t("logs.add-edit-log.record_glucose.measurement.types.random") },
@@ -44,20 +58,7 @@ export default function GlucoseForm({ glucoseData, setGlucoseData }) {
     { value: "After Meal", label: t("logs.add-edit-log.record_glucose.measurement.types.postMeal") },
   ];
 
-    const getGlucoseStatus = (value) => {
-    if (value === null || value === undefined || value === "") return "empty";
-    const num = Number(value);
-    if (num>=70 &&num <= 140) return "normal";
-    return "danger";
-  };
-
-const glucoseReadingTag = {
-  normal: "text-[#17CE92] bg-[#17CE92]/10 border-[#17CE92] focus:border-[#17CE92] font-semibold",
-  danger: "text-[#FB2C36] bg-[#FB2C36]/10 border-[#FB2C36] focus:border-[#FB2C36] font-semibold",
-};
-
-  const glucoseStatus = getGlucoseStatus(glucoseData?.glucose_level);                  
-  const glucoseTagClasses = glucoseData?.glucose_level ? glucoseReadingTag[glucoseStatus] : "";
+  const glucoseTagClasses = getGlucoseStatusStyles(glucoseData?.glucose_level, true);
 
   return (
     <motion.div
@@ -81,8 +82,8 @@ const glucoseReadingTag = {
               <RadioButton
                 name="reading_type"
                 value={type.value}
+                onClick={() => handleRadioClick(type.value)}
                 isChecked={glucoseData?.reading_type === type.value}
-                onChange={(e) => handleInputChange(e)}
               >
                 {type.label}
               </RadioButton>
@@ -128,7 +129,8 @@ const glucoseReadingTag = {
             placeholder={t("logs.add-edit-log.record_glucose.notes.placeholder")}
             className="w-full bg-[#D9D9D9]/30 dark:bg-white/10 text-[#161A41] dark:text-white rounded-lg px-4 py-2.5 sm:py-3 placeholder:text-[#808080] dark:placeholder:text-gray-400
             border-[#D9D9D9]/30 focus:border-[#6976EB] text-sm sm:text-base outline-none transition-all"
-          >{glucoseData?.notes || ""}</textarea>
+            value={glucoseData?.notes || ""}
+          />
         </div>
       </motion.div>
 

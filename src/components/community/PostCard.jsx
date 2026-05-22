@@ -5,7 +5,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
@@ -24,6 +24,7 @@ export default function PostCard({ post }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
   const relativeDate = formatRelativeTime(post.created_at);
@@ -37,12 +38,12 @@ export default function PostCard({ post }) {
 
   const categoryColorMap = {
     "type1 / lada":
-      "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize",
-    type2: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6] capitalize",
-    mody: "bg-[#f97316]/20 text-[#f97316] border-[#f97316] uppercase",
-    gestational: "bg-[#a855f7]/20 text-[#a855f7] border-[#a855f7] capitalize",
-    general: "bg-[#eab308]/20 text-[#eab308] border-[#eab308] capitalize",
-    advices: "bg-[#9ca3af]/20 text-[#9ca3af] border-[#9ca3af] capitalize",
+      "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize items-stretch min-w-0",
+    type2: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6] capitalize items-stretch min-w-0",
+    mody: "bg-[#f97316]/20 text-[#f97316] border-[#f97316] uppercase items-stretch min-w-0",
+    gestational: "bg-[#a855f7]/20 text-[#a855f7] border-[#a855f7] capitalize items-stretch min-w-0",
+    general: "bg-[#eab308]/20 text-[#eab308] border-[#eab308] capitalize items-stretch min-w-0",
+    advices: "bg-[#9ca3af]/20 text-[#9ca3af] border-[#9ca3af] capitalize items-stretch min-w-0",
   };
 
   const profileBorderColorMap = {
@@ -62,8 +63,8 @@ export default function PostCard({ post }) {
 
   return (
     <div
-      className="w-full shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl overflow-hidden
-    bg-white bg-none border-[#D9D9D9]/30
+      className="w-full min-w-0 shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl overflow-hidden
+        bg-white bg-none border-[#D9D9D9]/30
         dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10"
     >
       {/* user info */}
@@ -91,12 +92,14 @@ export default function PostCard({ post }) {
       </div>
 
       {/* content section */}
-      <div className="gap-4 w-full text-start">
-        <h3 className="text-[#161A41] dark:text-white break-words">
+      <div className="flex flex-col gap-4 w-full text-start px-2 overflow-hidden">
+        {/* Added whitespace-pre-wrap to make sure long headers or continuous words wrap properly */}
+        <h3 className="text-[#161A41] dark:text-white break-words whitespace-pre-wrap">
           {post.title}
         </h3>
 
-        <p className="text-[#3B3D53] dark:text-gray-300 text-sm sm:text-base break-words">
+        {/* Added whitespace-pre-wrap to force normal body words or overflow text to drop clean to the next line */}
+        <p className="text-[#3B3D53] dark:text-gray-300 text-sm sm:text-base break-words whitespace-pre-wrap">
           {post.content}
         </p>
       </div>
@@ -135,7 +138,7 @@ export default function PostCard({ post }) {
             onClick={() =>
               navigate(`/community/posts/${post.id}`, {
                 replace: true,
-                state: { post, from: location.pathname + location.search }, // Tracks exactly where you clicked it
+                state: { post, from: location.pathname + location.search },
               })
             }
             className="flex-center w-auto gap-2 text-[#808080] dark:text-gray-400 hover:text-[#6976EB] transition-colors cursor-pointer"

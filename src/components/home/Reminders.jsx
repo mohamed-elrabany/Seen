@@ -73,14 +73,14 @@ export default function Reminders() {
       flex flex-col justify-between items-center
         bg-white bg-none dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] border-[#D9D9D9]/30 dark:border-white/10"
     >
-      <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="w-full flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-start lg:justify-between">
         <div className="space-y-2 text-start">
           <h3>{t("reminder.home.title")}</h3>
           <p className="card-text">{t("reminder.home.description")}</p>
         </div>
         <Button
           onClick={() => navigate("/add-reminder")}
-          className="bg-[#6976EB] p-3 cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
+          className="w-full lg:w-auto p-3 bg-[#6976EB] cursor-pointer rounded-xl text-white hover:bg-[#5a61d8] transition-colors"
         >
           <RiAddLargeLine className="w-5 h-5" />
           <p>{t("reminder.home.addButton")}</p>

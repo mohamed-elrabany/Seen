@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { replace, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {formatDisplayedTime} from "../../util/formatDiplayedDate";
+import { getGlucoseStatusStyles } from "../../util/logs/glucoseStatus";
 
 export default function LogCard({ logData }) {
   const { t, i18n } = useTranslation();
@@ -18,24 +19,8 @@ export default function LogCard({ logData }) {
     ? formatDisplayedTime(logData.logged_at)
     : "No time";
 
-  const getGlucoseStatus = (value) => {
-    if (value === null || value === undefined || value === "") return "empty";
-    const num = Number(value);
-    if (num < 70) return "low";
-    if (num <= 140) return "normal";
-    return "high";
-  };
+  const glucoseTagClasses = getGlucoseStatusStyles(logData?.record_glucose?.glucose_level);
 
-  const glucoseReadingTag = {
-    low: "text-[#FF9800] bg-[#FF9800]/20",
-    normal: "text-[#17CE92] bg-[#17CE92]/20",
-    high: "text-[#FB2C36] bg-[#FB2C36]/20",
-    empty:
-      "text-[#808080] dark:text-gray-400 bg-[#808080]/20 dark:bg-gray-400/20",
-  };
-
-  const glucoseReading = logData?.record_glucose?.glucose_level;
-  const glucoseStatus = getGlucoseStatus(glucoseReading);
 
   return (
     <motion.div
@@ -81,9 +66,9 @@ export default function LogCard({ logData }) {
           )}
         </div>
         <span
-          className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-colors ${glucoseReadingTag[glucoseStatus]}`}
+          className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-colors ${glucoseTagClasses}`}
         >
-          {glucoseReading ? `${glucoseReading} mg/dL` : "No glucose reading"}
+          {logData?.record_glucose?.glucose_level ? `${logData.record_glucose.glucose_level} mg/dL` : "No glucose reading"}
         </span>
       </div>
     </motion.div>

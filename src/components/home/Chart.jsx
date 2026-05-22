@@ -52,7 +52,7 @@ export default function Chart({ setDate }) {
   // 2. dateValue: Only updates when inputValue is valid (Source of Truth for UI)
   const [dateValue, setDateValue] = useState(inputValue);
   
-  const [glucoseReadings, setGlucoseReadings] = useState(readingsData);
+  const [glucoseReadings, setGlucoseReadings] = useState(emptyStateWithLabels);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

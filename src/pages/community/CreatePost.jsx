@@ -3,19 +3,15 @@ import { IoArrowBack, IoClose } from "react-icons/io5";
 import { CgSpinner } from "react-icons/cg";
 
 import {
-  Form,
   Link,
-  redirect,
-  useSubmit,
-  useNavigation,
   useNavigate,
 } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import i18next from "i18next";
-import { createPost } from "../../services/communityServices";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCreatePost } from "../../hooks/mutations/useCreatePost";
 
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
@@ -25,10 +21,10 @@ import toast from "react-hot-toast";
 export default function CreatePost() {
   const user = useSelector((state) => state.user.user);
   const { t } = useTranslation();
-  const submit = useSubmit(); // Hook to trigger manual submission
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
   const navigate = useNavigate();
+  const createPostMutation = useCreatePost();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [post, setPost] = useState({
     title: "",
     content: "",
@@ -55,8 +51,8 @@ export default function CreatePost() {
     });
   };
 
-// Manual submission handler to bridge State and FormData
-  const handleSubmit = (event) => {
+// Manual submission handler to create post and invalidate caches
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -69,13 +65,16 @@ export default function CreatePost() {
       formData.append("images[]", imgObj.file);
     });
 
-    // console.log("Files attached:", formData.getAll("images"));
-    // console.log("Title:", formData.getAll(images));
-
-    submit(formData, {
-      method: "post",
-      encType: "multipart/form-data",
-    });
+    try {
+      setIsSubmitting(true);
+      await createPostMutation.mutateAsync(formData);
+      toast.success("Post created successfully!");
+      navigate("/community");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      toast.error("Failed to create post!");
+      setIsSubmitting(false);
+    }
   };
 
   const postCategories = [
@@ -114,7 +113,7 @@ export default function CreatePost() {
       </div>
 
       {/* Form */}
-      <Form onSubmit={handleSubmit} className="grid gap-6 mt-8">
+      <form onSubmit={handleSubmit} className="grid gap-6 mt-8">
         {/* Image Upload Area */}
         <div className="flex flex-col items-start gap-3">
           <label className="text-[#161A41] dark:text-white font-bold text-sm sm:text-base">
@@ -293,30 +292,7 @@ export default function CreatePost() {
             )}
           </AnimatePresence>
         </Button>
-      </Form>
+      </form>
     </div>
   );
-}
-
-/**
- * Action function to handle the form submission
- */
-export async function action({ request }) {
-  const formData = await request.formData();
-    console.log("title:", formData.get("title"));
-  console.log("content:", formData.get("content"));
-  console.log("category:", formData.get("category"));
-  console.log("images:", formData.getAll("images"));
-
-  try {
-    const response = await createPost(formData);
-    console.log("Post created:", response);
-
-    toast.success("Post created successfully!");
-    return redirect("/community");
-  } catch (error) {
-    console.error("Action error:", error);
-    toast.error("Failed to create post!");
-    return null;
-  }
 }

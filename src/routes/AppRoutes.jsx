@@ -4,7 +4,6 @@ import { Suspense, lazy } from "react";
 import { action as loginAction } from "../pages/auth/Login";
 import { action as registerAction } from "../pages/auth/Register";
 import { action as reminderAction } from "../pages/reminders/AddReminder";
-import { action as createPostAction } from "../pages/community/CreatePost";
 
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
 const Home = lazy(() => import("../pages/dashboard/Home"));
@@ -81,7 +80,6 @@ const router = createBrowserRouter([
       {
         path: "community/create",
         element: lazy_load(CreatePost),
-        action: createPostAction,
       },
       {
         path: "community/posts/:postId",
