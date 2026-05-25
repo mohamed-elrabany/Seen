@@ -66,7 +66,8 @@ export default function LogCard({ logData }) {
           )}
         </div>
         <span
-          className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-colors ${glucoseTagClasses}`}
+          className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-colors 
+            ${logData?.record_glucose?.glucose_level ? glucoseTagClasses : "text-[#808080] dark:text-gray-400 bg-[#808080]/10 dark:bg-gray-400/10"}`}
         >
           {logData?.record_glucose?.glucose_level ? `${logData.record_glucose.glucose_level} mg/dL` : "No glucose reading"}
         </span>

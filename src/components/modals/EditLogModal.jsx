@@ -10,7 +10,6 @@ import { MdError } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
@@ -19,11 +18,10 @@ import LogBasicInfo from "../logs/LogBasicInfo";
 import GlucoseForm from "../logs/GlucoseForm";
 import MedicationForm from "../logs/MedicationForm";
 import MealForm from "../logs/MealForm";
-import EmptyLogType from "../logs/EmptyLogType";
 import AddMedicineModal from "./AddMedicineModal";
 
 import { editLog } from "../../services/logServices";
-import {formatForBackendDateTime} from "../../util/formatDiplayedDate";
+import { formatForBackendDateTime } from "../../util/formatDiplayedDate";
 
 // Animation Variants
 const containerVariants = {
@@ -43,18 +41,24 @@ const itemVariants = {
   },
 };
 
+// Keys that come from the server and should not count as "user entered data"
+const USER_META_KEYS = new Set([
+  "log_id",
+  "user_id",
+  "reading_id",
+  "medication_id",
+  "meal_id",
+  "created_at",
+  "updated_at",
+  "average_glucose_level",
+]);
+
 export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const initialLogData = useRef(logDetails);
   const [logData, setLogData] = useState(logDetails);
-  const [isVisited, setIsVisited] = useState({
-    glucose: !!logDetails.record_glucose,
-    medication: !!logDetails.record_medication,
-    meal: !!logDetails.record_meal,
-  });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [refrshMedications, setRefreshMedications] = useState(0); // New state to trigger medication list refresh
+  const [refrshMedications, setRefreshMedications] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const modalRef = useRef();
   const [activeType, setActiveType] = useState(
@@ -64,33 +68,41 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
         ? "medication"
         : "meal",
   );
+
   const logTypes = [
-    { value: "glucose", label: t("logs.add-edit-log.types.glucose"), icon: GlucoseIcon },
-    { value: "medication", label: t("logs.add-edit-log.types.medication"), icon: BiSolidInjection },
-    { value: "meal", label: t("logs.add-edit-log.types.meal") , icon: BsForkKnife },
+    {
+      value: "glucose",
+      label: t("logs.add-edit-log.types.glucose"),
+      icon: GlucoseIcon,
+    },
+    {
+      value: "medication",
+      label: t("logs.add-edit-log.types.medication"),
+      icon: BiSolidInjection,
+    },
+    {
+      value: "meal",
+      label: t("logs.add-edit-log.types.meal"),
+      icon: BsForkKnife,
+    },
   ];
 
-  function hasAnyData(data) {
+  // ─── Helpers ────────────────────────────────────────────────────────────────
+
+  // Checks if the user has entered any meaningful data, ignoring server metadata
+  function hasUserEnteredData(data) {
     if (!data) return false;
-
-    return Object.values(data).some((value) => {
-      // 1. If it's an array, check if it has items
-      if (Array.isArray(value)) {
-        return value.length > 0;
-      }
-
-      // 2. If it's an object (and not null), recurse into it
-      if (value !== null && typeof value === "object") {
-        return hasAnyData(value);
-      }
-
-      // 3. For strings/numbers/etc, check if they are "filled"
+    return Object.entries(data).some(([key, value]) => {
+      if (USER_META_KEYS.has(key)) return false;
+      if (Array.isArray(value)) return value.length > 0;
+      if (value !== null && typeof value === "object")
+        return hasUserEnteredData(value);
       return value !== null && value !== "" && value !== undefined;
     });
   }
 
   function isGlucoseComplete(data) {
-    return (data?.glucose_level && data?.reading_type) || false;
+    return !!(data?.glucose_level && data?.reading_type);
   }
 
   function isMedicationComplete(data) {
@@ -98,53 +110,89 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
   }
 
   function isMealComplete(data) {
-    return (data?.meal_type && data?.meal_description) || false;
+    return !!(data?.meal_type && data?.meal_description);
   }
 
   function handleSelectedType(type) {
     setActiveType(type);
-    setIsVisited((prev) => ({ ...prev, [type]: true }));
   }
 
-  const glucoseIntended =
-    hasAnyData(logData.record_glucose) && isVisited.glucose;
-  const medicationIntended =
-    hasAnyData(logData.record_medication) && isVisited.medication;
-  const mealIntended = hasAnyData(logData.record_meal) && isVisited.meal;
+  // ─── Derived State (all synchronous, no useEffect needed) ───────────────────
+
+  // Does each section currently have user-entered data?
+  const glucoseHasData = hasUserEnteredData(logData.record_glucose);
+  const medicationHasData = hasUserEnteredData(logData.record_medication);
+  const mealHasData = hasUserEnteredData(logData.record_meal);
+
+  // Was a section originally present but now fully cleared by the user?
+  const glucoseRemoved = !!logDetails.record_glucose && !glucoseHasData;
+  const medicationRemoved =
+    !!logDetails.record_medication && !medicationHasData;
+  const mealRemoved = !!logDetails.record_meal && !mealHasData;
+
+  // A section is "intended" only if it currently has user data
+  const glucoseIntended = glucoseHasData;
+  const medicationIntended = medicationHasData;
+  const mealIntended = mealHasData;
+
+  // A section is "valid" only if it's intended AND all required fields are filled
+  const glucoseValid =
+    glucoseIntended && isGlucoseComplete(logData.record_glucose);
+  const medicationValid =
+    medicationIntended && isMedicationComplete(logData.record_medication);
+  const mealValid = mealIntended && isMealComplete(logData.record_meal);
+
+  // ─── Form Validity ──────────────────────────────────────────────────────────
 
   const isFormValid =
     logData.log_title.trim() !== "" &&
     logData.log_description.trim() !== "" &&
     logData.logged_at.trim() !== "" &&
-    (glucoseIntended ? isGlucoseComplete(logData.record_glucose) : true) &&
-    (medicationIntended
-      ? isMedicationComplete(logData.record_medication)
-      : true) &&
-    (mealIntended ? isMealComplete(logData.record_meal) : true);
+    // At least one section must be valid OR at least one section was deliberately removed
+    (glucoseValid ||
+      medicationValid ||
+      mealValid ||
+      glucoseRemoved ||
+      medicationRemoved ||
+      mealRemoved) &&
+    // Any intended section must be complete — no half-filled sections allowed
+    (!glucoseIntended || glucoseValid) &&
+    (!medicationIntended || medicationValid) &&
+    (!mealIntended || mealValid);
 
+  // ─── Dirty Check ────────────────────────────────────────────────────────────
+
+  // Form is dirty if data changed OR a section was fully removed
   const isDirty =
-    JSON.stringify(logData) !== JSON.stringify(initialLogData.current);
+    JSON.stringify(logData) !== JSON.stringify(initialLogData.current) ||
+    glucoseRemoved ||
+    medicationRemoved ||
+    mealRemoved;
+
   const isButtomDisabled = !isFormValid || !isDirty || isSubmitting;
+
+  // ─── Submit ─────────────────────────────────────────────────────────────────
 
   async function handleSubmit(e) {
     e.preventDefault();
     setIsSubmitting(true);
+
     const data = {
       log_title: logData.log_title,
       log_description: logData.log_description,
       logged_at: formatForBackendDateTime(logData.logged_at),
+      // Send null for any section that was cleared, keeping server metadata stripped
       record_glucose: glucoseIntended ? logData.record_glucose : null,
       record_medication: medicationIntended ? logData.record_medication : null,
       record_meal: mealIntended ? logData.record_meal : null,
     };
 
     try {
-      // Simulate API call delay
-      console.log("Submitting updated log data:", data); // Debugging log
-      const result = await editLog(logData.log_id, data); // Pass log ID and updated data
-      console.log("Update Log Result:", result); // Debugging log
+      console.log("Submitting updated log data:", data);
+      const result = await editLog(logData.log_id, data);
+      console.log("Update Log Result:", result);
       onClose();
-      refresh(); 
+      refresh();
       toast.success("Log updated successfully!");
     } catch (error) {
       toast.error("An error occurred while updating the log.");
@@ -152,8 +200,16 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
       setIsSubmitting(false);
     }
   }
+
+  // ─── Render ─────────────────────────────────────────────────────────────────
+
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title={t("logs.add-edit-log.edit-title")} icon={FiEdit}>
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={t("logs.add-edit-log.edit-title")}
+      icon={FiEdit}
+    >
       <form
         method="post"
         className="space-y-8 max-w-5xl mx-auto"
@@ -166,28 +222,26 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
           animate="visible"
           exit="exit"
           variants={containerVariants}
-          className="grid grid-cols-3 gap-4 items-start justify-center" // Changed items-center to items-start to handle error height
+          className="grid grid-cols-3 gap-4 items-start justify-center"
         >
           {logTypes.map((type) => {
             const Icon = type.icon;
 
-            // Logic to determine if this specific section has an error
             let isIntended = false;
             let isComplete = false;
 
             if (type.value === "glucose") {
-              isIntended =
-                hasAnyData(logData.record_glucose) && isVisited.glucose;
+              isIntended = glucoseIntended;
               isComplete = isGlucoseComplete(logData.record_glucose);
             } else if (type.value === "medication") {
-              isIntended =
-                hasAnyData(logData.record_medication) && isVisited.medication;
+              isIntended = medicationIntended;
               isComplete = isMedicationComplete(logData.record_medication);
             } else if (type.value === "meal") {
-              isIntended = hasAnyData(logData.record_meal) && isVisited.meal;
+              isIntended = mealIntended;
               isComplete = isMealComplete(logData.record_meal);
             }
 
+            // Only show error when: section has data, it's incomplete, AND user is looking at another tab
             const showIncompleteError =
               isIntended && !isComplete && activeType !== type.value;
 
@@ -211,7 +265,6 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
                   <p className="text-xs md:text-base">{type.label}</p>
                 </RadioButton>
 
-                {/* Localized Error Message */}
                 <AnimatePresence>
                   {showIncompleteError && (
                     <motion.div
@@ -262,66 +315,66 @@ export default function EditLogModal({ logDetails, isOpen, onClose, refresh }) {
             )}
           </motion.div>
         </AnimatePresence>
-        {/* Submit Button with Smooth Content Switch */}
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-            <Button
-              type="button"
-              onClick={onClose} // <-- Fixed from onCancel
-              className="h-full order-2 sm:order-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-6 py-4 font-bold cursor-pointer rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all flex items-center justify-center"
-            >
-              {t("logs.add-edit-log.cancel-button")}
-            </Button>
 
-            <Button
-              disabled={isButtomDisabled}
-              type="submit"
-              className={`order-1 sm:order-2 w-full px-6 py-4 transition-all flex items-center justify-center gap-2 rounded-xl ${
-                isButtomDisabled || isSubmitting
-                  ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
-                  : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
-              }`}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {isSubmitting ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+          <Button
+            type="button"
+            onClick={onClose}
+            className="h-full order-2 sm:order-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white border-none px-6 py-4 font-bold cursor-pointer rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all flex items-center justify-center"
+          >
+            {t("logs.add-edit-log.cancel-button")}
+          </Button>
+
+          <Button
+            disabled={isButtomDisabled}
+            type="submit"
+            className={`order-1 sm:order-2 w-full px-6 py-4 transition-all flex items-center justify-center gap-2 rounded-xl ${
+              isButtomDisabled
+                ? "bg-[#808080]/20 text-[#808080] cursor-not-allowed"
+                : "bg-[#6976EB] hover:bg-[#2B3695] text-white cursor-pointer"
+            }`}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {isSubmitting ? (
+                <motion.div
+                  key="loading"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex gap-4 items-center justify-center"
+                >
                   <motion.div
-                    key="loading"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="flex gap-4 items-center justify-center"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1,
+                      ease: "linear",
+                    }}
                   >
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 1,
-                        ease: "linear",
-                      }}
-                    >
-                      <CgSpinner className="text-white w-6 h-6" />
-                    </motion.div>
-                    <p>{t("logs.add-edit-log.edit-submitting")}</p>
+                    <CgSpinner className="text-white w-6 h-6" />
                   </motion.div>
-                ) : (
-                  <motion.p
-                    key="static"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                  >
-                    {t("logs.add-edit-log.edit-button")}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </Button>
-          </div>
+                  <p>{t("logs.add-edit-log.edit-submitting")}</p>
+                </motion.div>
+              ) : (
+                <motion.p
+                  key="static"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  {t("logs.add-edit-log.edit-button")}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </Button>
+        </div>
       </form>
 
       <AddMedicineModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         formRef={modalRef}
-        setRefreshMedications={setRefreshMedications} // Pass the state updater to the modal
+        setRefreshMedications={setRefreshMedications}
       />
     </BaseModal>
   );

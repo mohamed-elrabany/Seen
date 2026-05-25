@@ -26,6 +26,16 @@ const itemVariants = {
 export default function MealForm({ mealData, setMealData }) {
   const id = useId(); // Generates a unique ID for the label/input association
   const { t } = useTranslation();
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setMealData((prevData) => ({
+      ...prevData,
+      record_meal: {
+        ...prevData.record_meal,
+        [name]: value,
+      },
+    }));
+  }
 
   function handleRadioClick(value) {
     setMealData((prevData) => {
@@ -34,17 +44,29 @@ export default function MealForm({ mealData, setMealData }) {
         ...prevData,
         record_meal: {
           ...prevData.record_meal,
-          meal_type: currentType === value ? "" : value
-        }
+          meal_type: currentType === value ? "" : value,
+        },
       };
     });
   }
 
   const mealTypes = [
-    { value: "Breakfast", label: t("logs.add-edit-log.record_meal.meal.types.breakfast") },
-    { value: "Lunch", label: t("logs.add-edit-log.record_meal.meal.types.lunch") },
-    { value: "Dinner", label: t("logs.add-edit-log.record_meal.meal.types.dinner") },
-    { value: "Snack", label: t("logs.add-edit-log.record_meal.meal.types.snack") },
+    {
+      value: "Breakfast",
+      label: t("logs.add-edit-log.record_meal.meal.types.breakfast"),
+    },
+    {
+      value: "Lunch",
+      label: t("logs.add-edit-log.record_meal.meal.types.lunch"),
+    },
+    {
+      value: "Dinner",
+      label: t("logs.add-edit-log.record_meal.meal.types.dinner"),
+    },
+    {
+      value: "Snack",
+      label: t("logs.add-edit-log.record_meal.meal.types.snack"),
+    },
   ];
 
   return (
@@ -62,7 +84,7 @@ export default function MealForm({ mealData, setMealData }) {
         >
           {t("logs.add-edit-log.record_meal.meal.title")}
         </label>
-        
+
         <div className="w-full md:col-span-3 grid grid-cols-2 sm:grid-cols-4 gap-4">
           {mealTypes.map((type) => (
             <motion.div key={type.value} variants={itemVariants}>
@@ -70,7 +92,8 @@ export default function MealForm({ mealData, setMealData }) {
                 name="meal_type"
                 value={type.value}
                 isChecked={mealData?.meal_type === type.value}
-                onClick={() => handleRadioClick(type.value)}
+                onChange={(e) => handleInputChange(e)}
+                onClick={(e) => handleRadioClick(type.value)}
               >
                 {type.label}
               </RadioButton>
@@ -84,7 +107,9 @@ export default function MealForm({ mealData, setMealData }) {
           label={t("logs.add-edit-log.record_meal.description.title")}
           name="meal_description"
           type="text"
-          placeholder={t("logs.add-edit-log.record_meal.description.placeholder")}
+          placeholder={t(
+            "logs.add-edit-log.record_meal.description.placeholder",
+          )}
           value={mealData?.meal_description || ""}
           onChange={(e) => handleInputChange(e)}
         />
@@ -119,7 +144,7 @@ export default function MealForm({ mealData, setMealData }) {
           </label>
 
           <textarea
-            onChange={(e)=> handleInputChange(e)}
+            onChange={(e) => handleInputChange(e)}
             name="notes"
             id="meal-notes"
             placeholder={t("logs.add-edit-log.record_meal.notes.placeholder")}
@@ -130,7 +155,6 @@ export default function MealForm({ mealData, setMealData }) {
           </textarea>
         </div>
       </motion.div>
-
     </motion.div>
   );
 }

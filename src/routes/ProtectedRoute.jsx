@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import LoadingPage from "../pages/loading/LoadingPage";
 import Sidebar from "../components/layout/Sidebar";
-import { use } from "react";
+import { useEffect } from "react";
 
 export default function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
@@ -18,6 +18,9 @@ export default function ProtectedRoute() {
   if (!isAuthenticated) {
     return <Navigate to={"/login"} state={{ from: location }} replace />;
   }
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]); 
 
   return (
     <>

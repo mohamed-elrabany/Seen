@@ -32,11 +32,11 @@ export default function AddMedicineModal({ isOpen, onClose, formRef, setRefreshM
 
      try {
       // Simulate API call delay
-      const result = await addMedications(medicationName);
+      const result = await addMedications(medicineName);
       console.log("API response:", result);
         toast.success(t("modals.medicine.alert.success"));
+        setRefreshMedications()
         onClose();
-        setRefreshMedications((prev) => prev + 1);
     } catch (error) {
       toast.error(t("modals.medicine.alert.error"));
     } finally {

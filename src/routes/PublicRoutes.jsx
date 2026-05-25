@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import LoadingPage from "../pages/loading/LoadingPage";
+import { useEffect } from "react";
 
 export default function PublicRoute() {
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);

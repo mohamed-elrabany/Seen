@@ -128,7 +128,7 @@ export default function PostComment({ comment, onLike, onDelete, onEdit }) {
         </div>
       )}
       {comment.user.id === user?.id && !isEditing && (
-        <div className="flex gap-2 justify-center items-center">
+        <div className="flex gap-2 justify-end items-center w-full">
           <button
             onClick={() => setIsEditing(true)}
             className="cursor-pointer p-2 text-center rounded-md hover:bg-gray-300 dark:hover:bg-gray-900/30"

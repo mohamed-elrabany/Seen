@@ -77,9 +77,21 @@ export default function AddLog() {
   const modalRef = useRef();
   const [activeType, setActiveType] = useState("glucose");
   const logTypes = [
-    { value: "glucose", label: t("logs.add-edit-log.types.glucose"), icon: GlucoseIcon },
-    { value: "medication", label: t("logs.add-edit-log.types.medication"), icon: BiSolidInjection },
-    { value: "meal", label: t("logs.add-edit-log.types.meal") , icon: BsForkKnife },
+    {
+      value: "glucose",
+      label: t("logs.add-edit-log.types.glucose"),
+      icon: GlucoseIcon,
+    },
+    {
+      value: "medication",
+      label: t("logs.add-edit-log.types.medication"),
+      icon: BiSolidInjection,
+    },
+    {
+      value: "meal",
+      label: t("logs.add-edit-log.types.meal"),
+      icon: BsForkKnife,
+    },
   ];
 
   function hasAnyData(data) {
@@ -124,15 +136,22 @@ export default function AddLog() {
     hasAnyData(logData.record_medication) && isVisited.medication;
   const mealIntended = hasAnyData(logData.record_meal) && isVisited.meal;
 
+  const glucoseValid = glucoseIntended
+    ? isGlucoseComplete(logData.record_glucose)
+    : false;
+  const medicationValid = medicationIntended
+    ? isMedicationComplete(logData.record_medication)
+    : false;
+  const mealValid = mealIntended ? isMealComplete(logData.record_meal) : false;
+
   const isFormValid =
     logData.log_title.trim() !== "" &&
     logData.log_description.trim() !== "" &&
     logData.logged_at.trim() !== "" &&
-    (glucoseIntended ? isGlucoseComplete(logData.record_glucose) : true) &&
-    (medicationIntended
-      ? isMedicationComplete(logData.record_medication)
-      : true) &&
-    (mealIntended ? isMealComplete(logData.record_meal) : true);
+    (glucoseValid || medicationValid || mealValid) && // Must have at least one valid medical log
+    (!glucoseIntended || glucoseValid) && // If they started filling glucose, it must be valid
+    (!medicationIntended || medicationValid) && // If they started filling medication, it must be valid
+    (!mealIntended || mealValid);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -151,7 +170,7 @@ export default function AddLog() {
       console.log("Submitting Log Data:", data); // Debugging log to check final data being submitted
       const result = await addLog(data);
       console.log("Add Log Result:", result); // Debugging log
-      navigate('/home');
+      navigate("/home");
       toast.success("Log added successfully!");
     } catch (error) {
       toast.error("An error occurred while adding the log.");
@@ -199,7 +218,8 @@ export default function AddLog() {
               isComplete = isMealComplete(logData.record_meal);
             }
 
-            const showIncompleteError = isIntended && !isComplete && activeType !== type.value;
+            const showIncompleteError =
+              isIntended && !isComplete && activeType !== type.value;
 
             return (
               <motion.div
@@ -231,7 +251,9 @@ export default function AddLog() {
                       className="flex items-center justify-center gap-1 text-[#6976EB] mt-2 text-center text-xs sm:text-sm"
                     >
                       <MdError className=" w-4 h-4" />
-                      <p className="font-medium leading-tight">{t("logs.add-edit-log.types.incomplete")}</p>
+                      <p className="font-medium leading-tight">
+                        {t("logs.add-edit-log.types.incomplete")}
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -316,7 +338,7 @@ export default function AddLog() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         formRef={modalRef}
-        setRefreshMedications={setRefreshMedications} // Pass the state updater to the modal
+        setRefreshMedications={() => setRefreshMedications((prev) => prev + 1)} // Pass the state updater to the modal
       />
     </div>
   );

@@ -17,7 +17,7 @@ const Profile = lazy(() => import("../pages/profile/Profile"));
 const Settings = lazy(() => import("../pages/settings/Settings"));
 const Assistant = lazy(() => import("../pages/assistant/Assistant"));
 const Chats = lazy(() => import("../pages/chats/Chats"));
-const Reports = lazy(() => import("../pages/reports/Reports"));
+const Analysis = lazy(() => import("../pages/analysis/Analysis"));
 const AddReminder = lazy(() => import("../pages/reminders/AddReminder"));
 const AddLog= lazy(() => import("../pages/logs/AddLog"));
 const LogDetails= lazy(() => import("../pages/logs/LogDetails"));
@@ -102,7 +102,7 @@ const router = createBrowserRouter([
       },
       {
         path: "reports",
-        element: lazy_load(Reports),
+        element: lazy_load(Analysis),
       },
       {
         path: "add-reminder",
