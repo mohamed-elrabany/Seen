@@ -21,7 +21,7 @@ export default function Home() {
   }, [params, t]); // Added t to dependency array
 
   return (
-    <main className="space-y-8">
+    <main className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8">
       <HomeHeader />
       <Chart setDate={setDate} />
       <div className="grid grid-cols-1 md:grid-cols-2 items-start justify-center gap-4">

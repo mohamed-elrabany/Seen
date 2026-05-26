@@ -102,7 +102,7 @@ export default function Settings() {
       animate="visible"
       exit="exit"
       variants={containerVariants}
-      className="space-y-8"
+      className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8"
     >
       <Header className="flex-col-between">
         <div className="w-full flex-col-start gap-4 mb-6">

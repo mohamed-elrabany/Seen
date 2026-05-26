@@ -14,7 +14,7 @@ export default function Analysis(){
     const [analysisData, setAnalysisData] = useState(data);
 
     return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8">
         <AnalysisHeader analysisData={data} />
         <DurationSelector duration={duration} setDuration={setDuration} range={timeRange} setRange={setTimeRange} />
         <GlucoseStatus analysisData={analysisData} />

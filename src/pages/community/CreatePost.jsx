@@ -1,4 +1,4 @@
-import { GoImage } from "react-icons/go";
+import AddImageIcon from "../../components/ui/AddImageIcon";
 import { IoArrowBack, IoClose } from "react-icons/io5";
 import { CgSpinner } from "react-icons/cg";
 
@@ -179,7 +179,7 @@ export default function CreatePost() {
                   : "w-9 h-9 bg-[#6976EB]"
               }`}
             >
-              <GoImage
+              <AddImageIcon
                 className={`text-white ${
                   post.images.length === 0 ? "w-10 h-10" : "w-6 h-6"
                 }`}

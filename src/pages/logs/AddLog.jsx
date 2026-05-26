@@ -181,7 +181,7 @@ export default function AddLog() {
   console.log("Current Log Data:", logData); // Debugging log to check form data in real-time
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8">
       <IconHeader icon={GlucoseIcon} title={t("logs.add-edit-log.add-title")} />
 
       <form

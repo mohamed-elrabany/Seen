@@ -22,7 +22,7 @@ export default function Community() {
 
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8">
       <HeaderBar />
       <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-8 py-8 items-start">
         <CategorySidebar
