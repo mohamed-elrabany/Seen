@@ -5,44 +5,54 @@ import { useSelector } from "react-redux";
 
 import Header from "../layout/Header";
 import HeaderCards from "../ui/HeaderCards";
+import Button from "../ui/Button";
 
 import { FiTarget } from "react-icons/fi";
 import { LuChartColumn } from "react-icons/lu";
 
-
 import { headerCardsContent as cards } from "../../util/content";
 
-export default function AnalysisHeader({analysisData}) {
+export default function AnalysisHeader({ analysisData }) {
   const { t } = useTranslation();
 
-  const cards=[
+  const cards = [
     {
-        icon: FiTarget,
-        value: analysisData?.a1c || "6.6%",
-        label: "A1C تقديري"
+      icon: FiTarget,
+      value: analysisData?.a1cEstimation ? `${analysisData.a1cEstimation}%` : "6.2%",
+      label: "A1C تقديري"
     },
     {
-        icon: LuChartColumn,
-        value: analysisData?.readings || "82",
-        label: "قراءات"
+      icon: LuChartColumn,
+      value: analysisData?.totalReadings || "82",
+      label: "قراءات"
     },
   ];
 
-
   return (
     <Header className="flex-col-between">
-      <div className="w-full flex-col-start gap-4 mb-6">
-        <div className="flex-center gap-4">
+      <div className="w-full flex flex-col justify-start items-center lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="w-auto lg:w-full flex-col-start gap-4 mb-6">
+          <div className="flex-center gap-4">
             <div className="p-4 rounded-full bg-[#161A41]/40 flex-center ">
-                <LuChartColumn className="text-white w-6 h-6" />
+              <LuChartColumn className="text-white w-6 h-6" />
             </div>
+            {/* Main Title Updated */}
             <h2 className="text-white mb-0">
-                التحليل و التقارير
+              مستوى السكر في الدم
             </h2>
+          </div>
+          {/* Subtitle Updated */}
+          <p className="text-white">
+            مراجعة وتحليل قياسات السكر الحالية والسابقة
+          </p>
         </div>
-        <p className="text-white">
-          تحليل شامل لبياناتك الصحية
-        </p>
+        
+        {/* Action Button Label Updated */}
+        <Button
+          className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap"
+        >
+          <p className="text-white w-full">كل القراءات</p>
+        </Button>
       </div>
 
       <motion.div
@@ -54,7 +64,6 @@ export default function AnalysisHeader({analysisData}) {
             <HeaderCards
               icon={card.icon}
               value={card.value}
-              // This correctly resolves homePage.header.cards.currentReading etc.
               label={t(card.label)}
             />
           </motion.div>

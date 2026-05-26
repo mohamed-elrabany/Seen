@@ -245,3 +245,54 @@ export const posts = [
     comments: commentsData,
   },
 ];
+
+
+export const analysisData = {
+  lowestGlucose: 86,
+  avgGlucose: 139,
+  highestGlucose: 232,
+  a1cEstimation: 6.2,
+  totalReadings: 82,
+  
+  glucoseReadings: {
+    duration: "أسبوعي",
+
+    // Fasting (6 readings)
+    fasting: [
+      { id: "f1", glucoseLevel: 114, timestamp: "2026-05-19T07:00:00Z" },
+      { id: "f2", glucoseLevel: 118, timestamp: "2026-05-20T07:15:00Z" },
+      { id: "f3", glucoseLevel: 86,  timestamp: "2026-05-21T07:00:00Z" },
+      { id: "f4", glucoseLevel: 121, timestamp: "2026-05-22T08:30:00Z" },
+      { id: "f5", glucoseLevel: 93,  timestamp: "2026-05-23T07:45:00Z" },
+      { id: "f7", glucoseLevel: 112, timestamp: "2026-05-25T08:00:00Z" } // Day 24 missing
+    ],
+
+    // Pre-Meal (7 readings)
+    pre_meal: [
+      { id: "pr1", glucoseLevel: 122, timestamp: "2026-05-19T12:30:00Z" },
+      { id: "pr2", glucoseLevel: 133, timestamp: "2026-05-20T13:00:00Z" },
+      { id: "pr3", glucoseLevel: 130, timestamp: "2026-05-21T12:00:00Z" },
+      { id: "pr4", glucoseLevel: 178, timestamp: "2026-05-22T13:15:00Z" },
+      { id: "pr5", glucoseLevel: 139, timestamp: "2026-05-23T12:45:00Z" },
+      { id: "pr6", glucoseLevel: 101, timestamp: "2026-05-24T13:00:00Z" },
+      { id: "pr7", glucoseLevel: 126, timestamp: "2026-05-25T12:30:00Z" }
+    ],
+
+    // Post-Meal (Only 5 readings)
+    post_meal: [
+      { id: "pm1", glucoseLevel: 156, timestamp: "2026-05-19T15:30:00Z" },
+      { id: "pm2", glucoseLevel: 176, timestamp: "2026-05-20T16:00:00Z" },
+      { id: "pm3", glucoseLevel: 181, timestamp: "2026-05-21T15:45:00Z" },
+      { id: "pm4", glucoseLevel: 153, timestamp: "2026-05-22T16:15:00Z" },
+      { id: "pm5", glucoseLevel: 232, timestamp: "2026-05-23T15:00:00Z" } // Days 24 and 25 missing
+    ],
+
+    // Random (4 readings)
+    random: [
+      { id: "r1", glucoseLevel: 164, timestamp: "2026-05-19T21:00:00Z" },
+      { id: "r2", glucoseLevel: 166, timestamp: "2026-05-20T22:30:00Z" },
+      { id: "r5", glucoseLevel: 159, timestamp: "2026-05-23T22:00:00Z" },
+      { id: "r6", glucoseLevel: 175, timestamp: "2026-05-24T21:30:00Z" }
+    ]
+  }
+};
