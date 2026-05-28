@@ -19,14 +19,14 @@ export default function UserChatHeader({ user, onBackClick }) {
     "border-2 border-gray-300";
 
   return (
-    <div className="flex items-center gap-4 p-4 border-b border-gray-200 dark:border-white/10 bg-white dark:bg-[#161A41] w-full">
+    <div className="flex items-center gap-4 p-4 mt-30 lg:mt-0 border-b border-gray-200 dark:border-white/10 bg-white dark:bg-[#161A41] w-full">
       
       {/* 1. Back Navigation Button: 
          - `rtl:rotate-180` flips the left arrow to face right when the document dir="rtl"
       */}
       <button 
         onClick={() => navigate(-1)}
-        className="p-1 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full transition-colors duration-200 text-[#161A41] dark:text-white"
+        className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors duration-200 text-[#161A41] dark:text-white"
         aria-label="Back"
       >
         <IoChevronBack className="text-2xl transform rtl:rotate-180" />

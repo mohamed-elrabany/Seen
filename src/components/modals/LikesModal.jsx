@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { FaHeart } from "react-icons/fa";
+import { getBorderColor } from "../../util/community/ctaegoryColors";
 
 const containerVariants = {
   hidden: { opacity: 0 },

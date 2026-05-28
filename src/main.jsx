@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { store } from './store/store.js'
 import { Provider } from 'react-redux'
 import QueryProvider from './providers/QueryProvider.jsx'
+import { EchoProvider } from './providers/EchoProvider.jsx'
 
 import './index.css'
 import App from './App.jsx'
@@ -13,9 +14,11 @@ import 'react-step-progress-bar'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <QueryProvider>
-        <App />
-      </QueryProvider>
+      <EchoProvider>
+        <QueryProvider>
+          <App />
+        </QueryProvider>
+      </EchoProvider>
     </Provider>
   </StrictMode>,
 )
