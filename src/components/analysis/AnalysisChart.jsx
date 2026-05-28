@@ -148,10 +148,10 @@ const CustomTooltip = ({ active, payload, activeType }) => {
 
     // Map internal key strings back to clean category tags
     const typeLabels = {
-      fasting: "صائم",
-      pre_meal: "قبل الأكل",
-      post_meal: "بعد الأكل",
-      random: "عشوائي",
+      fasting: "analysis.types.fasting",
+      pre_meal: "analysis.types.preMeal",
+      post_meal: "analysis.types.postMeal",
+      random: "analysis.types.random",
     };
     const currentTypeName = typeLabels[activePayloadItem.name] || "";
 
@@ -159,7 +159,7 @@ const CustomTooltip = ({ active, payload, activeType }) => {
       <div className="bg-white dark:bg-[#1F1A5F] border border-[#D9D9D9]/30 dark:border-white/10 p-3 rounded-xl shadow-xl z-50 text-right">
         {/* Shows Reading Type Label instead of Time Stamp */}
         <p className="text-sm font-medium text-gray-400 mb-1">
-          {currentTypeName}
+          {t(currentTypeName)}
         </p>
 
         <p className="text-sm font-bold" style={{ color: activePayloadItem.color }}>

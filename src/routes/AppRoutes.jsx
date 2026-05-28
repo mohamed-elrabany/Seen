@@ -102,7 +102,7 @@ const router = createBrowserRouter([
         element: lazy_load(Chats),
       },
       {
-        path: "chats/:userId",
+        path: "chats/:receiverId",
         element: lazy_load(UserChat),
       },
       {

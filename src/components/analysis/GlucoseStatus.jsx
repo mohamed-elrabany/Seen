@@ -1,21 +1,23 @@
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { PiPulseBold } from "react-icons/pi";
+import { useTranslation } from "react-i18next";
 
 export default function GlucoseStatus({ analysisData }) {
+    const { t } = useTranslation();
     // Array defined inside to smoothly fallback to defaults if analysisData is missing
     const highLowCards = [
         {
-            title: "أعلى قراءة جلوكوز",
+            title: t("analysis.highest"),
             value: analysisData?.highestGlucose || "320",
             icon: FaArrowTrendUp,
         },
         {
-            title: "أدنى قراءة جلوكوز",
+            title: t("analysis.lowest"),
             value: analysisData?.lowestGlucose || "80",
             icon: FaArrowTrendDown,
         },
         {
-            title: "متوسط قراءات السكر",
+            title: t("analysis.avg"),
             value: analysisData?.avgGlucose || "128",
             icon: PiPulseBold,
         },

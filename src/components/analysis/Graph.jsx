@@ -2,16 +2,18 @@ import Button from "../ui/Button";
 import AnalysisChart from "./AnalysisChart";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const BUTTONS_CONFIG = [
-  { id: "All", label: "الكل" },
-  { id: "Fasting", label: "صائم" },
-  { id: "Before Meal", label: "قبل الأكل" },
-  { id: "After Meal", label: "بعد الأكل" },
-  { id: "Random", label: "عشوائي" },
+  { id: "All", label: "analysis.types.all" },
+  { id: "Fasting", label: "analysis.types.fasting" },
+  { id: "Before Meal", label: "analysis.types.preMeal" },
+  { id: "After Meal", label: "analysis.types.postMeal" },
+  { id: "Random", label: "analysis.types.random" },
 ];
 
 export default function Graph({ readings }) {
+  const { t } = useTranslation();
   const [activeType, setActiveType] = useState("All");
 
   return (
@@ -28,7 +30,7 @@ export default function Graph({ readings }) {
                 ${isSelected ? "bg-[#6976EB] text-white" : "text-[#6976EB] hover:bg-[#6976EB]/10"}
               `}
             >
-              {btn.label}
+              {t(btn.label)}
             </Button>
           );
         })}

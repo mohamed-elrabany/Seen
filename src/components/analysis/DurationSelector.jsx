@@ -2,15 +2,17 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 
 const BUTTONS_CONFIG = [
-    { id: "weekly", label: "أسبوعي" },
-    { id: "monthly", label: "شهري" },
-    { id: "custom", label: "مخصص" }
+    { id: "weekly", label: "analysis.weekly" },
+    { id: "monthly", label: "analysis.monthly" },
+    { id: "custom", label: "analysis.custom" }
 ];
 
 export default function DurationSelector({ duration, setDuration, range, setRange }) {
+    const { t } = useTranslation();
     return (
         <div className="w-full space-y-4">
             <div className="w-full grid grid-cols-3 justify-center items-center gap-4">
@@ -30,7 +32,7 @@ export default function DurationSelector({ duration, setDuration, range, setRang
                                 }
                             `}
                         >
-                            {btn.label}
+                            {t(btn.label)}
                         </Button>
                     );
                 })}
@@ -46,14 +48,14 @@ export default function DurationSelector({ duration, setDuration, range, setRang
                         className="w-full py-4 grid grid-cols-2 gap-4 items-center justify-center"
                     >
                         <Input
-                        label="من"
+                        label={t("analysis.from")}
                         type="date"
                         value={range.start || ""}
                         min={range.end ? new Date(range.end) : undefined}
                         onChange={(e) => setRange({ ...range, start: e.target.value })}
                          />
                         <Input
-                        label="إلى"
+                        label={t("analysis.to")}
                         type="date"
                         value={range.end || ""}
                         max={range.start ? new Date(range.start) : undefined}

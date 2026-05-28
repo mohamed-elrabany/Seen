@@ -1,5 +1,6 @@
 import { TbChecks } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
+import { formatDisplayedTime } from "../../util/formatDiplayedDate";
 
 export default function MessageBubble({ cardData, message, isOwnMessage, isRead }) {
   const { t, i18n } = useTranslation();
@@ -25,7 +26,7 @@ export default function MessageBubble({ cardData, message, isOwnMessage, isRead 
           isOwnMessage ? "order-2" : "order-1"
         }`}
       >
-        <img src={cardData?.user?.profile_picture} alt="profile_picture" className="w-full h-full object-cover" />
+        <img src={cardData?.user1?.profile_picture} alt="profile_picture" className="w-full h-full object-cover" />
       </div>
 
       {/* Message Content & Timestamp Container */}
@@ -38,14 +39,14 @@ export default function MessageBubble({ cardData, message, isOwnMessage, isRead 
               : "bg-[#D7DAF3] text-[#161A41] rounded-ss-none"
           }`}
         >
-          {message}
+          {message.message}
         </p>
 
         {/* 3. Metadata (Time & Status checkmarks):
           - Uses a standard row layout. The checkmark sits naturally next to the time based on reading direction.
         */}
         <div className={`flex items-center gap-4 text-xs text-[#808080] dark:text-gray-400 ${isOwnMessage ? "flex-row-reverse" : ""}`}>
-          <p>06:45 م</p>
+          <p>{formatDisplayedTime(message.created_at)}</p>
           <TbChecks className={`text-sm w-4 h-4 ${isRead ? "text-[#6976EB]" : "text-[#808080] dark:text-gray-400"}`} />
 
         </div>

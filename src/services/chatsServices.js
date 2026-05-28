@@ -5,16 +5,14 @@ async function handleRequest(request) {
     const response = await request;
     return response.data.data;
   } catch (error) {
-    return {
-      error: error?.response?.data?.message || "Something went wrong!",
-    };
+    throw new Error(error?.response?.data?.message || "Something went wrong!");
   }
 }
 
 // ─── Conversations ─────────────────────────────────────────────
 
-export function getConversations() {
-  return handleRequest(api.get("/conversations"));
+export function getConversations(page = 1) {
+  return handleRequest(api.get("/conversations", { params: { page } }));
 }
 
 export function getConversationById(conversation_id) {
@@ -23,12 +21,29 @@ export function getConversationById(conversation_id) {
 
 // ─── Messages ──────────────────────────────────────────────────
 
-export function getOldMessages(receiver_id, page = 1) {
-  return handleRequest(
-    api.get(`/messages/chat/${receiver_id}`, {
-      params: { page },
+// export function getChatMessages(receiver_id, page = 1) {
+//   return handleRequest(
+//     api.get(`/messages/chat/${receiver_id}`, {
+//       params: { page },
+//     }),
+//   );
+// }
+
+export function getChatMessages(receiver_id, page = 1) {
+  return api
+    .get(`/messages/chat/${receiver_id}`, { params: { page } })
+    .then((res) => {
+      // No conversation yet — backend returns { success: true, data: [] }
+      if (res.data.success === true) {
+        return { current_page: 1, last_page: 1, data: [] };
+      }
+      // Has messages — backend returns raw Laravel paginator
+      // { current_page, last_page, data: [...messages] }
+      return res.data;
     })
-  );
+    .catch((error) => {
+      throw new Error(error?.response?.data?.message || "Something went wrong!");
+    });
 }
 
 // export function sendMessage(receiver_id, message, file = null) {
@@ -53,7 +68,7 @@ export function sendMessage(receiver_id, message) {
     api.post("/messages", {
       receiver_id,
       message,
-    })
+    }),
   );
 }
 
@@ -69,16 +84,16 @@ export function deleteMessage(message_id) {
 
 export function markAsRead(conversation_id) {
   return handleRequest(
-    api.post(`/conversations/${conversation_id}/mark-as-read`)
+    api.post(`/conversations/${conversation_id}/mark-as-read`),
   );
 }
 
 // ─── Search For Friends ─────────────────────────────────────────────
 
-export function friendsSearch(query, page){
-    return handleRequest(
-        api.get("/search/friends", {
-            params: { query, page }
-        })
-    );
+export function friendsSearch(query, page) {
+  return handleRequest(
+    api.get("/search/friends", {
+      params: { query, page },
+    }),
+  );
 }

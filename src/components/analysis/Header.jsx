@@ -19,12 +19,12 @@ export default function AnalysisHeader({ analysisData }) {
     {
       icon: FiTarget,
       value: analysisData?.a1cEstimation ? `${analysisData.a1cEstimation}%` : "6.2%",
-      label: "A1C تقديري"
+      label: "analysis.header.a1c"
     },
     {
       icon: LuChartColumn,
       value: analysisData?.totalReadings || "82",
-      label: "قراءات"
+      label: "analysis.header.readings"
     },
   ];
 
@@ -38,12 +38,12 @@ export default function AnalysisHeader({ analysisData }) {
             </div>
             {/* Main Title Updated */}
             <h2 className="text-white mb-0">
-              مستوى السكر في الدم
+              {t("analysis.header.title")}
             </h2>
           </div>
           {/* Subtitle Updated */}
           <p className="text-white">
-            مراجعة وتحليل قياسات السكر الحالية والسابقة
+           {t("analysis.header.description")}
           </p>
         </div>
         
@@ -51,7 +51,7 @@ export default function AnalysisHeader({ analysisData }) {
         <Button
           className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap"
         >
-          <p className="text-white w-full">كل القراءات</p>
+          <p className="text-white w-full">{t("analysis.header.button")}</p>
         </Button>
       </div>
 

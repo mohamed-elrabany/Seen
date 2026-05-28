@@ -42,7 +42,8 @@
       "chats": "Chats",
       "assistant": "Smart Assistant",
       "profile": "Profile",
-      "settings": "Settings"
+      "settings": "Settings",
+      "notifications": "Notifications"
     },
     "buttons": {
       "darkMode": "Dark Mode",
@@ -667,6 +668,56 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "submitting": "Deleting Post"
+    },
+    "search":{
+      "title": "Search",
+      "placeholder":"Search for posts or people...",
+      "posts":"Posts",
+      "profiles": "Profiles",
+      "results": "Results",
+      "empty": {
+        "title": "No {{type}} found",
+        "description": "Try a different search term."
+      }
+    }
+  },
+  "chats":{
+    "title": "Chats",
+    "searchPlaceholder": "Search for conversations...",
+    "inputPlaceholder": "Type your message here...",
+      "empty":{
+        "conv":{
+          "title": "No conversations yet",
+          "description": "Start a conversation by sending a message to someone!"
+        },
+        "messages":{
+          "title": "No messages yet",
+           "description": "Be the first to send a message in this conversation!"
+      }
+    }
+  },
+  "analysis":{
+    "header":{
+      "title":"Blood Sugar Level",
+      "description":"A comprehensive analysis of your health data with detailed reports and a clear insight into your health status",
+      "button": "All Readings",
+      "a1c":"Estimated A1C",
+      "readings":"Readings"
+    },
+    "weekly":"Weekly",
+    "monthly":"Monthly",
+    "custom":"Custom",
+    "from":"From",
+    "to":"To",
+    "lowest": "Lowest Glucose Reading",
+    "highest": "Highest Glucose Reading",
+    "avg": "Average Blood Sugar",
+    "types": {
+      "all": "All",
+      "fasting": "Fasting",
+      "preMeal": "Before Meal",
+      "postMeal": "After Meal",
+      "random": "Random"
     }
   }
 }

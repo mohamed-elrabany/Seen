@@ -11,7 +11,7 @@ const EchoContext = createContext(null);
 export function EchoProvider({ children }) {
   const echoRef = useRef(null);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // adjust to your slice
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -29,9 +29,9 @@ export function EchoProvider({ children }) {
       wsHost: import.meta.env.VITE_REVERB_HOST,
       wsPort: import.meta.env.VITE_REVERB_PORT,
       wssPort: import.meta.env.VITE_REVERB_PORT,
-      forceTLS: true,
-      enabledTransports: ["wss"],
-      authEndpoint: import.meta.env.VITE_API_BASE_URL + "/broadcasting/auth",
+      forceTLS: false, // ← http, not https
+      enabledTransports: ["ws"], // ← ws, not wss
+      authEndpoint: import.meta.env.VITE_REVERB_AUTH_ENDPOINT, // ← your Laravel auth endpoint
       auth: {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -39,6 +39,9 @@ export function EchoProvider({ children }) {
         },
       },
     });
+    echoRef.current.connector.pusher.connection.bind("state_change", (states) => {
+  console.log("🔌 Connection state:", states.previous, "→", states.current);
+});
 
     return () => {
       if (echoRef.current) {
@@ -49,9 +52,7 @@ export function EchoProvider({ children }) {
   }, [isAuthenticated]);
 
   return (
-    <EchoContext.Provider value={echoRef}>
-      {children}
-    </EchoContext.Provider>
+    <EchoContext.Provider value={echoRef}>{children}</EchoContext.Provider>
   );
 }
 
