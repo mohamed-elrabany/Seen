@@ -31,8 +31,8 @@ export default function ConversationCard({ cardData }) {
         ease: "easeOut",
         stiffness: 0.2,
       }}
-      className={`grid grid-cols-5 items-center gap-2 p-4 rounded-lg shadow-lg cursor-pointer
-        bg-white dark:bg-white/10 border transition-colors duration-300
+      className={`grid grid-cols-5 items-center gap-2 p-8 rounded-xl shadow-lg cursor-pointer
+        bg-white dark:bg-white/5 border transition-colors duration-300
         ${isRead ? "border-[#D9D9D9]/30 dark:border-white/10" : "border-[#6976EB]"}
         `}
       onClick={() => navigate(`/chats/${otherUser.id}`)}

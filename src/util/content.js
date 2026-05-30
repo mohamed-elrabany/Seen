@@ -66,22 +66,22 @@ export const headerCardsContent = [
   {
     icon: PiPulseBold,
     value: 128,
-    label: 'homePage.header.cards.currentReading',
+    label: "homePage.header.cards.currentReading",
   },
   {
     icon: IoBarChart,
     value: 132,
-    label: 'homePage.header.cards.weeklyAverage',
+    label: "homePage.header.cards.weeklyAverage",
   },
   {
     icon: SlEnergy,
     value: 12,
-    label: 'homePage.header.cards.streak',
+    label: "homePage.header.cards.streak",
   },
   {
     icon: FaRegHeart,
     value: "85%",
-    label: 'homePage.header.cards.timeInRange',
+    label: "homePage.header.cards.timeInRange",
   },
 ];
 
@@ -95,7 +95,7 @@ const commentsData = [
     user: {
       full_name: "Ahmed Ali",
       profile_picture: "https://i.pravatar.cc/150?img=5",
-      diabetes_type: "type1"
+      diabetes_type: "type1",
     },
   },
   {
@@ -107,7 +107,7 @@ const commentsData = [
     user: {
       full_name: "Mona Hassan",
       profile_picture: "https://i.pravatar.cc/150?img=6",
-      diabetes_type: "type2"
+      diabetes_type: "type2",
     },
   },
   {
@@ -119,7 +119,7 @@ const commentsData = [
     user: {
       full_name: "Youssef Khaled",
       profile_picture: "https://i.pravatar.cc/150?img=7",
-      diabetes_type: "gestational"
+      diabetes_type: "gestational",
     },
   },
 ];
@@ -136,8 +136,12 @@ export const posts = [
     isLiked: false,
     comments_count: 3,
     // DYNAMIC: This will always show "Just now" or "less than a minute"
-    created_at: new Date().toISOString(), 
-    user: { full_name: "Ahmed Ali", profile_picture: "https://i.pravatar.cc/150?img=1", diabetes_type: "type2" },
+    created_at: new Date().toISOString(),
+    user: {
+      full_name: "Ahmed Ali",
+      profile_picture: "https://i.pravatar.cc/150?img=1",
+      diabetes_type: "type2",
+    },
     hashtags: ["#health", "#صحة", "#fitness"],
     comments: commentsData,
   },
@@ -152,8 +156,12 @@ export const posts = [
     isLiked: true,
     comments_count: 25000,
     // STATIC: Set to ~5 minutes ago from current system time
-    created_at: "2026-04-20T05:25:00.000Z", 
-    user: { full_name: "Mohamed Hassan", profile_picture: "https://i.pravatar.cc/150?img=2", diabetes_type: "type1" },
+    created_at: "2026-04-20T05:25:00.000Z",
+    user: {
+      full_name: "Mohamed Hassan",
+      profile_picture: "https://i.pravatar.cc/150?img=2",
+      diabetes_type: "type1",
+    },
     hashtags: ["#Type1", "#تجربة", "#Control"],
     comments: commentsData,
   },
@@ -164,7 +172,7 @@ export const posts = [
     images: [
       "https://picsum.photos/300/200?random=1",
       "https://picsum.photos/300/200?random=2",
-      "https://picsum.photos/300/200?random=3"
+      "https://picsum.photos/300/200?random=3",
     ],
     category: "type2",
     isOwner: false,
@@ -172,8 +180,12 @@ export const posts = [
     isLiked: false,
     comments_count: 100,
     // STATIC: Set to ~2 hours ago
-    created_at: "2026-04-20T03:30:00.000Z", 
-    user: { full_name: "Sara Mohamed", profile_picture: "https://i.pravatar.cc/150?img=3", diabetes_type: "type2" },
+    created_at: "2026-04-20T03:30:00.000Z",
+    user: {
+      full_name: "Sara Mohamed",
+      profile_picture: "https://i.pravatar.cc/150?img=3",
+      diabetes_type: "type2",
+    },
     hashtags: ["#Type2", "#أكل_صحي"],
     comments: commentsData,
   },
@@ -188,8 +200,12 @@ export const posts = [
     isLiked: true,
     comments_count: 1024,
     // STATIC: Set to Yesterday
-    created_at: "2026-04-19T10:00:00.000Z", 
-    user: { full_name: "Omar Khaled", profile_picture: "https://i.pravatar.cc/150?img=4", diabetes_type: "lada" },
+    created_at: "2026-04-19T10:00:00.000Z",
+    user: {
+      full_name: "Omar Khaled",
+      profile_picture: "https://i.pravatar.cc/150?img=4",
+      diabetes_type: "lada",
+    },
     hashtags: ["#LADA", "#Diabetes", "#تجربة"],
     comments: commentsData,
   },
@@ -203,8 +219,12 @@ export const posts = [
     likes_count: 30215,
     isLiked: false,
     comments_count: 2500,
-    created_at: "2026-04-05T12:00:00.000Z", 
-    user: { full_name: "Nour Ahmed", profile_picture: "https://i.pravatar.cc/150?img=5", diabetes_type: "mody" },
+    created_at: "2026-04-05T12:00:00.000Z",
+    user: {
+      full_name: "Nour Ahmed",
+      profile_picture: "https://i.pravatar.cc/150?img=5",
+      diabetes_type: "mody",
+    },
     hashtags: ["#MODY", "#Rare", "#نادر"],
     comments: commentsData,
   },
@@ -224,8 +244,12 @@ export const posts = [
     isLiked: true,
     comments_count: 120,
     // STATIC: Today, but 10 hours ago
-    created_at: "2026-04-19T19:30:00.000Z", 
-    user: { full_name: "Fatma Ali", profile_picture: "https://i.pravatar.cc/150?img=6", diabetes_type: "gestational" },
+    created_at: "2026-04-19T19:30:00.000Z",
+    user: {
+      full_name: "Fatma Ali",
+      profile_picture: "https://i.pravatar.cc/150?img=6",
+      diabetes_type: "gestational",
+    },
     hashtags: ["#Gestational", "#حملي", "#Pregnancy"],
     comments: commentsData,
   },
@@ -239,13 +263,16 @@ export const posts = [
     likes_count: 10000,
     isLiked: true,
     comments_count: 1200,
-    created_at: "2026-04-07T08:00:00.000Z", 
-    user: { full_name: "You", profile_picture: "https://i.pravatar.cc/150?img=7", diabetes_type: "type1" },
+    created_at: "2026-04-07T08:00:00.000Z",
+    user: {
+      full_name: "You",
+      profile_picture: "https://i.pravatar.cc/150?img=7",
+      diabetes_type: "type1",
+    },
     hashtags: ["#Tips", "#نصائح", "#Health"],
     comments: commentsData,
   },
 ];
-
 
 export const analysisData = {
   lowestGlucose: 86,
@@ -253,7 +280,7 @@ export const analysisData = {
   highestGlucose: 232,
   a1cEstimation: 6.2,
   totalReadings: 82,
-  
+
   glucoseReadings: {
     duration: "أسبوعي",
 
@@ -261,10 +288,10 @@ export const analysisData = {
     fasting: [
       { id: "f1", glucoseLevel: 114, timestamp: "2026-05-19T07:00:00Z" },
       { id: "f2", glucoseLevel: 118, timestamp: "2026-05-20T07:15:00Z" },
-      { id: "f3", glucoseLevel: 86,  timestamp: "2026-05-21T07:00:00Z" },
+      { id: "f3", glucoseLevel: 86, timestamp: "2026-05-21T07:00:00Z" },
       { id: "f4", glucoseLevel: 121, timestamp: "2026-05-22T08:30:00Z" },
-      { id: "f5", glucoseLevel: 93,  timestamp: "2026-05-23T07:45:00Z" },
-      { id: "f7", glucoseLevel: 112, timestamp: "2026-05-25T08:00:00Z" } // Day 24 missing
+      { id: "f5", glucoseLevel: 93, timestamp: "2026-05-23T07:45:00Z" },
+      { id: "f7", glucoseLevel: 112, timestamp: "2026-05-25T08:00:00Z" }, // Day 24 missing
     ],
 
     // Pre-Meal (7 readings)
@@ -275,7 +302,7 @@ export const analysisData = {
       { id: "pr4", glucoseLevel: 178, timestamp: "2026-05-22T13:15:00Z" },
       { id: "pr5", glucoseLevel: 139, timestamp: "2026-05-23T12:45:00Z" },
       { id: "pr6", glucoseLevel: 101, timestamp: "2026-05-24T13:00:00Z" },
-      { id: "pr7", glucoseLevel: 126, timestamp: "2026-05-25T12:30:00Z" }
+      { id: "pr7", glucoseLevel: 126, timestamp: "2026-05-25T12:30:00Z" },
     ],
 
     // Post-Meal (Only 5 readings)
@@ -284,7 +311,7 @@ export const analysisData = {
       { id: "pm2", glucoseLevel: 176, timestamp: "2026-05-20T16:00:00Z" },
       { id: "pm3", glucoseLevel: 181, timestamp: "2026-05-21T15:45:00Z" },
       { id: "pm4", glucoseLevel: 153, timestamp: "2026-05-22T16:15:00Z" },
-      { id: "pm5", glucoseLevel: 232, timestamp: "2026-05-23T15:00:00Z" } // Days 24 and 25 missing
+      { id: "pm5", glucoseLevel: 232, timestamp: "2026-05-23T15:00:00Z" }, // Days 24 and 25 missing
     ],
 
     // Random (4 readings)
@@ -292,7 +319,54 @@ export const analysisData = {
       { id: "r1", glucoseLevel: 164, timestamp: "2026-05-19T21:00:00Z" },
       { id: "r2", glucoseLevel: 166, timestamp: "2026-05-20T22:30:00Z" },
       { id: "r5", glucoseLevel: 159, timestamp: "2026-05-23T22:00:00Z" },
-      { id: "r6", glucoseLevel: 175, timestamp: "2026-05-24T21:30:00Z" }
-    ]
-  }
+      { id: "r6", glucoseLevel: 175, timestamp: "2026-05-24T21:30:00Z" },
+    ],
+  },
 };
+
+export const mockNotifications = [
+  {
+    id: 1,
+    type: "reminder",
+    time: "2026-05-30T05:00:00Z",
+    reminderName: "ميعاد جرعة الأنسولين القادمة",
+  },
+  {
+    id: 2,
+    type: "comment",
+    time: "2026-05-30T06:42:12Z",
+    senderName: "سارة أحمد",
+    postTitle: "نصائح لمرضى السكري",
+  },
+  {
+    id: 3,
+    type: "glucose",
+    time: "2026-05-30T07:00:00Z",
+    glucoseLevel: 180,
+  },
+  {
+    id: 4,
+    type: "like",
+    time: "2026-05-30T07:15:00Z", // UTC Form
+    senderName: "أحمد محمد",
+  },
+
+  {
+    id: 5,
+    type: "system",
+    time: "2026-05-29T21:30:00Z",
+    version: "v2.1.0",
+  },
+  {
+    id: 6,
+    type: "message",
+    time: "2026-05-29T18:14:22Z",
+    senderName: "د. خالد عبد العزيز",
+  },
+  {
+    id: 7,
+    type: "follow",
+    time: "2026-05-29T12:00:05Z",
+    senderName: "منى علي",
+  },
+];

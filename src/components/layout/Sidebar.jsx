@@ -5,10 +5,11 @@ import { GoHome } from "react-icons/go";
 import { LuChartColumn } from "react-icons/lu";
 import { RiRobot3Line } from "react-icons/ri";
 import { BsPerson } from "react-icons/bs";
-import { MdOutlineLogout } from "react-icons/md";
+import { MdOutlineLogout, MdNotifications } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
+import CommunityIcon from "../ui/CommunityIcon";
 
 import { useEffect, useState, useRef, use } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -95,7 +96,7 @@ export default function Sidebar() {
     {
       to: "/community",
       label: t("sidebar.nav.community"),
-      icon: <LuChartColumn className="w-5 h-5" />,
+      icon: <CommunityIcon className="w-5 h-5" />,
     },
     {
       to: "/chats",
@@ -106,6 +107,11 @@ export default function Sidebar() {
       to: "/assistant",
       label: t("sidebar.nav.assistant"),
       icon: <RiRobot3Line className="w-5 h-5" />,
+    },
+    {
+      to: "/notifications",
+      label: t("sidebar.nav.notifications"),
+      icon: <MdNotifications className="w-5 h-5" />,
     },
     {
       to: "/profile",

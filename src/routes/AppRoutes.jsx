@@ -22,6 +22,7 @@ const Analysis = lazy(() => import("../pages/analysis/Analysis"));
 const AddReminder = lazy(() => import("../pages/reminders/AddReminder"));
 const AddLog= lazy(() => import("../pages/logs/AddLog"));
 const LogDetails= lazy(() => import("../pages/logs/LogDetails"));
+const Notifications = lazy(() => import("../pages/notifications/Notifications"));
 
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
       {
         path: "logs/:logId",
         element: lazy_load(LogDetails),
+      },
+      {
+        path: "notifications",
+        element: lazy_load(Notifications),
       },
     ],
   },
