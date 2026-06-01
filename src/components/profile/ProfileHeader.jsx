@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next"; // Added
+import { useTranslation } from "react-i18next";
 import Button from "../ui/Button";
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast"; // Make sure toast is imported!
 
-import { sendRequest, acceptRequest } from "../../services/communityServices";
+// Added "reject" if it exists in your service, or replace it with your actual service endpoint
+import { sendRequest, acceptRequest, removeFriend } from "../../services/communityServices";
 import {
   profileTagStyling,
   getBorderColor,
@@ -20,44 +22,63 @@ import {
   BsFillPersonCheckFill,
   BsFillPersonXFill,
   BsFillPersonPlusFill,
+  BsFillPersonDashFill
 } from "react-icons/bs";
 import { MdOutlineBlock } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
 
-export default function ProfileHeader({ userId, isOwnProfile, openModal }) {
-  const { t } = useTranslation(); // Initialize
+export default function ProfileHeader({ currentUser, userId, isOwnProfile, blockModal, removeModal }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.user);
-  // Debugging log
-  const userName = user?.first_name
-    ? `${user.first_name} ${user.last_name}`
-    : "username";
-  const diabetesType = user?.diabetes_type.toLowerCase() || "gestational";
+  
+  // Normalize fallback to "add_friend" if no relation status exists yet
+  const [friendStatus, setFriendStatus] = useState(currentUser?.relation_status || "add_friend"); 
+  const [friendsCount, setFriendsCount] = useState(currentUser?.friends_count || 0);
+  
+  // Sync state if currentUser prop changes dynamically
+  useEffect(() => {
+    if (currentUser) {
+      setFriendStatus(currentUser.relation_status || "add_friend");
+      setFriendsCount(currentUser.friends_count || 0);
+    }
+  }, [currentUser]);
 
+  const diabetesType = currentUser?.diabetes_type?.toLowerCase() || "gestational";
   const categoryColor = profileTagStyling(diabetesType);
   const profileBorderColor = getBorderColor(diabetesType);
  
   async function handleSendRequest() {
     try {
-      const result = await sendRequest(userId);
-      console.log("Friend request sent successfully:", result);
-      toast.success("Friend request sent successfully!"); // Show success message
+      await sendRequest(userId);
+      toast.success("Friend request sent successfully!");
+      setFriendStatus("pending_sent"); // Matches your JSX condition
     } catch (error) {
       console.error("Error sending friend request:", error);
-      toast.error("Error sending friend request. Please try again."); // Show error message
-      // Optionally, show an error message to the user
+      toast.error("Error sending friend request. Please try again.");
     }
   }
 
   async function handleAcceptRequest() {
     try {
-      const result = await acceptRequest(userId);
-      console.log("Friend request accepted successfully:", result);
-      toast.success("Friend request accepted successfully!"); // Show success message
+      await acceptRequest(userId);
+      toast.success("Friend request accepted successfully!");
+      setFriendStatus("friends");
+      setFriendsCount((prevCount) => prevCount + 1);
     } catch (error) {
       console.error("Error accepting friend request:", error);
-      toast.error("Error accepting friend request. Please try again."); // Show error message
-      // Optionally, show an error message to the user
+      toast.error("Error accepting friend request. Please try again.");
+    }
+  }
+
+  async function handleReject() {
+    try {
+      // NOTE: Ensure 'removeFriend' or your actual backend rejection service is used here
+      await removeFriend(userId); 
+      toast.success("Friend request canceled/rejected!");
+      setFriendStatus("add_friend");
+    } catch (error) {
+      console.error("Error rejecting friend request:", error);
+      toast.error("Error executing action. Please try again.");
     }
   }
 
@@ -72,15 +93,9 @@ export default function ProfileHeader({ userId, isOwnProfile, openModal }) {
     >
       <div className="flex flex-col justify-center items-center md:flex-row gap-4">
         {/* profile photo */}
-        <div
-          className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}
-        >
-          {user?.profileImg ? (
-            <img
-              src={user.profileImg}
-              alt="Profile"
-              className="w-full h-full object-cover rounded-xl"
-            />
+        <div className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}>
+          {currentUser?.profile_picture ? (
+            <img src={currentUser.profile_picture} alt="Profile" className="w-full h-full object-cover rounded-xl" />
           ) : (
             <IoPerson className="w-16 h-16 text-gray-400" />
           )}
@@ -89,56 +104,21 @@ export default function ProfileHeader({ userId, isOwnProfile, openModal }) {
         {/* user info */}
         <div className="flex-col-center gap-2 mt-4">
           <h2 className="text-center text-[#161A41] dark:text-white">
-            {userName}
+            {currentUser?.full_name || "User Name"}
           </h2>
-
-          <p
-            className={`px-4 py-2 w-full text-center rounded-full font-bold ${categoryColor}`}
-          >
-            {/* Reusing the shared categories from earlier */}
+          <p className={`px-4 py-2 w-full text-center rounded-full font-bold ${categoryColor}`}>
             {t(`communityPage.shared.categories.${diabetesType}`)}
           </p>
 
-          <div className="flex items-center justify-center md:justify-start gap-6 mb-4">
-            <div className="flex-center gap-2">
-              <GoTrophy className="w-5 h-5 text-[#FFD700]" />
-              <span className="font-bold text-[#3B3D53] dark:text-gray-300">
-                {t("profilePage.header.points", { count: 5 })}
-              </span>
-            </div>
-            <div className="flex-center gap-2">
-              <LuFlame className="w-5 h-5 text-[#FF9800]" />
-              <span className="font-bold text-[#3B3D53] dark:text-gray-300">
-                {t("profilePage.header.streak", { count: "1,234" })}
-              </span>
-            </div>
-          </div>
-
           <div className="grid grid-cols-2 items-center justify-center md:justify-start gap-6 mb-4">
             <div className="flex-col-center">
-              <p className="font-bold text-2xl text-[#161A41] dark:text-white">
-                122
-              </p>
-              <span className="font-bold text-sm text-[#808080] dark:text-gray-400">
-                {t("profilePage.header.followers")}
-              </span>
+              <p className="font-bold text-2xl text-[#161A41] dark:text-white">{friendsCount}</p>
+              <span className="font-bold text-sm text-[#808080] dark:text-gray-400">Friends</span>
             </div>
             <div className="flex-col-center">
-              <p className="font-bold text-2xl text-[#161A41] dark:text-white">
-                67
-              </p>
-              <span className="font-bold text-sm text-[#808080] dark:text-gray-400">
-                {t("profilePage.header.following")}
-              </span>
+              <p className="font-bold text-2xl text-[#161A41] dark:text-white">{currentUser?.posts_count || 0}</p>
+              <span className="font-bold text-sm text-[#808080] dark:text-gray-400">Posts</span>
             </div>
-            {/* <div className="flex-col-center">
-              <p className="font-bold text-2xl text-[#161A41] dark:text-white">
-                37k
-              </p>
-              <span className="font-bold text-sm text-[#808080] dark:text-gray-400">
-                {t("profilePage.header.support")}
-              </span>
-            </div> */}
           </div>
         </div>
       </div>
@@ -147,11 +127,8 @@ export default function ProfileHeader({ userId, isOwnProfile, openModal }) {
       {isOwnProfile ? (
         <div className="flex flex-col gap-2 w-full md:w-auto">
           <Button
-            onClick={() => navigate(`/profile/edit/${user?.id || ":userId"}`)}
-            className="px-6 py-3 cursor-pointer rounded-xl text-white
-            bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695]
-            bg-[length:200%_auto] bg-left transition-all duration-500 ease-out
-            hover:bg-right active:scale-[0.98]"
+            onClick={() => navigate(`/profile/edit/${currentUser?.id || ":userId"}`)}
+            className="px-6 py-3 cursor-pointer rounded-xl text-white bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695] bg-[length:200%_auto] bg-left transition-all duration-500 ease-out hover:bg-right active:scale-[0.98]"
           >
             <FiEdit className="w-5 h-5" />
             <p>{t("profilePage.header.editAccount")}</p>
@@ -167,44 +144,75 @@ export default function ProfileHeader({ userId, isOwnProfile, openModal }) {
         </div>
       ) : (
         <div className="flex flex-col gap-2 w-full md:w-auto">
-          {userName && (
-              <Button
+          {friendStatus === "add_friend" && (
+            <Button
               onClick={handleSendRequest}
-              className="px-6 py-3 cursor-pointer rounded-xl text-white
-              bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695]
-              bg-[length:200%_auto] bg-left transition-all duration-500 ease-out
-              hover:bg-right active:scale-[0.98]"
+              className="px-6 py-3 cursor-pointer rounded-xl text-white bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695] bg-[length:200%_auto] bg-left transition-all duration-500 ease-out hover:bg-right active:scale-[0.98]"
             >
               <BsFillPersonPlusFill className="w-5 h-5" />
               <p>Add Friend</p>
             </Button>
           )}
-          
 
-          {userName && (
+          {friendStatus === "pending_sent" && (
+            <div className="flex justify-center items-center gap-2 w-full">
+              <Button
+                className="px-6 py-3 w-full cursor-not-allowed rounded-xl bg-[#808080]/10 text-[#808080] dark:bg-gray-400/10 dark:text-gray-400"
+                disabled
+              >
+                <FaUserClock className="w-5 h-5" />
+                <p>Pending</p>
+              </Button>
+              <Button
+                onClick={handleReject}
+                className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+              >
+                <BsFillPersonXFill className="w-5 h-5" />
+                <p>Cancel</p>
+              </Button>
+            </div>
+          )}
+
+          {friendStatus === "friends" && (
+            <div className="flex justify-center items-center gap-2 w-full">
+              <Button
+                className="px-6 py-3 w-full cursor-not-allowed rounded-xl bg-[#808080]/10 text-[#808080] dark:bg-gray-400/10 dark:text-gray-400"
+                disabled
+              >
+                <BsFillPersonCheckFill className="w-5 h-5" />
+                <p>Friends</p>
+              </Button>
+              <Button
+                onClick={removeModal}
+                className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+              >
+                <BsFillPersonDashFill className="w-5 h-5" />
+                <p>Remove</p>
+              </Button>
+            </div>
+          )}
+
+          {friendStatus === "pending_received" && (
             <div className="flex justify-center items-center gap-2 w-full">
               <Button
                 onClick={handleAcceptRequest}
-                className="px-6 py-3 w-full cursor-pointer rounded-xl text-white
-              bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695]
-              bg-[length:200%_auto] bg-left transition-all duration-500 ease-out
-            hover:bg-right active:scale-[0.98]"
-            >
-              <BsFillPersonCheckFill className="w-5 h-5" />
-              <p>Accept</p>
-            </Button>
-
-            <Button
-              onClick={openModal}
-              className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
-            >
-              <BsFillPersonXFill className="w-5 h-5" />
-              <p>Reject</p>
-            </Button>
-          </div>)}
+                className="px-6 py-3 w-full cursor-pointer rounded-xl text-white bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695] bg-[length:200%_auto] bg-left transition-all duration-500 ease-out hover:bg-right active:scale-[0.98]"
+              >
+                <BsFillPersonCheckFill className="w-5 h-5" />
+                <p>Accept</p>
+              </Button>
+              <Button
+                onClick={handleReject}
+                className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+              >
+                <BsFillPersonXFill className="w-5 h-5" />
+                <p>Reject</p>
+              </Button>
+            </div>
+          )}
 
           <Button
-            onClick={openModal}
+            onClick={blockModal}
             className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
           >
             <MdOutlineBlock className="w-5 h-5" />

@@ -130,17 +130,10 @@ export function getLikes(id, type, page){
     );
 }
 
-export function getFollowers(userId, page){
+// ==================== Friends ====================
+export function getFriends(userId, page){
     return handleRequest(
-        api.get(`/users/${userId}/followers`, {
-            params: { page }
-        })
-    );
-}
-
-export function getFollowing(userId, page){
-    return handleRequest(
-        api.get(`/users/${userId}/following`, {
+        api.get(`/users/${userId}/friends`, {
             params: { page }
         })
     );
@@ -163,6 +156,14 @@ export function removeFriend(userId){
     );
 }
 
+export function getBlockedUsers(page){
+    return handleRequest(
+        api.get(`/friends/block`, {
+            params: { page }
+        })
+    );
+}
+
 export function blockUser(userId){
     return handleRequest(
         api.post(`/friends/${userId}/block`)
@@ -174,3 +175,10 @@ export function unblockUser(userId){
         api.delete(`/friends/${userId}/unblock`)
     );
 }
+
+export function getUserProfile(userId){
+    return handleRequest(
+        api.get(`/user/profile/${userId}`)
+    );
+}
+

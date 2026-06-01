@@ -2,27 +2,23 @@ import { useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useSendMessage } from "../../hooks/chats/useSendMessage";
 
 import toast from "react-hot-toast";
 
 import { GoImage } from "react-icons/go";
 import AddImageIcon from "../ui/AddImageIcon";
 
-export default function MessageInput({ receiverId }) {
+export default function MessageInput({ sendMessage, isPending }) {
   const [message, setMessage] = useState("");
   const { t, i18n } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { mutate: send, isPending } = useSendMessage();
 
   function handleSend() {
+    const snapshot = message;
     if (!message.trim()) return;
-    send(
-      { receiver_id: receiverId, message: message },
-      {
-        onSuccess: () => setMessage(""), // clear input only on success
-      }
-    );
+    setMessage("");
+    sendMessage(message, {
+      onError: () => setMessage(snapshot),
+    });
   }
 
   return (
