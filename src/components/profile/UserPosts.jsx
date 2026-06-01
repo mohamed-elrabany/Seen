@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import PostFeed from "../community/PostsFeed";
 
-export default function UserPosts() {
+export default function UserPosts({ userId }) {
   const { t } = useTranslation();
   const user = useSelector((state) => state.user.user);
 
@@ -15,7 +15,7 @@ export default function UserPosts() {
       className="mb-6"
     >
       <h2 className="text-[#161A41] dark:text-white mb-4">Posts</h2>
-      <PostFeed profileId={user?.id} />
+      <PostFeed profileId={userId} />
     </motion.div>
   );
 }

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { formatDisplayedDate } from "../../util/formatDiplayedDate";
+import { formatDisplayedDate } from "../../../util/formatDiplayedDate";
 
 import { IoPersonOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
@@ -50,9 +50,9 @@ export default function PersonalInfo() {
       transition={{ duration: 0.5, delay: 0.1 }}
       className="mb-6"
     >
-      <h2 className="text-[#161A41] dark:text-white">
+      {/* <h2 className="text-[#161A41] dark:text-white">
         {t("profilePage.personalInfo.title")}
-      </h2>
+      </h2> */}
       <div className="rounded-2xl shadow-lg p-6 border
         bg-white bg-none border-[#D9D9D9]/30
         dark:bg-gradient-to-br dark:from-[#1F1A5F] dark:to-[#161A41] dark:border-white/10">

@@ -23,6 +23,8 @@ const AddReminder = lazy(() => import("../pages/reminders/AddReminder"));
 const AddLog= lazy(() => import("../pages/logs/AddLog"));
 const LogDetails= lazy(() => import("../pages/logs/LogDetails"));
 const Notifications = lazy(() => import("../pages/notifications/Notifications"));
+const UserData = lazy(() => import("../pages/settings/UserData"));
+const EditUserData = lazy(() => import("../pages/settings/EditUserData"));
 
 import RootLayout from "./RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -87,12 +89,24 @@ const router = createBrowserRouter([
         element: lazy_load(PostDetails),
       },
       {
-        path: "profile",
+        path: "profile/me",
+        element: lazy_load(Profile),
+      },
+      {
+        path: "users/:userId",
         element: lazy_load(Profile),
       },
       {
         path: "settings",
         element: lazy_load(Settings),
+      },
+      {
+        path: "user/data/show",
+        element: lazy_load(UserData),
+      },
+      {
+        path: "user/data/edit",
+        element: lazy_load(EditUserData),
       },
       {
         path: "assistant",

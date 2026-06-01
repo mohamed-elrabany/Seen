@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { formatCount } from "../../util/formatPostStatus";
 import { formatRelativeTime } from "../../util/formatRelativeTime";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -15,6 +16,7 @@ import LikesModal from "../modals/LikesModal";
 
 export default function PostComment({ comment, onLike, onDelete, onEdit }) {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [editComment, setEditComment] = useState(comment.comment_text);
   const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +25,18 @@ export default function PostComment({ comment, onLike, onDelete, onEdit }) {
   // Use the correct keys from your console log
   const formattedLikesCount = formatCount(comment.likes_count, t);
   const relativeDate = formatRelativeTime(comment.created_at);
+
+    function handleNavigation() {
+    if(user.id === comment.user.id) {
+      navigate(`/profile/me`, {
+        replace: true,
+      });
+    } else {
+      navigate(`/users/${comment.user.id}`, {
+        replace: true,
+      });
+    }
+  }
 
   const profileBorderColorMap = {
     type1: "border-2 border-red-700 dark:border-red-400",
@@ -51,7 +65,9 @@ export default function PostComment({ comment, onLike, onDelete, onEdit }) {
             />
           </div>
           <div className="flex-col-start">
-            <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
+            <p 
+            onClick={handleNavigation}
+            className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold hover:underline cursor-pointer">
               {comment.user?.first_name} {comment.user?.last_name}
             </p>
             <p className="text-[#808080] dark:text-white/30 text-xs sm:text-sm">

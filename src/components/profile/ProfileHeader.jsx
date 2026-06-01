@@ -3,45 +3,63 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // Added
 import Button from "../ui/Button";
+import { useState, useEffect } from "react";
+
+import { sendRequest, acceptRequest } from "../../services/communityServices";
+import {
+  profileTagStyling,
+  getBorderColor,
+} from "../../util/community/ctaegoryColors";
 
 import { IoPerson } from "react-icons/io5";
 import { LuFlame } from "react-icons/lu";
 import { GoTrophy } from "react-icons/go";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineSettings } from "react-icons/md";
+import {
+  BsFillPersonCheckFill,
+  BsFillPersonXFill,
+  BsFillPersonPlusFill,
+} from "react-icons/bs";
+import { MdOutlineBlock } from "react-icons/md";
+import { FaUserClock } from "react-icons/fa";
 
-export default function ProfileHeader() {
+export default function ProfileHeader({ userId, isOwnProfile, openModal }) {
   const { t } = useTranslation(); // Initialize
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
-  console.log("User in ProfileHeader:", user); // Debugging log
+  // Debugging log
   const userName = user?.first_name
     ? `${user.first_name} ${user.last_name}`
     : "username";
   const diabetesType = user?.diabetes_type.toLowerCase() || "gestational";
 
-  const categoryColorMap = {
-    type1: "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize",
-    type2: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6] capitalize",
-    lada: "bg-[#22c55e]/20 text-[#22c55e] border-[#22c55e] uppercase",
-    mody: "bg-[#f97316]/20 text-[#f97316] border-[#f97316] uppercase",
-    gestational: "bg-[#a855f7]/20 text-[#a855f7] border-[#a855f7] capitalize",
-    general: "bg-[#eab308]/20 text-[#eab308] border-[#eab308] capitalize",
-    advices: "bg-[#9ca3af]/20 text-[#9ca3af] border-[#9ca3af] capitalize",
-  };
+  const categoryColor = profileTagStyling(diabetesType);
+  const profileBorderColor = getBorderColor(diabetesType);
+ 
+  async function handleSendRequest() {
+    try {
+      const result = await sendRequest(userId);
+      console.log("Friend request sent successfully:", result);
+      toast.success("Friend request sent successfully!"); // Show success message
+    } catch (error) {
+      console.error("Error sending friend request:", error);
+      toast.error("Error sending friend request. Please try again."); // Show error message
+      // Optionally, show an error message to the user
+    }
+  }
 
-  const profileBorderColorMap = {
-    type1: "border-2 border-[#ef4444]",
-    type2: "border-2 border-[#3b82f6]",
-    mody: "border-2 border-[#f97316]",
-    lada: "border-2 border-[#22c55e]",
-    gestational: "border-2 border-[#a855f7]",
-  };
-
-  const categoryColor =
-    categoryColorMap[diabetesType] ?? "bg-gray-100 text-gray-700";
-  const profileBorderColor =
-    profileBorderColorMap[diabetesType] ?? "border-2 border-gray-300";
+  async function handleAcceptRequest() {
+    try {
+      const result = await acceptRequest(userId);
+      console.log("Friend request accepted successfully:", result);
+      toast.success("Friend request accepted successfully!"); // Show success message
+    } catch (error) {
+      console.error("Error accepting friend request:", error);
+      toast.error("Error accepting friend request. Please try again."); // Show error message
+      // Optionally, show an error message to the user
+    }
+  }
 
   return (
     <motion.div
@@ -55,7 +73,7 @@ export default function ProfileHeader() {
       <div className="flex flex-col justify-center items-center md:flex-row gap-4">
         {/* profile photo */}
         <div
-          className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg ${profileBorderColor}`}
+          className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}
         >
           {user?.profileImg ? (
             <img
@@ -126,26 +144,74 @@ export default function ProfileHeader() {
       </div>
 
       {/* buttons */}
-      <div className="flex flex-col gap-2 w-full md:w-auto">
-        <Button
-          onClick={() => navigate(`/profile/edit/${user?.id || ":userId"}`)}
-          className="px-6 py-3 cursor-pointer rounded-xl text-white
+      {isOwnProfile ? (
+        <div className="flex flex-col gap-2 w-full md:w-auto">
+          <Button
+            onClick={() => navigate(`/profile/edit/${user?.id || ":userId"}`)}
+            className="px-6 py-3 cursor-pointer rounded-xl text-white
             bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695]
             bg-[length:200%_auto] bg-left transition-all duration-500 ease-out
             hover:bg-right active:scale-[0.98]"
-        >
-          <FiEdit className="w-5 h-5" />
-          <p>{t("profilePage.header.editAccount")}</p>
-        </Button>
+          >
+            <FiEdit className="w-5 h-5" />
+            <p>{t("profilePage.header.editAccount")}</p>
+          </Button>
 
-        <Button
-          onClick={() => navigate("/settings")}
-          className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer bg-[#808080]/10 text-[#808080] hover:bg-[#808080]/20 dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-400 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
-        >
-          <MdOutlineSettings className="w-5 h-5" />
-          <p>{t("profilePage.header.settings")}</p>
-        </Button>
-      </div>
+          <Button
+            onClick={() => navigate("/settings")}
+            className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer bg-[#808080]/10 text-[#808080] hover:bg-[#808080]/20 dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-400 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+          >
+            <MdOutlineSettings className="w-5 h-5" />
+            <p>{t("profilePage.header.settings")}</p>
+          </Button>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2 w-full md:w-auto">
+          {userName && (
+              <Button
+              onClick={handleSendRequest}
+              className="px-6 py-3 cursor-pointer rounded-xl text-white
+              bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695]
+              bg-[length:200%_auto] bg-left transition-all duration-500 ease-out
+              hover:bg-right active:scale-[0.98]"
+            >
+              <BsFillPersonPlusFill className="w-5 h-5" />
+              <p>Add Friend</p>
+            </Button>
+          )}
+          
+
+          {userName && (
+            <div className="flex justify-center items-center gap-2 w-full">
+              <Button
+                onClick={handleAcceptRequest}
+                className="px-6 py-3 w-full cursor-pointer rounded-xl text-white
+              bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695]
+              bg-[length:200%_auto] bg-left transition-all duration-500 ease-out
+            hover:bg-right active:scale-[0.98]"
+            >
+              <BsFillPersonCheckFill className="w-5 h-5" />
+              <p>Accept</p>
+            </Button>
+
+            <Button
+              onClick={openModal}
+              className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+            >
+              <BsFillPersonXFill className="w-5 h-5" />
+              <p>Reject</p>
+            </Button>
+          </div>)}
+
+          <Button
+            onClick={openModal}
+            className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+          >
+            <MdOutlineBlock className="w-5 h-5" />
+            <p>Block</p>
+          </Button>
+        </div>
+      )}
     </motion.div>
   );
 }

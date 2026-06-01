@@ -129,3 +129,48 @@ export function getLikes(id, type, page){
         })
     );
 }
+
+export function getFollowers(userId, page){
+    return handleRequest(
+        api.get(`/users/${userId}/followers`, {
+            params: { page }
+        })
+    );
+}
+
+export function getFollowing(userId, page){
+    return handleRequest(
+        api.get(`/users/${userId}/following`, {
+            params: { page }
+        })
+    );
+}
+
+export function sendRequest(userId){
+    return handleRequest(
+        api.post(`/friends/${userId}/request`)
+    );
+}
+export function acceptRequest(userId){
+    return handleRequest(
+        api.post(`/friends/${userId}/accept`)
+    );
+}
+
+export function removeFriend(userId){
+    return handleRequest(
+        api.delete(`/friends/${userId}`)
+    );
+}
+
+export function blockUser(userId){
+    return handleRequest(
+        api.post(`/friends/${userId}/block`)
+    );
+}
+
+export function unblockUser(userId){
+    return handleRequest(
+        api.delete(`/friends/${userId}/unblock`)
+    );
+}

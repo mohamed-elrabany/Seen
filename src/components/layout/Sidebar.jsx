@@ -114,7 +114,7 @@ export default function Sidebar() {
       icon: <MdNotifications className="w-5 h-5" />,
     },
     {
-      to: "/profile",
+      to: "/profile/me",
       label: t("sidebar.nav.profile"),
       icon: <BsPerson className="w-5 h-5" />,
     },

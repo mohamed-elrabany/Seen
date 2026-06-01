@@ -45,6 +45,7 @@ export default function MedicationForm({
       try {
         const data = await getMedications();
         console.log("Raw medication data:", data);
+        console.log("isArray:", Array.isArray(data));
         setMedicationList(data);
       } catch (error) {
         toast.error("Failed to fetch medications. Using default list.");

@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 
 import { formatRelativeTime } from "../../util/formatRelativeTime";
 import { formatCount } from "../../util/formatPostStatus";
+import { postTagStyling, getBorderColor } from "../../util/community/ctaegoryColors";
 
 import PostImages from "./PostImages";
 import DeletePostModal from "../modals/DeletePostModal";
@@ -35,30 +36,24 @@ export default function PostCard({ post }) {
   function handleLike() {
     togglePostLike.mutate(post.id);
   }
-
-  const categoryColorMap = {
-    "type1 / lada":
-      "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444] capitalize items-stretch min-w-0",
-    type2: "bg-[#3b82f6]/20 text-[#3b82f6] border-[#3b82f6] capitalize items-stretch min-w-0",
-    mody: "bg-[#f97316]/20 text-[#f97316] border-[#f97316] uppercase items-stretch min-w-0",
-    gestational: "bg-[#a855f7]/20 text-[#a855f7] border-[#a855f7] capitalize items-stretch min-w-0",
-    general: "bg-[#eab308]/20 text-[#eab308] border-[#eab308] capitalize items-stretch min-w-0",
-    advices: "bg-[#9ca3af]/20 text-[#9ca3af] border-[#9ca3af] capitalize items-stretch min-w-0",
-  };
-
-  const profileBorderColorMap = {
-    type1: "border-2 border-[#ef4444]",
-    type2: "border-2 border-[#3b82f6]",
-    mody: "border-2 border-[#f97316]",
-    lada: "border-2 border-[#22c55e]",
-    gestational: "border-2 border-[#a855f7]",
-  };
+  
+  function handleNavigation() {
+    if(user.id === post.user.id) {
+      navigate(`/profile/me`, {
+        replace: true,
+      });
+    } else {
+      navigate(`/users/${post.user.id}`, {
+        replace: true,
+      });
+    }
+  }
 
   const categoryColor =
-    categoryColorMap[post.category.toLowerCase()] ??
+    postTagStyling(post.category.toLowerCase()) ??
     "bg-gray-100 text-gray-700";
   const profileBorderColor =
-    profileBorderColorMap[post.user?.diabetes_type?.toLowerCase()] ??
+    getBorderColor(post.user?.diabetes_type?.toLowerCase()) ??
     "border-2 border-gray-300";
 
   return (
@@ -71,12 +66,14 @@ export default function PostCard({ post }) {
       <div className="flex justify-between items-center w-full">
         <div className="flex-start gap-4">
           <div
-            className={`w-12 h-12 ${profileBorderColor} bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0`}
+            className={`w-12 h-12 border-2 ${profileBorderColor} bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0`}
           >
             <img src={post.user?.profile_picture} alt="profile_picture" />
           </div>
           <div className="flex-col-start">
-            <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">
+            <p 
+            onClick={handleNavigation}
+            className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold hover:underline cursor-pointer">
               {post.user?.full_name}
             </p>
             <p className="text-[#808080] dark:text-gray-400 text-xs sm:text-sm">

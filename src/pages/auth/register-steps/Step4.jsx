@@ -19,7 +19,7 @@ export default function Step4({data, setData, isStepValid}) {
       <h2 className="mb-6">{t('registerPage.step4.title')}</h2>
       <div className="grid items-center gap-4">
         <RadioButton
-          id="diabetes-type"
+          id="pen_syringes"
           name="insulin_therapy"
           value="Pen / Syringes"
           onChange={(e)=> setData({...data, insulin_therapy: e.target.value})}
@@ -28,7 +28,7 @@ export default function Step4({data, setData, isStepValid}) {
           <p>{t('registerPage.step4.options.injection')}</p>
         </RadioButton>
         <RadioButton
-          id="diabetes-type"
+          id="pump"
           name="insulin_therapy"
           value="pump"
           onChange={(e)=> setData({...data, insulin_therapy: e.target.value})}
@@ -37,7 +37,7 @@ export default function Step4({data, setData, isStepValid}) {
           <p>{t('registerPage.step4.options.pump')}</p>
         </RadioButton>
         <RadioButton
-          id="diabetes-type"
+          id="no-insulin"
           name="insulin_therapy"
           value="No insulin"
           onChange={(e)=> setData({...data, insulin_therapy: e.target.value})}
