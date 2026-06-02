@@ -158,7 +158,7 @@ export function removeFriend(userId){
 
 export function getBlockedUsers(page){
     return handleRequest(
-        api.get(`/friends/block`, {
+        api.get(`/friends/blocks`, {
             params: { page }
         })
     );

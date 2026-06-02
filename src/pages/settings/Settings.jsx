@@ -10,6 +10,7 @@ import Header from "../../components/layout/Header";
 import Button from "../../components/ui/Button";
 import LogoutModal from "../../components/modals/LogoutModal";
 import DeleteAccountModal from "../../components/modals/DeleteAccountModal";
+import BlockedUsersModal from "../../components/modals/BlockedUsersModal";
 import { BsPerson, BsTrash } from "react-icons/bs";
 import { GoLock } from "react-icons/go";
 
@@ -43,6 +44,7 @@ export default function Settings() {
   const logoutRef = useRef();
   const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] = useState(false);
   const deleteAccountRef = useRef();
+  const [showBlocksModal, setShowBlocksModal] = useState(false);
 
 
   return (
@@ -63,7 +65,7 @@ export default function Settings() {
       </Header>
 
       {/* 1. Account Section */}
-      <Account />
+      <Account openBlocksModal={() => setShowBlocksModal(true)} />
 
       {/* 2. Preferences Section */}
       <Prefrences />
@@ -83,6 +85,10 @@ export default function Settings() {
         onClose={() => setShowDeleteAccountConfirm(false)}
         deleteRef={deleteAccountRef}
       />
+      <BlockedUsersModal
+        isOpen={showBlocksModal}
+        onClose={() => setShowBlocksModal(false)}
+       />
     </motion.div>
   );
 }

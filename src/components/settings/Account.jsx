@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { BsPerson } from "react-icons/bs";
 import { GoLock } from "react-icons/go";
+import { MdOutlineBlock } from "react-icons/md";
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
@@ -14,7 +15,7 @@ const itemVariants = {
   },
 };
 
-export default function Account() {
+export default function Account({ openBlocksModal }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   return (
@@ -51,6 +52,20 @@ export default function Account() {
             <h4 className="mb-0 font-bold">{t("settings.account.security.title")}</h4>
             <p className="meta-text">
               {t("settings.account.security.description")}
+            </p>
+          </div>
+        </div>
+
+        <div 
+        onClick={openBlocksModal}
+        className="w-full group cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+          <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 flex-center">
+            <MdOutlineBlock className="h-5 w-5 text-[#6976EB]" />
+          </div>
+          <div>
+            <h4 className="mb-0 font-bold">Blocked Users</h4>
+            <p className="meta-text">
+              Here you can view and manage the users you've blocked. Unblocking a user will allow them to interact with you again.
             </p>
           </div>
         </div>
