@@ -43,6 +43,11 @@ export default function AvatarUpload({
   const rafId = useRef(null);
   const resultSrc = useRef(currentImage);
 
+  useEffect(() => {
+    resultSrc.current = currentImage;
+    setPhase(currentImage ? "result" : "upload");
+  }, [currentImage]);
+
   // ─── Drawing ────────────────────────────────────────────────────────────────
   // Draw is stored in a ref so it always closes over the latest ref values.
   // Never wrap in useCallback — a stale closure would cache imgRef.current=null.
@@ -361,7 +366,7 @@ export default function AvatarUpload({
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-            className="mt-1 flex items-center gap-2 px-5 py-2 text-sm rounded-xl
+            className="mt-1 flex items-center gap-2 px-5 py-2 text-sm rounded-xl cursor-pointer
               border border-[#D9D9D9]/50 dark:border-white/15
               text-[#161A41] dark:text-white
               hover:bg-[#F8F9FF] dark:hover:bg-white/10
@@ -435,7 +440,7 @@ export default function AvatarUpload({
             <button
               type="button"
               onClick={resetAll}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg cursor-pointer
                 border border-[#D9D9D9]/50 dark:border-white/15
                 text-[#808080] dark:text-gray-400
                 hover:bg-[#F8F9FF] dark:hover:bg-white/10
@@ -450,7 +455,7 @@ export default function AvatarUpload({
             <button
               type="button"
               onClick={cancelCrop}
-              className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl
+              className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl cursor-pointer
                 border border-[#D9D9D9]/50 dark:border-white/15
                 text-[#808080] dark:text-gray-400
                 hover:bg-[#F8F9FF] dark:hover:bg-white/10

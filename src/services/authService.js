@@ -55,3 +55,9 @@ export function deleteMe({ password }){
     api.delete("/delete-me", { password })
   );
 }
+
+export function updateMe(userData){
+  return handleRequest(
+    api.post("/user", userData)
+  );
+}
