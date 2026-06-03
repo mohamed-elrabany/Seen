@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast"; // Make sure toast is imported!
 
 // Added "reject" if it exists in your service, or replace it with your actual service endpoint
-import { sendRequest, acceptRequest, removeFriend } from "../../services/communityServices";
+import { sendRequest, acceptRequest, removeFriend, cancelRequest } from "../../services/communityServices";
 import {
   profileTagStyling,
   getBorderColor,
@@ -27,7 +27,7 @@ import {
 import { MdOutlineBlock } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
 
-export default function ProfileHeader({ currentUser, userId, isOwnProfile, blockModal, removeModal }) {
+export default function ProfileHeader({ currentUser, userId, isOwnProfile, blockModal, removeModal, openImagePreview, friendsModal }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   
@@ -48,36 +48,52 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
   const profileBorderColor = getBorderColor(diabetesType);
  
   async function handleSendRequest() {
+    setFriendStatus("pending_sent"); // Matches your JSX condition
     try {
       await sendRequest(userId);
       toast.success("Friend request sent successfully!");
-      setFriendStatus("pending_sent"); // Matches your JSX condition
     } catch (error) {
+      setFriendStatus("add_friend"); // Revert back to "add_friend" if sending fails
       console.error("Error sending friend request:", error);
       toast.error("Error sending friend request. Please try again.");
     }
   }
 
   async function handleAcceptRequest() {
+    setFriendStatus("friends"); // Optimistically set to friends
     try {
       await acceptRequest(userId);
       toast.success("Friend request accepted successfully!");
-      setFriendStatus("friends");
       setFriendsCount((prevCount) => prevCount + 1);
     } catch (error) {
+      setFriendStatus("pending_received"); // Revert back to pending_received if acceptance fails
       console.error("Error accepting friend request:", error);
       toast.error("Error accepting friend request. Please try again.");
     }
   }
 
   async function handleReject() {
+    setFriendStatus("add_friend");
     try {
       // NOTE: Ensure 'removeFriend' or your actual backend rejection service is used here
       await removeFriend(userId); 
-      toast.success("Friend request canceled/rejected!");
-      setFriendStatus("add_friend");
+      toast.success("Friend request rejected!");
     } catch (error) {
+      setFriendStatus("pending_received"); // Revert back to pending if rejection fails
       console.error("Error rejecting friend request:", error);
+      toast.error("Error executing action. Please try again.");
+    }
+  }
+
+  async function handleCancel() {
+    setFriendStatus("add_friend");
+    try {
+      // NOTE: Ensure 'cancelRequest' or your actual backend cancellation service is used here
+      await cancelRequest(userId);
+      toast.success("Friend request canceled!");
+    } catch (error) {
+      console.error("Error canceling friend request:", error);
+      setFriendStatus("pending_sent"); // Revert back to pending_sent if cancellation fails
       toast.error("Error executing action. Please try again.");
     }
   }
@@ -93,7 +109,9 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
     >
       <div className="flex flex-col justify-center items-center md:flex-row gap-4">
         {/* profile photo */}
-        <div className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}>
+        <div 
+        onClick={openImagePreview}
+        className={`w-32 h-32 cursor-pointer overflow-hidden flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}>
           {currentUser?.profile_picture ? (
             <img src={currentUser.profile_picture} alt="Profile" className="w-full h-full object-cover rounded-xl" />
           ) : (
@@ -111,7 +129,7 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
           </p>
 
           <div className="grid grid-cols-2 items-center justify-center md:justify-start gap-6 mb-4">
-            <div className="flex-col-center">
+            <div className="flex-col-center group cursor-pointer" onClick={friendsModal}>
               <p className="font-bold text-2xl text-[#161A41] dark:text-white">{friendsCount}</p>
               <span className="font-bold text-sm text-[#808080] dark:text-gray-400">Friends</span>
             </div>
@@ -164,7 +182,7 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
                 <p>Pending</p>
               </Button>
               <Button
-                onClick={handleReject}
+                onClick={handleCancel}
                 className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
               >
                 <BsFillPersonXFill className="w-5 h-5" />

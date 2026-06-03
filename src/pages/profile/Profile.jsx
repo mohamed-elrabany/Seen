@@ -3,6 +3,8 @@ import PersonalInfo from "../../components/settings/user/PersonalInfo";
 import UserPosts from "../../components/profile/UserPosts";
 import BlockUserModal from "../../components/modals/BlockUserModal";
 import RemoveFriendModal from "../../components/modals/RemoveFriendModal";
+import ImagePreviewModal from "../../components/modals/ImagePreviewModal";
+import FriendsModal from "../../components/modals/FriendsModal";
 import LoadingPage from "../loading/LoadingPage";
 
 import { useParams } from "react-router-dom";
@@ -15,6 +17,8 @@ export default function Profile() {
   const { userId } = useParams();
   const [openBlockModal, setOpenBlockModal] = useState(false);
   const [openRemoveFriendModal, setOpenRemoveFriendModal] = useState(false);
+  const [openImagePreview, setOpenImagePreview] = useState(false);
+  const [openFriendsModal, setOpenFriendsModal] = useState(false);
   const [viewedUserProfile, setViewedUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -61,6 +65,8 @@ export default function Profile() {
         isOwnProfile={isOwnProfile}
         blockModal={() => setOpenBlockModal(true)}
         removeModal={() => setOpenRemoveFriendModal(true)}
+        openImagePreview={() => setOpenImagePreview(true)}
+        friendsModal={() => setOpenFriendsModal(true)}
       />
 
       {/* <PersonalInfo />  */}
@@ -79,6 +85,17 @@ export default function Profile() {
         userId={viewedUserId}
         isOpen={openRemoveFriendModal}
         onClose={() => setOpenRemoveFriendModal(false)}
+      />
+
+      <ImagePreviewModal
+        isOpen={openImagePreview}
+        onClose={() => setOpenImagePreview(false)}
+        imageUrl={viewedUserProfile?.profile_picture}
+      />
+
+      <FriendsModal
+        isOpen={openFriendsModal}
+        onClose={() => setOpenFriendsModal(false)}
       />
     </div>
   );

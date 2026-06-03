@@ -133,7 +133,7 @@ export function getLikes(id, type, page){
 // ==================== Friends ====================
 export function getFriends(userId, page){
     return handleRequest(
-        api.get(`/users/${userId}/friends`, {
+        api.get(`/friends`, {
             params: { page }
         })
     );
@@ -147,6 +147,11 @@ export function sendRequest(userId){
 export function acceptRequest(userId){
     return handleRequest(
         api.post(`/friends/${userId}/accept`)
+    );
+}
+export function cancelRequest(userId){
+    return handleRequest(
+        api.delete(`/friends/${userId}/cancel`)
     );
 }
 

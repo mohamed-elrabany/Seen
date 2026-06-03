@@ -113,8 +113,10 @@ export default function EditUserData() {
     }
 
     setIsSubmitting(true);
+    console.log("Submitting user data update:", userData);
     try {
       const response = await updateMe(userData);
+      console.log("Update response:", response);
 
       if (response?.error) {
         const message =
@@ -134,7 +136,8 @@ export default function EditUserData() {
 
       setSubmitAttempted(false);
     } catch (error) {
-      toast.error("Failed to update account. Please try again.");
+      console.error("Failed to update account:", error);
+      toast.error(error?.message || "Failed to update account. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

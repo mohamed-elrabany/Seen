@@ -26,7 +26,6 @@ function App() {
         const data = await getMe();
         console.log("CheckSession Data:", data);
         dispatch(setUser(data.user));
-        
       } catch (error) {
         console.log("No active session found.");
         localStorage.removeItem("seen-app-theme");

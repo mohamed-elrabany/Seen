@@ -22,7 +22,7 @@ import {
 import { MdOutlineBlock } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
 
-export default function ProfileHeader() {
+export default function ProfileHeader({openImagePreview}) {
   const { t } = useTranslation(); // Initialize
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
@@ -34,7 +34,6 @@ export default function ProfileHeader() {
 
   const categoryColor = profileTagStyling(diabetesType);
   const profileBorderColor = getBorderColor(diabetesType);
- 
 
   return (
     <motion.div
@@ -48,11 +47,12 @@ export default function ProfileHeader() {
       <div className="flex flex-col justify-center items-center md:flex-row gap-4">
         {/* profile photo */}
         <div
-          className={`w-32 h-32 flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}
+          className={`w-32 h-32 cursor-pointer overflow-hidden flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}
         >
-          {user?.profileImg ? (
+          {user?.profile_picture ? (
             <img
-              src={user.profileImg}
+              onClick={openImagePreview}
+              src={user.profile_picture}
               alt="Profile"
               className="w-full h-full object-cover rounded-xl"
             />

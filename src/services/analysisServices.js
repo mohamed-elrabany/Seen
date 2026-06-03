@@ -19,3 +19,11 @@ export async function getGlucoseReadings(date) {
 
     return data.readings || [];
 }
+
+export async function generatePDF(start_date, end_date) {
+    return handleRequest(
+        api.get('/reports/glucose/pdf', {
+            params: { start_date, end_date }
+        })
+    );
+}

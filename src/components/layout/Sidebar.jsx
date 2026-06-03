@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { themeActions } from "../../store/slices/themeSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { getBorderColor } from "../../util/community/ctaegoryColors";
 
 import i18next from "i18next";
 import logo from "/logo.svg";
@@ -29,22 +31,14 @@ export default function Sidebar() {
   const logoutRef = useRef();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const theme = useSelector((state) => state.theme.theme);
   const { t } = useTranslation();
   const { toggleTheme } = themeActions;
 
   const diabetesType = user?.diabetes_type.toLowerCase() || "gestational";
-
-  const profileBorderColorMap = {
-    type1: "border-2 border-[#ef4444]",
-    type2: "border-2 border-[#3b82f6]",
-    mody: "border-2 border-[#f97316]",
-    lada: "border-2 border-[#22c55e]",
-    gestational: "border-2 border-[#a855f7]",
-  };
-  const profileBorderColor =
-    profileBorderColorMap[diabetesType] ?? "border-2 border-gray-300";
+  const profileBorderColor = getBorderColor(diabetesType);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -143,9 +137,18 @@ export default function Sidebar() {
           {/* User Info */}
           <div className="border-b border-[#D9D9D9]/30 p-6 flex-start gap-4">
             <div
-              className={`w-14 h-14 flex items-center justify-center rounded-full shadow-lg border-2 ${profileBorderColor}`}
+            onClick={() => navigate("/user/data/show")}
+              className={`w-14 h-14 flex items-center justify-center rounded-full cursor-pointer shadow-lg border-2 ${profileBorderColor}`}
             >
-              <IoPerson className="w-6 h-6 text-gray-400" />
+              {user?.profile_picture ? (
+                <img
+                  src={user.profile_picture}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <IoPerson className="w-6 h-6 text-gray-400" />
+              )}
             </div>
 
             <div>
@@ -225,10 +228,19 @@ export default function Sidebar() {
       >
         {/* profile */}
         <div
-          className={`w-14 h-14 flex items-center justify-center rounded-full shadow-lg border-2 ${profileBorderColor}`}
-        >
-          <IoPerson className="w-6 h-6 text-gray-400" />
-        </div>
+            onClick={() => navigate("/user/data/show")}
+              className={`w-14 h-14 flex items-center justify-center rounded-full cursor-pointer shadow-lg border-2 ${profileBorderColor}`}
+            >
+              {user?.profile_picture ? (
+                <img
+                  src={user.profile_picture}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <IoPerson className="w-6 h-6 text-gray-400" />
+              )}
+            </div>
 
         {/* logo */}
         <img src={logo} alt="Seen logo" className="h-12 w-auto" />
@@ -278,10 +290,19 @@ export default function Sidebar() {
                 {/* User Info */}
                 <div className="border-b border-[#D9D9D9]/30 p-6 flex-start gap-4">
                   <div
-                    className={`w-14 h-14 flex items-center justify-center rounded-full shadow-lg border-2 ${profileBorderColor}`}
-                  >
-                    <IoPerson className="w-6 h-6 text-gray-400" />
-                  </div>
+            onClick={() => {navigate("/user/data/show"); setOpenMenu(false)}}
+              className={`w-14 h-14 flex items-center justify-center rounded-full cursor-pointer shadow-lg border-2 ${profileBorderColor}`}
+            >
+              {user?.profile_picture ? (
+                <img
+                  src={user.profile_picture}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <IoPerson className="w-6 h-6 text-gray-400" />
+              )}
+            </div>
 
                   <div>
                     <h4 className="text-[#161A41] dark:text-white text-lg font-bold">
