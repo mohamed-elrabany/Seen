@@ -4,7 +4,7 @@ async function handleRequest(request) {
   try {
     const response = await request;
     console.log("Notification Response:", response); // Log the entire response for debugging
-    return response.data.notifications;
+    return response.data;
   } catch (error) {
     return {
       error: error || "Something wrong happened!",
@@ -14,6 +14,14 @@ async function handleRequest(request) {
 
 export async function getNotifications(page = 1) {
   return handleRequest(api.get("/notifications", {params: { page }}));
+}
+
+export async function markAsRead(id) {
+  return handleRequest(api.patch(`/notifications/${id}/read`));
+}
+
+export async function readAllNotifications() {
+  return handleRequest(api.patch("/notifications/read-all"));
 }
 
 /*[

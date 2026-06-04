@@ -4,15 +4,18 @@ import { PiChatCircleTextBold } from "react-icons/pi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import GllucoseIcon from "../ui/GlucoseIcon";
+import { TbChecks } from "react-icons/tb";
+import GlucoseIcon from "../ui/GlucoseIcon";
 import CommunityIcon from "../ui/CommunityIcon";
 
 import { formatRelativeTime } from "../../util/formatRelativeTime";
+import { formatDateTimeString } from "../../util/formatDiplayedDate";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-export default function NotificationCard({ type, time, isRead = true, ...extraData }) {
+export default function NotificationCard({ type, time, is_read, extraData, markAsRead, onDelete, ...rest }) {
     const navigate = useNavigate();
+    const formattedTime = formatDateTimeString(time);
 
     const cardContent = {
         like: { icon: FaHeart, title: "إعجاب بمنشورك", description: `قام ${extraData.senderName || "مستخدم"} بالإعجاب بمنشورك الأخير.` },
@@ -21,7 +24,7 @@ export default function NotificationCard({ type, time, isRead = true, ...extraDa
         system: { icon: IoSettingsOutline, title: "تحديث التطبيق", description: `تم إطلاق تحديث جديد للنظام برقم ${extraData.version || ""}.` },
         message: { icon: PiChatCircleTextBold, title: "رسالة جديدة", description: `أرسل لك ${extraData.senderName || "مستخدم"} رسالة جديدة في الخاص.` },
         follow: { icon: BsFillPersonPlusFill, title: "طلب صداقة", description: `أرسل لك ${extraData.senderName || "مستخدم"} طلب صداقة جديد.` },
-        glucose: { icon: GllucoseIcon, title: "تنبيه صحي مهم", description: `مستوى السكر في الدم الحالي هو ${extraData.glucoseLevel || "--"} mg/dL. يرجى الانتباه!` },
+        glucose: { icon: GlucoseIcon, title: "تنبيه صحي مهم", description: `مستوى السكر في الدم الحالي هو ${extraData.glucoseLevel || "--"} mg/dL. يرجى الانتباه!` },
     };
 
     const IconComponent = cardContent[type]?.icon || BsFillPersonCheckFill;
@@ -59,7 +62,7 @@ export default function NotificationCard({ type, time, isRead = true, ...extraDa
             className={`grid grid-cols-5 items-center gap-8 p-8 rounded-xl shadow-lg
                 bg-white dark:bg-white/5 border transition-colors duration-300
                 ${isClickable ? "cursor-pointer" : "cursor-default"}
-                ${isRead ? "border-[#D9D9D9]/30 dark:border-white/10" : "border-[#6976EB] bg-[#6976EB]/5"}
+                ${is_read ? "border-[#D9D9D9]/30 dark:border-white/10" : "border-[#6976EB] bg-[#6976EB]/5"}
             `}
         >
             <div className="col-span-4 flex justify-start items-start gap-4 min-w-0">
@@ -80,10 +83,19 @@ export default function NotificationCard({ type, time, isRead = true, ...extraDa
                     {/* Action Buttons */}
                     <div className="w-full flex justify-start items-center font-semibold" onClick={(e) => e.stopPropagation()}>
                         {type !== "follow" ? (
-                            <button className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#FB2C36] bg-[#FB2C36]/10 hover:bg-[#FB2C36]/20 w-auto transition-colors cursor-pointer">
+                            <div className="w-full grid grid-cols-2 gap-4 justify-center items-center">
+                                <button className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#6976EB] bg-[#6976EB]/10 hover:bg-[#6976EB]/20 transition-colors cursor-pointer" 
+                                onClick={markAsRead}>
+                                    <TbChecks className="w-5 h-5" />
+                                    <span>تحديد كمقروء</span>
+                                </button>
+                            <button 
+                            onClick={onDelete}
+                            className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#FB2C36] bg-[#FB2C36]/10 hover:bg-[#FB2C36]/20 w-auto transition-colors cursor-pointer">
                                 <RiDeleteBin6Line className="w-5 h-5" />
                                 <span>حذف</span>
                             </button>
+                            </div>
                         ) : (
                             <div className="w-full grid grid-cols-2 gap-4 justify-center items-center">
                                 <button className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#6976EB] bg-[#6976EB]/10 hover:bg-[#6976EB]/20 transition-colors cursor-pointer">
@@ -101,8 +113,8 @@ export default function NotificationCard({ type, time, isRead = true, ...extraDa
             </div>
 
             <div className="col-span-1 w-full h-full flex flex-col justify-start items-center gap-2">
-                <p className={`text-sm font-medium ${isRead ? "text-gray-400" : "text-[#6976EB]"}`}>
-                    {formatRelativeTime(time)}
+                <p className={`text-sm font-medium ${is_read ? "text-gray-400" : "text-[#6976EB]"}`}>
+                    {formatRelativeTime(formattedTime)}
                 </p>
             </div>
         </motion.div>

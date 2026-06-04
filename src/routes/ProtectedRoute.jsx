@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import LoadingPage from "../pages/loading/LoadingPage";
 import Sidebar from "../components/layout/Sidebar";
 import { useEffect } from "react";
+import NotificationListener from "../components/notifications/NotificationListener";
 
 export default function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
@@ -24,6 +25,7 @@ export default function ProtectedRoute() {
 
   return (
     <>
+    <NotificationListener />
       <Toaster
         position="top-center"
         reverseOrder={false}
