@@ -21,9 +21,20 @@ export async function getGlucoseReadings(date) {
 }
 
 export async function generatePDF(start_date, end_date) {
-    return handleRequest(
-        api.get('/reports/glucose/pdf', {
-            params: { start_date, end_date }
-        })
-    );
+  const response = await api.get('/reports/glucose/pdf', {
+    params: { start_date, end_date },
+    responseType: 'blob',  // ← critical: tells axios not to parse the binary
+  });
+
+  const blob = new Blob([response.data], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `glucose_report_${start_date}_${end_date}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+
+  a.remove();
+  URL.revokeObjectURL(url);
 }

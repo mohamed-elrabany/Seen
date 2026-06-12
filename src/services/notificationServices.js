@@ -16,6 +16,10 @@ export async function getNotifications(page = 1) {
   return handleRequest(api.get("/notifications", {params: { page }}));
 }
 
+export async function removeNotification(id) {
+  return handleRequest(api.delete(`/notifications/${id}`));
+}
+
 export async function markAsRead(id) {
   return handleRequest(api.patch(`/notifications/${id}/read`));
 }

@@ -96,7 +96,7 @@ export default function LogDetails({ logId: propLogId }) {
   console.log("Log Data:", logData); // Debugging log
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8">
       <LogDetailsHeader logHeaderData={logData} logId={logId} setOpenModal={setIsEditModalOpen} />
 
       <motion.div

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { MdOutlineBlock } from "react-icons/md";
+import { BsPersonFillSlash } from "react-icons/bs";
 import { getBorderColor } from "../../util/community/ctaegoryColors";
 import Button from "../ui/Button";
 
@@ -93,7 +93,7 @@ export default function BlockedUsersModal({ isOpen, onClose }) {
   }
 
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} icon={MdOutlineBlock} title={"Blocked Users"}>
+    <BaseModal isOpen={isOpen} onClose={onClose} icon={BsPersonFillSlash} title={"Blocked Users"}>
       {/* Scroll container must have explicit overflow and a min-height */}
       <div
         ref={scrollRef}

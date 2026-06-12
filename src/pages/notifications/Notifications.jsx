@@ -7,14 +7,14 @@ import NotificationCard from "../../components/notifications/NotificationCard";
 import { useNotifications } from "../../hooks/notifications/useNotifications";
 import { useReadNotification } from "../../hooks/notifications/useReadNotification";
 import { useReadAllNotifications } from "../../hooks/notifications/useReadAllNotifications";
-// import { useDeleteNotifications } from "../../hooks/notifications/useDeleteNotifications";
+ import { useDeleteNotification } from "../../hooks/notifications/useDeleteNotification";
 
 export default function Notifications() {
   // 1. Destructure 'data' from the query hook
   const { data, isLoading, isError } = useNotifications();
   const { mutate: readNotification } = useReadNotification();
   const { mutate: readAll } = useReadAllNotifications();
-//   const { mutate: deleteNotification } = useDeleteNotification();
+  const { mutate: deleteNotification } = useDeleteNotification();
 
   // 2. Handle Loading and Error states gracefully
   if (isLoading) {
@@ -53,7 +53,7 @@ export default function Notifications() {
               time={n.created_at}
               is_read={n.is_read}
               extraData={n.extra_data}
-            //   onDelete={() => deleteNotification(n.notification_id)}
+              onDelete={() => deleteNotification(n.notification_id)}
               markAsRead={() => {
                 if (!n.is_read) {
                   readNotification(n.notification_id);

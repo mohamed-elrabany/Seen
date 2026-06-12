@@ -6,27 +6,33 @@ import { useSelector } from "react-redux";
 import Header from "../layout/Header";
 import HeaderCards from "../ui/HeaderCards";
 import Button from "../ui/Button";
+import toast from "react-hot-toast";
 
 import { FiTarget } from "react-icons/fi";
 import { LuChartColumn } from "react-icons/lu";
 
 import { headerCardsContent as cards } from "../../util/content";
+import { generatePDF } from "../../services/analysisServices";
 
-export default function AnalysisHeader({ analysisData }) {
+export default function AnalysisHeader({ analysisData, generateReport }) {
   const { t } = useTranslation();
 
   const cards = [
     {
       icon: FiTarget,
-      value: analysisData?.a1cEstimation ? `${analysisData.a1cEstimation}%` : "6.2%",
-      label: "analysis.header.a1c"
+      value: analysisData?.a1cEstimation
+        ? `${analysisData.a1cEstimation}%`
+        : "6.2%",
+      label: "analysis.header.a1c",
     },
     {
       icon: LuChartColumn,
       value: analysisData?.totalReadings || "82",
-      label: "analysis.header.readings"
+      label: "analysis.header.readings",
     },
   ];
+
+
 
   return (
     <Header className="flex-col-between">
@@ -37,21 +43,21 @@ export default function AnalysisHeader({ analysisData }) {
               <LuChartColumn className="text-white w-6 h-6" />
             </div>
             {/* Main Title Updated */}
-            <h2 className="text-white mb-0">
-              {t("analysis.header.title")}
-            </h2>
+            <h2 className="text-white mb-0">{t("analysis.header.title")}</h2>
           </div>
           {/* Subtitle Updated */}
-          <p className="text-white">
-           {t("analysis.header.description")}
-          </p>
+          <p className="text-white">{t("analysis.header.description")}</p>
         </div>
-        
+
         {/* Action Button Label Updated */}
+        <Button className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap">
+          <p className="text-white w-full">{t("analysis.header.button")}</p>
+        </Button>
         <Button
+          onClick={generateReport}
           className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap"
         >
-          <p className="text-white w-full">{t("analysis.header.button")}</p>
+          <p className="text-white w-full">Generate Report</p>
         </Button>
       </div>
 
@@ -60,7 +66,7 @@ export default function AnalysisHeader({ analysisData }) {
         className="w-full grid grid-cols-2 gap-4"
       >
         {cards.map((card, index) => (
-          <motion.div key={index} /* ... motion variants */ >
+          <motion.div key={index} /* ... motion variants */>
             <HeaderCards
               icon={card.icon}
               value={card.value}

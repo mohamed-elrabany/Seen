@@ -17,12 +17,12 @@ import { IoPerson } from "react-icons/io5";
 import { LuFlame } from "react-icons/lu";
 import { GoTrophy } from "react-icons/go";
 import { FiEdit } from "react-icons/fi";
-import { MdOutlineSettings } from "react-icons/md";
 import {
   BsFillPersonCheckFill,
   BsFillPersonXFill,
   BsFillPersonPlusFill,
-  BsFillPersonDashFill
+  BsFillPersonDashFill,
+  BsPersonFillSlash 
 } from "react-icons/bs";
 import { MdOutlineBlock } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
@@ -185,7 +185,7 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
                 onClick={handleCancel}
                 className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
               >
-                <BsFillPersonXFill className="w-5 h-5" />
+                <BsFillPersonDashFill className="w-5 h-5" />
                 <p>Cancel</p>
               </Button>
             </div>
@@ -233,7 +233,7 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
             onClick={blockModal}
             className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
           >
-            <MdOutlineBlock className="w-5 h-5" />
+            <BsPersonFillSlash className="w-5 h-5" />
             <p>Block</p>
           </Button>
         </div>
