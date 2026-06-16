@@ -131,13 +131,16 @@ export function getLikes(id, type, page){
 }
 
 // ==================== Friends ====================
-export function getFriends(userId, page){
-    return handleRequest(
-        api.get(`/friends`, {
-            params: { page }
-        })
-    );
+export function getFriends(page){
+    return handleRequest(api.get("/friends/profile"));
 }
+// export function getFriends(page){
+//     return handleRequest(
+//         api.get(`/friends/profile`, {
+//             params: { page }
+//         })
+//     );
+// }
 
 export function sendRequest(userId){
     return handleRequest(

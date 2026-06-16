@@ -1,17 +1,17 @@
 import AddImageIcon from "../../components/ui/AddImageIcon";
 import { IoArrowBack, IoClose } from "react-icons/io5";
 import { CgSpinner } from "react-icons/cg";
+import { IoPerson } from "react-icons/io5";
 
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import i18next from "i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCreatePost } from "../../hooks/mutations/useCreatePost";
+import { isProfileDefault } from "../../util/community/profileImg";
+import { getBorderColor } from "../../util/community/ctaegoryColors";
 
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
@@ -20,6 +20,10 @@ import toast from "react-hot-toast";
 
 export default function CreatePost() {
   const user = useSelector((state) => state.user.user);
+  const profilePictureUrl = isProfileDefault(user?.profile_picture);
+  const profileBorderColor =
+    getBorderColor(user?.diabetes_type?.toLowerCase()) ??
+    "border-2 border-gray-300";
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createPostMutation = useCreatePost();
@@ -51,7 +55,7 @@ export default function CreatePost() {
     });
   };
 
-// Manual submission handler to create post and invalidate caches
+  // Manual submission handler to create post and invalidate caches
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -101,8 +105,18 @@ export default function CreatePost() {
         </Link>
 
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0">
-            <img src={user?.avatar || ""} alt={user?.first_name} />
+          <div
+            className={`w-12 h-12 border-2 ${profileBorderColor} rounded-full flex items-center overflow-hidden justify-center shrink-0`}
+          >
+            {profilePictureUrl ? (
+              <img
+                src={profilePictureUrl}
+                alt="Profile"
+                className="w-full h-full object-cover rounded-xl"
+              />
+            ) : (
+              <IoPerson className="w-4 h-4 text-[#808080] dark:text-gray-400" />
+            )}
           </div>
           <div className="flex flex-col items-start">
             <p className="text-[#161A41] dark:text-white text-sm sm:text-base font-bold">

@@ -1,12 +1,17 @@
 import BaseModal from "../ui/BaseModal";
-import { getBlockedUsers, unblockUser } from "../../services/communityServices";
+import Button from "../ui/Button";
+
+import { BsPersonFillSlash } from "react-icons/bs";
+import { IoPerson } from "react-icons/io5";
+
 import { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { BsPersonFillSlash } from "react-icons/bs";
+
+import { getBlockedUsers, unblockUser } from "../../services/communityServices";
 import { getBorderColor } from "../../util/community/ctaegoryColors";
-import Button from "../ui/Button";
+import { isProfileDefault } from "../../util/community/profileImg";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -45,7 +50,7 @@ export default function BlockedUsersModal({ isOpen, onClose }) {
   }, [isOpen]);
 
   useEffect(() => {
-    if(!isOpen) return;
+    if (!isOpen) return;
     const fetchBlockedUsers = async () => {
       setIsLoading(true);
       try {
@@ -93,15 +98,24 @@ export default function BlockedUsersModal({ isOpen, onClose }) {
   }
 
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} icon={BsPersonFillSlash} title={"Blocked Users"}>
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      icon={BsPersonFillSlash}
+      title={"Blocked Users"}
+    >
       {/* Scroll container must have explicit overflow and a min-height */}
       <div
         ref={scrollRef}
         onScroll={() => {
           if (scrollRef.current) {
             const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-            if (scrollHeight - scrollTop <= clientHeight + 50 && !isLoading && hasMore) {
-              setPage(p => p + 1);
+            if (
+              scrollHeight - scrollTop <= clientHeight + 50 &&
+              !isLoading &&
+              hasMore
+            ) {
+              setPage((p) => p + 1);
             }
           }
         }}
@@ -110,49 +124,72 @@ export default function BlockedUsersModal({ isOpen, onClose }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex flex-col gap-2 w-full"
+          className="flex flex-col gap-2 w-full p-4"
         >
           <p className="text-center uppercase text-gray-400 font-bold text-[10px] tracking-widest py-2">
             {t("modals.blocked-users.total-blocked", { count: totalBlocked })}
           </p>
 
           {/* If blocked users has data, map it. If not and not loading, show empty state */}
-          {blockedUsers.length > 0 ? (
-            blockedUsers.map((user, idx) => (
-              <div
-                key={`${user.id}-${idx}`}
-                className="flex items-center justify-between gap-4 p-3 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl border border-transparent hover:border-gray-100 dark:hover:border-white/10 transition-all"
-              >
-                <div className={`w-11 h-11 border-2 rounded-full overflow-hidden shrink-0 shadow-sm ${
-                    getBorderColor(user?.diabetes_type?.toLowerCase().replace(/\s/g, "")) || "border-[#6976EB]"
-                  }`}>
-                  <img
-                    src={user?.profile_picture || user?.avatar}
-                    alt=""
-                    className="w-full h-full object-cover"            
-                  />
-                </div>
-                <div className="flex-1">
-                  <h4 className="m-0 text-[#161A41] dark:text-white font-bold text-sm">
-                    {user?.first_name} {user?.last_name}
-                  </h4>
-                  <p className="text-[10px] text-gray-500 uppercase font-bold m-0">
-                    {user?.diabetes_type || "Member"}
-                  </p>
-                </div>
-                  <Button
-                    onClick={() => handleUnblock(user.id)}
-                    className=" cursor-pointer px-4 py-2 text-sm font-bold bg-[#6976EB]/20 border border-[#6976EB] text-white hover:bg-[#6976EB] transition-colors"
+          {blockedUsers.length > 0
+            ? blockedUsers.map((user, idx) => {
+                const profileBorderColor = getBorderColor(
+                  user.diabetes_type?.toLowerCase(),
+                );
+                const profilePictureUrl = isProfileDefault(
+                  user.profile_picture,
+                );
+                return (
+                  <motion.div
+                  initial={{opacity: 0, y: 10}}
+                  animate={{opacity: 1, y: 0}}
+                    transition={{
+                      duration: 0.2,
+                      ease: "easeOut",
+                      stiffness: 0.2,
+                      delay: idx * 0.1,
+                    }}
+                    key={`${user.id}-${idx}`}
+                    className="flex items-center justify-between gap-4 p-4 transition-all border-b border-[#D9D9D9]/30  dark:border-white/10 last:border-0"
                   >
-                    unblock
-                  </Button>
-              </div>
-            ))
-          ) : !isLoading && (
-            <div className="text-center py-10 text-gray-400 text-sm">
-              No blocked users found.
-            </div>
-          )}
+                    <div className="flex items-center gap-4">
+                      <div
+                      className={`w-12 h-12 border-2 ${profileBorderColor} rounded-full flex items-center overflow-hidden justify-center shrink-0`}
+                    >
+                      {profilePictureUrl ? (
+                        <img
+                          src={profilePictureUrl}
+                          alt="Profile"
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      ) : (
+                        <IoPerson className="w-4 h-4 text-[#808080] dark:text-gray-400" />
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="mb-0 text-[#161A41] dark:text-white font-bold">
+                        {user.first_name} {user.last_name}
+                      </h4>
+                      <p className="text-xs text-[#808080] dark:text-gray-400 uppercase">
+                        {user.diabetes_type || "Member"}
+                      </p>
+                    </div>
+                    </div>
+                    
+                    <Button
+                      onClick={() => handleUnblock(user.id)}
+                      className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
+                    >
+                      <p>Unblock</p>
+                    </Button>
+                  </motion.div>
+                );
+              })
+            : !isLoading && (
+                <div className="text-center py-10 text-gray-400 text-sm">
+                  No blocked users found.
+                </div>
+              )}
 
           {isLoading && (
             <div className="py-6 flex justify-center">

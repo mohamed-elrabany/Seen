@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function UserChatHeader({ user, onBackClick }) {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
+  console.log("💬 Rendering UserChatHeader:", { user });
 
   const profileBorderColorMap = {
     type1: "border-2 border-[#ef4444]",

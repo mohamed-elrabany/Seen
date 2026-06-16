@@ -1,11 +1,16 @@
 import BaseModal from "../ui/BaseModal";
-import { getFriends } from "../../services/communityServices";
+import { BsFillPersonCheckFill } from "react-icons/bs";
+import { IoPerson } from "react-icons/io5";
+
 import { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { BsFillPersonCheckFill } from "react-icons/bs";
+
+import { getFriends } from "../../services/communityServices";
 import { getBorderColor } from "../../util/community/ctaegoryColors";
+import { isProfileDefault } from "../../util/community/profileImg";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,18 +30,20 @@ const itemVariants = {
 };
 
 export default function FriendsModal({ isOpen, onClose }) {
-  const [likes, setLikes] = useState([]);
-  const [totalLikes, setTotalLikes] = useState(0);
+  const [friends, setFriends] = useState([]);
+  const [totalFriends, setTotalFriends] = useState(0);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const scrollRef = useRef();
 
   useEffect(() => {
     if (isOpen) {
-      setLikes([]);
-      setTotalLikes(0);
+      setFriends([]);
+      setTotalFriends(0);
       setPage(1);
       setHasMore(true);
       setIsLoading(false);
@@ -45,21 +52,21 @@ export default function FriendsModal({ isOpen, onClose }) {
 
   useEffect(() => {
     if(!isOpen) return;
-    const fetchLikes = async () => {
+    const fetchFriends = async () => {
       setIsLoading(true);
       try {
         const response = await getFriends(page);
         console.log("Fetch Friends Response:", response);
 
-        const fetchedUsers = response.users || [];
-        const total = response.total_friends || 0;
+        const fetchedUsers = response || [];
+        const total = fetchedUsers.length || 0;
 
-        setTotalLikes(total);
+        setTotalFriends(total);
 
         if (fetchedUsers.length === 0) {
           setHasMore(false);
         } else {
-          setLikes((prev) => {
+          setFriends((prev) => {
             const combined = [...prev, ...fetchedUsers];
             if (combined.length >= total || fetchedUsers.length < 10) {
               setHasMore(false);
@@ -75,16 +82,9 @@ export default function FriendsModal({ isOpen, onClose }) {
       }
     };
 
-    fetchLikes();
+    fetchFriends();
   }, [page, isOpen]);
 
-  const profileBorderColorMap = {
-    type1: "border-[#ef4444]",
-    type2: "border-[#3b82f6]",
-    mody: "border-[#f97316]",
-    lada: "border-[#22c55e]",
-    gestational: "border-[#a855f7]",
-  };
 
   return (
     <BaseModal isOpen={isOpen} onClose={onClose} icon={BsFillPersonCheckFill} title={t("Friends")}>
@@ -104,42 +104,63 @@ export default function FriendsModal({ isOpen, onClose }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex flex-col gap-2 w-full"
+          className="flex flex-col gap-2 w-full p-4"
         >
           <p className="text-center uppercase text-gray-400 font-bold text-[10px] tracking-widest py-2">
-            {t("modals.likes.total-likes", { count: totalLikes })}
+            {t("modals.friends.total-friends", { count: totalFriends })} friends
           </p>
 
-          {/* If likes has data, map it. If not and not loading, show empty state */}
-          {likes.length > 0 ? (
-            likes.map((user, idx) => (
-              <div
-                key={`${user.id}-${idx}`}
-                className="flex items-center gap-4 p-3 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl border border-transparent hover:border-gray-100 dark:hover:border-white/10 transition-all"
-              >
-                <div className={`w-11 h-11 border-2 rounded-full overflow-hidden shrink-0 shadow-sm ${
-                    profileBorderColorMap[user?.diabetes_type?.toLowerCase().replace(/\s/g, "")] || "border-[#6976EB]"
-                  }`}>
-                  <img
-                    src={user?.profile_picture || user?.avatar}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    
-                  />
-                </div>
-                <div className="flex-1">
-                  <h4 className="m-0 text-[#161A41] dark:text-white font-bold text-sm">
-                    {user?.first_name} {user?.last_name}
-                  </h4>
-                  <p className="text-[10px] text-gray-500 uppercase font-bold m-0">
-                    {user?.diabetes_type || "Member"}
-                  </p>
-                </div>
-              </div>
-            ))
+          {/* If friends has data, map it. If not and not loading, show empty state */}
+          {friends.length > 0 ? (
+            friends.map((user, idx) => {
+                const profileBorderColor = getBorderColor(
+                  user.diabetes_type?.toLowerCase(),
+                );
+                const profilePictureUrl = isProfileDefault(
+                  user.profile_picture,
+                );
+                return (
+                  <motion.div
+                    onClick={() => navigate(`/users/${user.id}`)}
+                    whileHover={{
+                      boxShadow: "0px 10px 15px rgba(0,0,0,0.1)",
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{
+                      duration: 0.1,
+                      ease: "easeOut",
+                      stiffness: 0.2,
+                    }}
+                    key={`${user.id}-${idx}`}
+                    className="cursor-pointer group flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-gray-100 dark:hover:border-white/10"
+                  >
+                    <div
+                      className={`w-12 h-12 border-2 ${profileBorderColor} rounded-full flex items-center overflow-hidden justify-center shrink-0`}
+                    >
+                      {profilePictureUrl ? (
+                        <img
+                          src={profilePictureUrl}
+                          alt="Profile"
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      ) : (
+                        <IoPerson className="w-4 h-4 text-[#808080] dark:text-gray-400" />
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="mb-0 text-[#161A41] dark:text-white font-bold">
+                        {user.first_name} {user.last_name}
+                      </h4>
+                      <p className="text-xs text-[#808080] dark:text-gray-400 uppercase">
+                        {user.diabetes_type || "Member"}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })
           ) : !isLoading && (
             <div className="text-center py-10 text-gray-400 text-sm">
-              {t("modals.likes.empty")}
+              No friends found.
             </div>
           )}
 

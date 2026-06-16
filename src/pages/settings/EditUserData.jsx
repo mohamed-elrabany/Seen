@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { getMe, updateMe } from "../../services/authService";
 import { userActions } from "../../store/slices/userSlice";
+import { isProfileDefault } from "../../util/community/profileImg";
 
 function validateUserData(data) {
   const errors = {};
@@ -154,7 +155,7 @@ export default function EditUserData() {
 
   return (
     <form className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8" onSubmit={handleSubmit}>
-      <AvatarUpload currentImage={userData?.profile_picture || null} onChange={handleAvatarChange} />
+      <AvatarUpload currentImage={isProfileDefault(userData?.profile_picture)} onChange={handleAvatarChange} />
       <EditForm
         userData={userData}
         setUserData={setUserData}

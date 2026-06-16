@@ -3,6 +3,7 @@ import api from "../api/axios";
 async function handleRequest(request) {
   try {
     const response = await request;
+    console.log("Friends Search Response:", response);
     return response.data.data;
   } catch (error) {
     throw new Error(error?.response?.data?.message || "Something went wrong!");
@@ -90,10 +91,16 @@ export function markAsRead(conversation_id) {
 
 // ─── Search For Friends ─────────────────────────────────────────────
 
-export function friendsSearch(query, page) {
-  return handleRequest(
-    api.get("/search/friends", {
-      params: { query, page },
-    }),
-  );
+export async function friendsSearch(query) {
+  try {
+    const response = await api.get("/conversations/search", {
+      params: { query },
+    });
+    return response.data.results;
+  } catch (error) {
+    throw new Error(error?.response?.data?.statusText || "Something went wrong!");
+  }
+
 }
+
+

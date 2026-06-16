@@ -11,6 +11,7 @@ const EchoContext = createContext(null);
 export function EchoProvider({ children }) {
   const echoRef = useRef(null);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // adjust to your slice
+  const isSecure = import.meta.env.VITE_REVERB_SCHEME === "https";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,8 +30,9 @@ export function EchoProvider({ children }) {
       wsHost: import.meta.env.VITE_REVERB_HOST,
       wsPort: import.meta.env.VITE_REVERB_PORT,
       wssPort: import.meta.env.VITE_REVERB_PORT,
-      forceTLS: false, // ← http, not https
-      enabledTransports: ["ws"], // ← ws, not wss
+      forceTLS: isSecure,
+      encrypted: true,
+      enabledTransports: isSecure ? ["wss"] : ["ws"],
       authEndpoint: import.meta.env.VITE_REVERB_AUTH_ENDPOINT, // ← your Laravel auth endpoint
       auth: {
         headers: {

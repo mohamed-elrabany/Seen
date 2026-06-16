@@ -1,14 +1,16 @@
 import { MdClose } from "react-icons/md";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch, IoPerson } from "react-icons/io5";
 import PostIcon from "../../components/ui/PostIcon";
 import emptyImg from "../../assets/search-empty.svg";
+import Input from "../../components/ui/Input";
+import PostCard from "../../components/community/PostCard";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { search as fetchSearchResults } from "../../services/communityServices";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import Input from "../../components/ui/Input";
-import PostCard from "../../components/community/PostCard";
+import { isProfileDefault } from "../../util/community/profileImg";
+import { getBorderColor } from "../../util/community/ctaegoryColors";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -218,37 +220,52 @@ export default function Search() {
                           post={post}
                         />
                       ))
-                    : results.users.map((profile, index) => (
-                        <motion.div
-                          whileHover={{boxShadow: "0px 10px 15px rgba(0,0,0,0.1)" }}
-                          whileTap={{scale:0.8}}
-                          transition={{
-                            duration: 0.1,
-                            ease: "easeOut",
-                            stiffness: 0.2,
-                          }}
-                          key={`${profile.id}-${index}`}
-                          className="cursor-pointer group flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-gray-100 dark:hover:border-white/10"
-                        >
-                          <div
-                            className={`w-12 h-12 ${profileBorderColorMap[profile.diabetes_type?.toLowerCase()] || "border-2 border-[#6976EB]"} rounded-full overflow-hidden shrink-0`}
+                    : results.users.map((profile, index) => {
+                        const profileBorderColor = getBorderColor(
+                          profile.diabetes_type?.toLowerCase(),
+                        );
+                        const profilePictureUrl = isProfileDefault(
+                          profile.profile_picture,
+                        );
+                        return (
+                          <motion.div
+                            onClick={() => navigate(`/users/${profile.id}`)}
+                            whileHover={{
+                              boxShadow: "0px 10px 15px rgba(0,0,0,0.1)",
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            transition={{
+                              duration: 0.1,
+                              ease: "easeOut",
+                              stiffness: 0.2,
+                            }}
+                            key={`${profile.id}-${index}`}
+                            className="cursor-pointer group flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-gray-100 dark:hover:border-white/10"
                           >
-                            <img
-                              src={profile.profile_picture}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div>
-                            <h4 className="mb-0 text-[#161A41] dark:text-white font-bold">
-                              {profile.full_name}
-                            </h4>
-                            <p className="text-xs text-[#808080] dark:text-gray-400 uppercase">
-                              {profile.diabetes_type || "Member"}
-                            </p>
-                          </div>
-                        </motion.div>
-                      ))}
+                            <div
+                              className={`w-12 h-12 border-2 ${profileBorderColor} rounded-full flex items-center overflow-hidden justify-center shrink-0`}
+                            >
+                              {profilePictureUrl ? (
+                                <img
+                                  src={profilePictureUrl}
+                                  alt="Profile"
+                                  className="w-full h-full object-cover rounded-xl"
+                                />
+                              ) : (
+                                <IoPerson className="w-4 h-4 text-[#808080] dark:text-gray-400" />
+                              )}
+                            </div>
+                            <div>
+                              <h4 className="mb-0 text-[#161A41] dark:text-white font-bold">
+                                {profile.full_name}
+                              </h4>
+                              <p className="text-xs text-[#808080] dark:text-gray-400 uppercase">
+                                {profile.diabetes_type || "Member"}
+                              </p>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
 
                   {isLoading && page > 1 && (
                     <div className="py-4 text-center text-sm text-gray-400">

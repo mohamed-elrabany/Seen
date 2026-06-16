@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast"; // Make sure toast is imported!
 
 // Added "reject" if it exists in your service, or replace it with your actual service endpoint
 import { sendRequest, acceptRequest, removeFriend, cancelRequest } from "../../services/communityServices";
+import { isProfileDefault } from "../../util/community/profileImg";
 import {
   profileTagStyling,
   getBorderColor,
@@ -24,7 +25,7 @@ import {
   BsFillPersonDashFill,
   BsPersonFillSlash 
 } from "react-icons/bs";
-import { MdOutlineBlock } from "react-icons/md";
+import { MdOutlineSettings } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
 
 export default function ProfileHeader({ currentUser, userId, isOwnProfile, blockModal, removeModal, openImagePreview, friendsModal }) {
@@ -98,6 +99,14 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
     }
   }
 
+  function handleViewFriends() {
+    if(isOwnProfile) {
+      friendsModal();
+    }
+  }
+
+  const userProfilePicture = isProfileDefault(currentUser?.profile_picture); // Normalize profile picture to null if default
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -110,10 +119,10 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
       <div className="flex flex-col justify-center items-center md:flex-row gap-4">
         {/* profile photo */}
         <div 
-        onClick={openImagePreview}
-        className={`w-32 h-32 cursor-pointer overflow-hidden flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}>
-          {currentUser?.profile_picture ? (
-            <img src={currentUser.profile_picture} alt="Profile" className="w-full h-full object-cover rounded-xl" />
+        onClick={userProfilePicture ? () => openImagePreview(userProfilePicture) : undefined}
+        className={`w-32 h-32 ${userProfilePicture ? "cursor-pointer" : ""} overflow-hidden flex items-center justify-center rounded-3xl shadow-lg border-2 ${profileBorderColor}`}>
+          {userProfilePicture ? (
+            <img src={userProfilePicture} alt="Profile" className="w-full h-full object-cover rounded-xl" />
           ) : (
             <IoPerson className="w-16 h-16 text-gray-400" />
           )}
@@ -129,7 +138,7 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
           </p>
 
           <div className="grid grid-cols-2 items-center justify-center md:justify-start gap-6 mb-4">
-            <div className="flex-col-center group cursor-pointer" onClick={friendsModal}>
+            <div className={`flex-col-center group ${isOwnProfile ? "cursor-pointer" : ""}`} onClick={handleViewFriends}>
               <p className="font-bold text-2xl text-[#161A41] dark:text-white">{friendsCount}</p>
               <span className="font-bold text-sm text-[#808080] dark:text-gray-400">Friends</span>
             </div>

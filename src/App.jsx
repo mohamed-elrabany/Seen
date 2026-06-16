@@ -8,6 +8,7 @@ import { getMe } from "./services/authService";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "./store/slices/userSlice";
+import { isProfileDefault } from "./util/community/profileImg";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
       try {
         const data = await getMe();
         console.log("CheckSession Data:", data);
+        data.user.profile_picture = isProfileDefault(data.user.profile_picture);
         dispatch(setUser(data.user));
       } catch (error) {
         console.log("No active session found.");

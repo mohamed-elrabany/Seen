@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "../../hooks/notifications/useNotifications";
 import { getBorderColor } from "../../util/community/ctaegoryColors";
+import { isProfileDefault } from "../../util/community/profileImg";
 
 import i18next from "i18next";
 import logo from "/logo.svg";
@@ -42,6 +43,7 @@ export default function Sidebar() {
 
   const diabetesType = user?.diabetes_type.toLowerCase() || "gestational";
   const profileBorderColor = getBorderColor(diabetesType);
+  const profilePictureUrl = isProfileDefault(user?.profile_picture);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -153,9 +155,9 @@ export default function Sidebar() {
             onClick={() => navigate("/user/data/show")}
               className={`w-14 h-14 flex items-center justify-center rounded-full cursor-pointer shadow-lg border-2 ${profileBorderColor}`}
             >
-              {user?.profile_picture ? (
+              {profilePictureUrl ? (
                 <img
-                  src={user.profile_picture}
+                  src={profilePictureUrl}
                   alt="Profile"
                   className="w-full h-full object-cover rounded-full"
                 />
@@ -240,9 +242,9 @@ export default function Sidebar() {
             onClick={() => navigate("/user/data/show")}
               className={`w-14 h-14 flex items-center justify-center rounded-full cursor-pointer shadow-lg border-2 ${profileBorderColor}`}
             >
-              {user?.profile_picture ? (
+              {profilePictureUrl ? (
                 <img
-                  src={user.profile_picture}
+                  src={profilePictureUrl}
                   alt="Profile"
                   className="w-full h-full object-cover rounded-full"
                 />

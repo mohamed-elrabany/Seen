@@ -1,32 +1,37 @@
 import { TbChecks } from "react-icons/tb";
+import { IoPerson } from "react-icons/io5";
+
 import { useTranslation } from "react-i18next";
 import { formatDisplayedTime } from "../../util/formatDiplayedDate";
+import { isProfileDefault } from "../../util/community/profileImg";
+import { getBorderColor } from "../../util/community/ctaegoryColors";
 
 export default function MessageBubble({ cardData, message, isOwnMessage, isRead }) {
   const { t, i18n } = useTranslation();
+  console.log("💬 Rendering MessageBubble:", {
+    cardData,
+    message,
+    isOwnMessage,
+    isRead
+  });
 
-  const profileBorderColorMap = {
-    type1: "border-2 border-[#ef4444]",
-    type2: "border-2 border-[#3b82f6]",
-    mody: "border-2 border-[#f97316]",
-    lada: "border-2 border-[#22c55e]",
-    gestational: "border-2 border-[#a855f7]",
-  };
-
-  const profileBorderColor =
-    profileBorderColorMap[cardData?.user?.diabetes_type?.toLowerCase()] ??
-    "border-2 border-gray-300";
+  const profilePicture = isProfileDefault(message?.sender?.profile_picture);
+  const displayTime = formatDisplayedTime(message?.created_at);
 
   return (
     <div className={`flex items-start gap-2 w-full ${isOwnMessage ? "justify-end" : "justify-start"}`}>
       
       {/* Profile Picture: Positioned dynamically via flex order. Received messages show avatar first. */}
       <div
-        className={`w-8 h-8 ${profileBorderColor} bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0 ${
+        className={`w-8 h-8 border-2 ${getBorderColor(message?.sender?.diabetes_type)} rounded-full flex items-center overflow-hidden justify-center shrink-0 ${
           isOwnMessage ? "order-2" : "order-1"
         }`}
       >
-        <img src={cardData?.user1?.profile_picture} alt="profile_picture" className="w-full h-full object-cover" />
+        {profilePicture ? (
+            <img src={profilePicture} alt="Profile" className="w-full h-full object-cover rounded-xl" />
+          ) : (
+            <IoPerson className="w-3 h-3 text-[#808080] dark:text-gray-400" />
+          )}
       </div>
 
       {/* Message Content & Timestamp Container */}
@@ -46,7 +51,7 @@ export default function MessageBubble({ cardData, message, isOwnMessage, isRead 
           - Uses a standard row layout. The checkmark sits naturally next to the time based on reading direction.
         */}
         <div className={`flex items-center gap-4 text-xs text-[#808080] dark:text-gray-400 ${isOwnMessage ? "flex-row-reverse" : ""}`}>
-          <p>{formatDisplayedTime(message.created_at)}</p>
+          <p>{displayTime}</p>
           <TbChecks className={`text-sm w-4 h-4 ${isRead ? "text-[#6976EB]" : "text-[#808080] dark:text-gray-400"}`} />
 
         </div>

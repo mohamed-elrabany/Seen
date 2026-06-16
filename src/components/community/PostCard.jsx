@@ -2,22 +2,24 @@ import { FaRegComment } from "react-icons/fa";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { IoPerson } from "react-icons/io5";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useToggleLike } from "../../hooks/mutations/useTogglePostLike";
 
 import { formatRelativeTime } from "../../util/formatRelativeTime";
 import { formatCount } from "../../util/formatPostStatus";
 import { postTagStyling, getBorderColor } from "../../util/community/ctaegoryColors";
+import { isProfileDefault } from "../../util/community/profileImg";
 
 import PostImages from "./PostImages";
 import DeletePostModal from "../modals/DeletePostModal";
 import LikesModal from "../modals/LikesModal";
 import EditPostModal from "../modals/EditPostModal";
-import { useToggleLike } from "../../hooks/mutations/useTogglePostLike";
 
 export default function PostCard({ post }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -56,6 +58,8 @@ export default function PostCard({ post }) {
     getBorderColor(post.user?.diabetes_type?.toLowerCase()) ??
     "border-2 border-gray-300";
 
+    const userProfilePicture = isProfileDefault(post.user?.profile_picture);
+
   return (
     <div
       className="w-full min-w-0 shadow-lg flex-col-start gap-8 border p-4 md:p-6 rounded-2xl overflow-hidden
@@ -66,9 +70,13 @@ export default function PostCard({ post }) {
       <div className="flex justify-between items-center w-full">
         <div className="flex-start gap-4">
           <div
-            className={`w-12 h-12 border-2 ${profileBorderColor} bg-[#ADB4F3]/60 rounded-full flex items-center overflow-hidden justify-center shrink-0`}
+            className={`w-12 h-12 border-2 ${profileBorderColor} rounded-full flex items-center overflow-hidden justify-center shrink-0`}
           >
-            <img src={post.user?.profile_picture} alt="profile_picture" />
+            {userProfilePicture ? (
+            <img src={userProfilePicture} alt="Profile" className="w-full h-full object-cover rounded-xl" />
+          ) : (
+            <IoPerson className="w-4 h-4 text-[#808080] dark:text-gray-400" />
+          )}
           </div>
           <div className="flex-col-start">
             <p 
