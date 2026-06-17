@@ -15,7 +15,7 @@ const itemVariants = {
   },
 };
 
-export default function Account({ openBlocksModal }) {
+export default function Account({ openBlocksModal, openChangePassword }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   return (
@@ -44,7 +44,9 @@ export default function Account({ openBlocksModal }) {
           </div>
         </div>
 
-        <div className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+        <div 
+        onClick={openChangePassword}
+        className="w-full cursor-pointer flex items-center justify-start gap-4 p-6 border-t border-[#D9D9D9]/30 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
           <div className="bg-[#6976EB]/10 border-[#6976EB] rounded-lg p-2 flex-center">
             <GoLock className="h-5 w-5 text-[#6976EB]" />
           </div>
