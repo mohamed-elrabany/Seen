@@ -1,5 +1,5 @@
-import Input from "../../../components/ui/Input";
-import RadioButton from "../../../components/ui/RadioButton";
+import Input from "../../ui/Input";
+import RadioButton from "../../ui/RadioButton";
 import { IoMdMan, IoMdWoman } from "react-icons/io";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";

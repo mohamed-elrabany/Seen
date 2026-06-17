@@ -1,8 +1,8 @@
 import Button from "../../components/ui/Button";
-import Step1 from "./register-steps/Step1";
-import Step2 from "./register-steps/Step2";
-import Step3 from "./register-steps/Step3";
-import Step4 from "./register-steps/Step4";
+import Step1 from "../../components/auth/register-steps/Step1";
+import Step2 from "../../components/auth/register-steps/Step2";
+import Step3 from "../../components/auth/register-steps/Step3";
+import Step4 from "../../components/auth/register-steps/Step4";
 import StepProgressBar from "../../components/ui/StepProgressBar";
 
 import { store } from "../../store/store";

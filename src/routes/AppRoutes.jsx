@@ -13,6 +13,7 @@ const CreatePost = lazy(() => import("../pages/community/CreatePost"));
 const PostDetails = lazy(() => import("../pages/community/PostDetails"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
+const ForgetPassword = lazy(() => import("../pages/auth/ForgetPassword"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
 const Settings = lazy(() => import("../pages/settings/Settings"));
 const Assistant = lazy(() => import("../pages/assistant/Assistant"));
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             path: "register",
             element: lazy_load(Register),
             action: registerAction,
+          },
+          {
+            path: "forget-password",
+            element: lazy_load(ForgetPassword),
           },
         ],
       },

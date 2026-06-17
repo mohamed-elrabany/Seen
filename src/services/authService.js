@@ -42,6 +42,8 @@ async function handleRequest(request){
     }
 }
 
+// ─── Login / Register ─────────────────────────────────────────────
+
 export async function login(email, password) {
   try {
     const response = await api.post("/login", { email, password }, { withCredentials: false });
@@ -87,6 +89,8 @@ export function deleteMe({ password }){
   );
 }
 
+// ─── Edit Profile ─────────────────────────────────────────────
+
 export function updateMe(userData){
   if (isBase64ImageDataUrl(userData?.profile_picture)) {
     const formData = new FormData();
@@ -115,4 +119,23 @@ export function updateMe(userData){
   }
 
   return handleRequest(api.put("/user/profile", userData));
+}
+
+// ─── Forget Password ─────────────────────────────────────────────
+export function sendOtp(email){
+  return handleRequest(
+    api.post("/forgot-password/send-otp", { email })
+  );
+}
+
+export function verifyOtp(email, otp){
+  return handleRequest(
+    api.post("/forgot-password/verify-otp", { email, otp })
+  );
+}
+
+export function resetPassword(email, password){
+  return handleRequest(
+    api.post("/forgot-password/reset", { email, password})
+  );
 }

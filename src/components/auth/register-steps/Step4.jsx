@@ -1,4 +1,4 @@
-import RadioButton from "../../../components/ui/RadioButton";
+import RadioButton from "../../ui/RadioButton";
 
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
