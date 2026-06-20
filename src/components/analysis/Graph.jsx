@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 const BUTTONS_CONFIG = [
   { id: "All", label: "analysis.types.all" },
+  { id: "Categorized", label: "analysis.types.categorized" },
   { id: "Fasting", label: "analysis.types.fasting" },
   { id: "Before Meal", label: "analysis.types.preMeal" },
   { id: "After Meal", label: "analysis.types.postMeal" },
@@ -40,7 +41,7 @@ export default function Graph({ readings }) {
       <div className="h-[500px] w-full relative px-2 py-4
       bg-white rounded-2xl shadow-lg border border-[#D9D9D9]/30 dark:bg-white/10 dark:border-white/10
       ">
-        <AnalysisChart analysisData={readings} activeType={activeType} />
+        <AnalysisChart graphData={readings} activeType={activeType} />
       </div>
     </div>
   );

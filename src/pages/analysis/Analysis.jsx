@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 import { analysisData as data } from "../../util/content";
 import { getDateRange } from "../../util/analysis/calculateReportsDate";
-import { generatePDF } from "../../services/analysisServices";
+import { generatePDF, getAnalysis } from "../../services/analysisServices";
 
 export default function Analysis() {
   const [loading, setLoading] = useState(true);
@@ -46,10 +46,47 @@ export default function Analysis() {
     );
   }
 
+useEffect(() => {
+    // 1. Guard Clause: Don't fetch if custom range is selected but dates are missing
+    if (duration === "custom" && (!start_date || !end_date)) {
+      return;
+    }
+
+    let isCurrent = true; // Flag to prevent race conditions
+    setLoading(true);
+
+    const fetchAnalysis = async () => {
+      try {
+        console.log("Fetching analysis DATA for:", { start_date, end_date });
+        const analysis = await getAnalysis(start_date, end_date);
+        
+        // 2. Only update state if this request is still the latest one
+        if (isCurrent) {
+          console.log("Analysis data successfully updated:", analysis);
+          setAnalysisData(analysis);
+        }
+      } catch (error) {
+        console.error("Error fetching analysis data:", error);
+      } finally {
+        if (isCurrent) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchAnalysis();
+
+    // 3. Cleanup function runs when start_date/end_date changes again
+    return () => {
+      isCurrent = false;
+    };
+  }, [start_date, end_date, duration]);
+
+
   return (
-    <div className="space-y-8 p-4 lg:p-8 pt-40 lg:pt-8">
+    <div className={`space-y-8 p-4 lg:p-8 pt-40 lg:pt-8 transition-opacity duration-300 ${loading ? "opacity-50 pointer-events-none" : "opacity-100"}`}>
       <AnalysisHeader
-        analysisData={data}
+        reportStatistics={analysisData.reportStatistics}
         generateReport={handleGenerateReport}
       />
       <DurationSelector
@@ -58,7 +95,7 @@ export default function Analysis() {
         range={customRange}
         setRange={setCustomRange}
       />
-      <GlucoseStatus analysisData={analysisData} />
+      <GlucoseStatus reportStatistics={analysisData.reportStatistics} />
       <Graph readings={analysisData.glucoseReadings} />
     </div>
   );

@@ -14,20 +14,20 @@ import { LuChartColumn } from "react-icons/lu";
 import { headerCardsContent as cards } from "../../util/content";
 import { generatePDF } from "../../services/analysisServices";
 
-export default function AnalysisHeader({ analysisData, generateReport }) {
+export default function AnalysisHeader({ reportStatistics, generateReport }) {
   const { t } = useTranslation();
 
   const cards = [
     {
       icon: FiTarget,
-      value: analysisData?.a1cEstimation
-        ? `${analysisData.a1cEstimation}%`
-        : "6.2%",
+      value: reportStatistics?.estimatedA1C
+        ? `${reportStatistics.estimatedA1C}%`
+        : "-",
       label: "analysis.header.a1c",
     },
     {
       icon: LuChartColumn,
-      value: analysisData?.totalReadings || "82",
+      value: reportStatistics?.logsCount || "-",
       label: "analysis.header.readings",
     },
   ];
@@ -57,7 +57,7 @@ export default function AnalysisHeader({ analysisData, generateReport }) {
           onClick={generateReport}
           className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap"
         >
-          <p className="text-white w-full">Generate Report</p>
+          <p className="text-white w-full">{t("analysis.header.report")}</p>
         </Button>
       </div>
 

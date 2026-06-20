@@ -17,11 +17,12 @@ export default function DurationSelector({
   setRange,
 }) {
   const { t } = useTranslation();
+  const today = new Date().toISOString().split("T")[0];
+
   return (
     <div className="w-full space-y-4">
       <div className="w-full grid grid-cols-3 justify-center items-center gap-4">
         {BUTTONS_CONFIG.map((btn) => {
-          // Boolean that activates the selection when condition is met
           const isSelected = duration === btn.id;
 
           return (
@@ -29,19 +30,20 @@ export default function DurationSelector({
               key={btn.id}
               onClick={() => setDuration(btn.id)}
               className={`
-                                w-full cursor-pointer p-4 rounded-md transition-colors duration-300 border border-transparent
-                                ${
-                                  isSelected
-                                    ? "bg-[#6976EB] text-white"
-                                    : "bg-[#6976EB]/10 text-[#6976EB] border-[#6976EB]/10 dark:bg-white/10 dark:text-white dark:border-white/10"
-                                }
-                            `}
+                w-full cursor-pointer p-4 rounded-md transition-colors duration-300 border border-transparent
+                ${
+                  isSelected
+                    ? "bg-[#6976EB] text-white"
+                    : "bg-[#6976EB]/10 text-[#6976EB] border-[#6976EB]/10 dark:bg-white/10 dark:text-white dark:border-white/10"
+                }
+              `}
             >
               {t(btn.label)}
             </Button>
           );
         })}
       </div>
+
       <AnimatePresence mode="wait">
         {duration === "custom" && (
           <motion.div
@@ -56,14 +58,15 @@ export default function DurationSelector({
               label={t("analysis.from")}
               type="date"
               value={range.start || ""}
-              max={range.end || undefined} // string "YYYY-MM-DD", not new Date()
+              max={range.end || today}
               onChange={(e) => setRange({ ...range, start: e.target.value })}
             />
             <Input
               label={t("analysis.to")}
               type="date"
               value={range.end || ""}
-              min={range.start || undefined} // prevents end < start
+              min={range.start || undefined}
+              max={today}
               onChange={(e) => setRange({ ...range, end: e.target.value })}
             />
           </motion.div>

@@ -38,3 +38,12 @@ export async function generatePDF(start_date, end_date) {
   a.remove();
   URL.revokeObjectURL(url);
 }
+
+export async function getAnalysis(start_date, end_date) {
+    return handleRequest(
+        api.post('/glucose-analysis', {
+            start_date,
+            end_date
+        })
+    );
+}

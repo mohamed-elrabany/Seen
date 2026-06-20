@@ -10,44 +10,51 @@ import {
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-export default function AnalysisChart({ analysisData, activeType }) {
+export default function AnalysisChart({ graphData, activeType }) {
   const darkMode = useSelector((state) => state.theme.theme);
   const isDark = darkMode === "dark";
   const { t, i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl";
 
   // --- DATE SYNCHRONIZATION PARSER ---
-  const fastingData = analysisData?.fasting || [];
-  const preMealData = analysisData?.pre_meal || [];
-  const postMealData = analysisData?.post_meal || []; // Fixed key name
-  const randomData = analysisData?.random || [];
+  // --- DATE SYNCHRONIZATION PARSER ---
+  const allData = graphData?.all || [];
+  const fastingData = graphData?.fasting || [];
+  const preMealData = graphData?.pre_meal || [];
+  const postMealData = graphData?.post_meal || []; 
+  const randomData = graphData?.random || [];
 
-  // 1. Gather every unique date from all arrays to establish chart timeline coordinates
+  // 1. Gather every single unique timestamp across all categories
   const allTimestamps = [
-    ...fastingData.map(d => d.timestamp),
-    ...preMealData.map(d => d.timestamp),
-    ...postMealData.map(d => d.timestamp),
-    ...randomData.map(d => d.timestamp),
+    ...allData.map(d => d.loggedAt),
+    ...fastingData.map(d => d.loggedAt),
+    ...preMealData.map(d => d.loggedAt),
+    ...postMealData.map(d => d.loggedAt),
+    ...randomData.map(d => d.loggedAt),
   ];
 
-  const uniqueDates = Array.from(
-    new Set(allTimestamps.map(ts => ts.split("T")[0]))
-  ).sort();
+  // 2. Keep the full timestamp string so identical days with different times don't overwrite each other
+  const uniqueTimestamps = Array.from(
+    new Set(allTimestamps.filter(Boolean))
+  ).sort((a, b) => new Date(a) - new Date(b)); // Sorts chronologically
 
-  // 2. Map date buckets into sequential slots (1, 2, 3...) to match screenshot style
-  const formattedChartData = uniqueDates.map((dateStr, i) => {
-    const fObj = fastingData.find(d => d.timestamp.startsWith(dateStr));
-    const prObj = preMealData.find(d => d.timestamp.startsWith(dateStr));
-    const pmObj = postMealData.find(d => d.timestamp.startsWith(dateStr));
-    const rObj = randomData.find(d => d.timestamp.startsWith(dateStr));
+  // 3. Map every unique timestamp to its own point on the chart
+  const formattedChartData = uniqueTimestamps.map((timestampStr, i) => {
+    // Match by the exact full timestamp string instead of just the date prefix
+    const aObj = allData.find(d => d.loggedAt === timestampStr);
+    const fObj = fastingData.find(d => d.loggedAt === timestampStr);
+    const prObj = preMealData.find(d => d.loggedAt === timestampStr);
+    const pmObj = postMealData.find(d => d.loggedAt === timestampStr);
+    const rObj = randomData.find(d => d.loggedAt === timestampStr);
 
     return {
-      label: (i + 1).toString(), // Displays 1, 2, 3... on X-axis
-      date: dateStr,
-      fasting: fObj?.glucoseLevel || null,
-      pre_meal: prObj?.glucoseLevel || null,
-      post_meal: pmObj?.glucoseLevel || null,
-      random: rObj?.glucoseLevel || null,
+      label: (i + 1).toString(), // Keeps your 1, 2, 3... sequential X-axis look
+      date: timestampStr.split(" ")[0], // Can still pass the raw date or time to tooltips if needed
+      all: aObj?.glucoseValue || null,
+      fasting: fObj?.glucoseValue || null,
+      pre_meal: prObj?.glucoseValue || null,
+      post_meal: pmObj?.glucoseValue || null,
+      random: rObj?.glucoseValue || null,
     };
   });
 
@@ -81,7 +88,19 @@ export default function AnalysisChart({ analysisData, activeType }) {
           cursor={{ stroke: "#6976EB", strokeWidth: 1 }}
         />
 
-        {(activeType === "All" || activeType === "Fasting") && (
+        {(activeType === "All") && (
+          <Line
+            type="monotone"
+            dataKey="all"
+            stroke="#6976EB"
+            strokeWidth={3}
+            connectNulls // Allows lines to cross missing days cleanly
+            dot={{ r: 4, fill: "#6976EB" }}
+            activeDot={{ r: 6, strokeWidth: 0 }}
+          />
+        )}
+
+        {(activeType === "Categorized" || activeType === "Fasting") && (
           <Line
             type="monotone"
             dataKey="fasting"
@@ -93,7 +112,7 @@ export default function AnalysisChart({ analysisData, activeType }) {
           />
         )}
 
-        {(activeType === "All" || activeType === "Before Meal") && (
+        {(activeType === "Categorized" || activeType === "Before Meal") && (
           <Line
             type="monotone"
             dataKey="pre_meal"
@@ -105,7 +124,7 @@ export default function AnalysisChart({ analysisData, activeType }) {
           />
         )}
 
-        {(activeType === "All" || activeType === "After Meal") && (
+        {(activeType === "Categorized" || activeType === "After Meal") && (
           <Line
             type="monotone"
             dataKey="post_meal"
@@ -117,7 +136,7 @@ export default function AnalysisChart({ analysisData, activeType }) {
           />
         )}
 
-        {(activeType === "All" || activeType === "Random") && (
+        {(activeType === "Categorized" || activeType === "Random") && (
           <Line
             type="monotone"
             dataKey="random"
