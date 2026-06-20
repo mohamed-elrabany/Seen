@@ -25,6 +25,8 @@ export default function NotificationCard({
   extraData,
   markAsRead,
   onDelete,
+  acceptRequest,
+  rejectRequest,
   ...rest
 }) {
   const { t } = useTranslation();
@@ -180,11 +182,22 @@ export default function NotificationCard({
               </div>
             ) : (
               <div className="w-auto grid grid-cols-2 gap-4 justify-center items-center">
-                <button className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#6976EB] bg-[#6976EB]/10 hover:bg-[#6976EB]/20 transition-colors cursor-pointer">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    acceptRequest();
+                  }}
+                  className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#6976EB] bg-[#6976EB]/10 hover:bg-[#6976EB]/20 transition-colors cursor-pointer"
+                >
                   <BsFillPersonCheckFill className="w-5 h-5" />
                   <span>{t("communityPage.requests.accept")}</span>
                 </button>
-                <button className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#FB2C36] bg-[#FB2C36]/10 hover:bg-[#FB2C36]/20 transition-colors cursor-pointer">
+                <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  rejectRequest();
+                }}
+                className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#FB2C36] bg-[#FB2C36]/10 hover:bg-[#FB2C36]/20 transition-colors cursor-pointer">
                   <BsFillPersonXFill className="w-5 h-5" />
                   <span>{t("communityPage.requests.reject")}</span>
                 </button>

@@ -710,10 +710,15 @@
     }
   },
   "notifications": {
+    "title": "الإشعارات ({{count}})",
     "markAllAsRead": "تحديد الكل كمقروء",
     "markAsRead": "تحديد كمقروء",
     "deleteAll": "حذف الكل",
     "delete": "حذف",
+        "empty":{
+      "title":"لا توجد إشعارات",
+      "description":"سنقوم بإعلامك فور وصول أي تحديثات أو تنبيهات جديدة."
+    },
     "friend_request": {
       "title": "طلب صداقة",
       "description": "أرسل لك {{name}} طلب صداقة."

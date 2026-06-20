@@ -735,10 +735,15 @@
     }
   },
   "notifications": {
+    "title": "Notifications ({{count}})",
     "markAllAsRead": "Mark All as Read",
     "markAsRead": "Mark as Read",
     "deleteAll": "Delete All",
     "delete": "Delete",
+    "empty":{
+      "title":"No Notifications",
+      "description":"We'll notify you as soon as there are new updates or alerts."
+    },
     "friend_request": {
       "title": "Friend Request",
       "description": "{{name}} sent you a friend request."
