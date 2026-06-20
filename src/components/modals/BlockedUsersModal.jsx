@@ -180,7 +180,7 @@ export default function BlockedUsersModal({ isOpen, onClose }) {
                       onClick={() => handleUnblock(user.id)}
                       className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
                     >
-                      <p>Unblock</p>
+                      <p>{t("communityPage.requests.unblock")}</p>
                     </Button>
                   </motion.div>
                 );

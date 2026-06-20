@@ -16,6 +16,7 @@ import { formatRelativeTime } from "../../util/formatRelativeTime";
 import { formatDateTimeString } from "../../util/formatDiplayedDate";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationCard({
   type,
@@ -26,44 +27,68 @@ export default function NotificationCard({
   onDelete,
   ...rest
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const formattedTime = formatDateTimeString(time);
 
   const cardContent = {
     like: {
       icon: FaHeart,
-      title: "إعجاب بمنشورك",
-      description: `قام ${extraData?.senderName || "مستخدم"} بالإعجاب بمنشورك الأخير.`,
+      title: t("notifications.like.title"),
+      description: t("notifications.like.description", {
+        name: extraData?.username || "مستخدم",
+      }),
     },
+
     comment: {
       icon: CommunityIcon,
-      title: "تعليق جديد",
-      description: `علق ${extraData?.senderName || "مستخدم"} على منشورك "${extraData?.postTitle || ""}".`,
+      title: t("notifications.comment.title"),
+      description: t("notifications.comment.description", {
+        name: extraData?.username || "مستخدم",
+      })
     },
     reminder: {
       icon: MdNotificationsActive,
-      title: "تذكير",
-      description: `حان وقت: ${extraData?.reminderName || "التنبيه الخاص بك"}.`,
+      title: t("notifications.reminder.title", { type: extraData?.type || "Reminder" }),
+      description: t("notifications.reminder.description", {
+        type: extraData?.type || "Reminder",
+        title: extraData?.title || "You have a new reminder.",
+      }),
     },
     system: {
       icon: IoSettingsOutline,
-      title: "تحديث التطبيق",
-      description: `تم إطلاق تحديث جديد للنظام برقم ${extraData?.version || ""}.`,
+      title: t("notifications.system.title"),
+      description: t("notifications.system.description", {
+        version: extraData?.version || "",
+      }),
     },
     message: {
       icon: PiChatCircleTextBold,
-      title: "رسالة جديدة",
-      description: `أرسل لك ${extraData?.senderName || "مستخدم"} رسالة جديدة في الخاص.`,
+      title: t("notifications.message.title"),
+      description: t("notifications.message.description", {
+        name: extraData?.senderName || "مستخدم",
+      }),
     },
     friend_request: {
       icon: BsFillPersonPlusFill,
-      title: "طلب صداقة",
-      description: `أرسل لك ${extraData?.senderName || "مستخدم"} طلب صداقة جديد.`,
+      title: t("notifications.friend_request.title"),
+      description: t("notifications.friend_request.description", {
+        name: extraData?.username,
+      }),
+    },
+    accept_request: {
+      icon: BsFillPersonCheckFill,
+      title: t("notifications.accept_request.title"),
+      description: t("notifications.accept_request.description", {
+        name: extraData?.username,
+      }),
     },
     glucose: {
       icon: GlucoseIcon,
-      title: "تنبيه صحي مهم",
-      description: `مستوى السكر في الدم الحالي هو ${extraData?.glucoseLevel || "--"} mg/dL. يرجى الانتباه!`,
+      title: t("notifications.glucose.title"),
+      description: t("notifications.glucose.description", {
+        level: extraData?.glucoseLevel || "--",
+      }),
     },
   };
 
@@ -84,6 +109,7 @@ export default function NotificationCard({
           navigate(`/community/posts/${extraData.post_id}`);
         break;
       case "friend_request":
+      case "accept_request":
         if (rest.reference_id) navigate(`/users/${rest.reference_id}`);
         break;
       default:
@@ -139,7 +165,7 @@ export default function NotificationCard({
                   }}
                 >
                   <TbChecks className="w-5 h-5" />
-                  <span>تحديد كمقروء</span>
+                  <span>{t("notifications.markAsRead")}</span>
                 </button>
                 <button
                   onClick={(e) => {
@@ -149,18 +175,18 @@ export default function NotificationCard({
                   className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#FB2C36] bg-[#FB2C36]/10 hover:bg-[#FB2C36]/20 w-auto transition-colors cursor-pointer"
                 >
                   <RiDeleteBin6Line className="w-5 h-5" />
-                  <span>حذف</span>
+                  <span>{t("notifications.delete")}</span>
                 </button>
               </div>
             ) : (
               <div className="w-auto grid grid-cols-2 gap-4 justify-center items-center">
                 <button className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#6976EB] bg-[#6976EB]/10 hover:bg-[#6976EB]/20 transition-colors cursor-pointer">
                   <BsFillPersonCheckFill className="w-5 h-5" />
-                  <span>قبول</span>
+                  <span>{t("communityPage.requests.accept")}</span>
                 </button>
                 <button className="flex items-center justify-center px-4 py-2 gap-2 rounded-lg text-[#FB2C36] bg-[#FB2C36]/10 hover:bg-[#FB2C36]/20 transition-colors cursor-pointer">
                   <BsFillPersonXFill className="w-5 h-5" />
-                  <span>رفض</span>
+                  <span>{t("communityPage.requests.reject")}</span>
                 </button>
               </div>
             )}

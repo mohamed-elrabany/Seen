@@ -361,6 +361,17 @@
         "description": "Try a different search term."
       },
       "no-more": "No more {{type}} to show"
+    },
+    "requests":{
+      "add": "Add Friend",
+      "accept": "Accept",
+      "pending": "Pending",
+      "reject": "Reject",
+      "cancel": "Cancel",
+      "friends": "Friends",
+      "remove": "Remove",
+      "block": "Block",
+      "unblock": "Unblock"
     }
   },
   "profilePage": {
@@ -436,7 +447,7 @@
       "add-submitting": "Adding Log",
       "edit-submitting": "Updating Log",
       "cancel-button": "Cancel",
-      "types":{
+      "types": {
         "glucose": "Glucose Check",
         "medication": "Medication",
         "meal": "Meal",
@@ -513,7 +524,7 @@
         }
       }
     },
-    "details":{
+    "details": {
       "edit": "Edit Log",
       "delete": "Delete Log",
       "notes": "Notes",
@@ -521,19 +532,19 @@
       "glucose": {
         "title": "Glucose Record",
         "glucose-level": "Glucose Level",
-        "type":"Reading type",
+        "type": "Reading type",
         "a1c": "A1C Estimation"
       },
       "medication": {
         "title": "Medication Record",
         "medications": "Medications"
       },
-      "meal":{
+      "meal": {
         "title": "Meal Record",
-        "type":"Meal Type",
+        "type": "Meal Type",
         "description": "Description",
         "carbs": "Carbohydrate Estimation",
-        "carb-amount":"{{value}} g",
+        "carb-amount": "{{value}} g",
         "cal": "Calorie Estimation",
         "cal-amount": "{{value}} kcal"
       }
@@ -670,10 +681,10 @@
       "delete": "Delete",
       "submitting": "Deleting Post"
     },
-    "search":{
+    "search": {
       "title": "Search",
-      "placeholder":"Search for posts or people...",
-      "posts":"Posts",
+      "placeholder": "Search for posts or people...",
+      "posts": "Posts",
       "profiles": "Profiles",
       "results": "Results",
       "empty": {
@@ -682,35 +693,35 @@
       }
     }
   },
-  "chats":{
+  "chats": {
     "title": "Chats",
     "searchPlaceholder": "Search for conversations...",
     "inputPlaceholder": "Type your message here...",
-      "empty":{
-        "conv":{
-          "title": "No conversations yet",
-          "description": "Start a conversation by sending a message to someone!"
-        },
-        "messages":{
-          "title": "No messages yet",
-           "description": "Be the first to send a message in this conversation!"
+    "empty": {
+      "conv": {
+        "title": "No conversations yet",
+        "description": "Start a conversation by sending a message to someone!"
+      },
+      "messages": {
+        "title": "No messages yet",
+        "description": "Be the first to send a message in this conversation!"
       }
     }
   },
-  "analysis":{
-    "header":{
-      "title":"Blood Sugar Level",
-      "description":"A comprehensive analysis of your health data with detailed reports and a clear insight into your health status",
+  "analysis": {
+    "header": {
+      "title": "Blood Sugar Level",
+      "description": "A comprehensive analysis of your health data with detailed reports and a clear insight into your health status",
       "button": "All Readings",
       "report": "Generate Report",
-      "a1c":"Estimated A1C",
-      "readings":"Readings"
+      "a1c": "Estimated A1C",
+      "readings": "Readings"
     },
-    "weekly":"Weekly",
-    "monthly":"Monthly",
-    "custom":"Custom",
-    "from":"From",
-    "to":"To",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "custom": "Custom",
+    "from": "From",
+    "to": "To",
     "lowest": "Lowest Glucose Reading",
     "highest": "Highest Glucose Reading",
     "avg": "Average Blood Sugar",
@@ -722,5 +733,44 @@
       "postMeal": "After Meal",
       "random": "Random"
     }
+  },
+  "notifications": {
+    "markAllAsRead": "Mark All as Read",
+    "markAsRead": "Mark as Read",
+    "deleteAll": "Delete All",
+    "delete": "Delete",
+    "friend_request": {
+      "title": "Friend Request",
+      "description": "{{name}} sent you a friend request."
+    },
+    "accept_request": {
+      "title": "Friend Request Accepted",
+      "description": "{{name}} accepted your friend request."
+    },
+    "message": {
+      "title": "New Message",
+      "description": "{{name}} sent you a new message."
+    },
+
+    "like": {
+      "title": "New Like",
+      "description": "{{name}} liked your post.",
+      "description_single": "{{name}} liked your post.",
+      "description_multiple": "{{name}} and {{count}} others liked your post."
+    },
+    "comment": {
+      "title": "New Comment",
+      "description": "{{name}} commented on your post.",
+      "description_single": "{{name}} commented on your post.",
+      "description_multiple": "{{name}} and {{count}} others commented on your post."
+    },
+    "reminder": {
+        "title": "{{type}} Reminder",
+        "description": "You have a new {{type}} reminder: {{title}}."
+      },
+      "system": {
+        "title": "System Notification",
+        "description": "You have a new system notification."
+      }
   }
 }

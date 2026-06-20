@@ -336,6 +336,17 @@
         "description": "جرّب كلمة بحث أخرى."
       },
       "no-more": "لا توجد المزيد من {{type}} لعرضها"
+    },
+    "requests":{
+      "add": "إضافة صديق",
+      "accept": "قبول",
+      "pending": "قيد الانتظار",
+      "reject": "رفض",
+      "cancel": "إلغاء",
+      "friends": "أصدقاء",
+      "remove": "إزالة",
+      "block": "حظر",
+      "unblock": "إلغاء الحظر"
     }
   },
   "profilePage": {
@@ -645,10 +656,10 @@
       "delete": "حذف",
       "submitting": "جاري حذف المنشور"
     },
-    "search":{
+    "search": {
       "title": "البحث",
-      "placeholder":"ابحث عن منشورات أو حسابات ...",
-      "posts":"المنشورات",
+      "placeholder": "ابحث عن منشورات أو حسابات ...",
+      "posts": "المنشورات",
       "profiles": "حسابات",
       "results": "النتائج",
       "empty": {
@@ -657,35 +668,35 @@
       }
     }
   },
-    "chats":{
-      "title": "المحادثات",
+  "chats": {
+    "title": "المحادثات",
     "searchPlaceholder": "ابحث عن محادثة أو صديق ...",
     "inputPlaceholder": "اكتب رسالتك هنا...",
-      "empty":{
-        "conv":{
-          "title": "لا توجد محادثات بعد",
-          "description": "ابدأ محادثة جديدة مع أحد الأصدقاء أو الزملاء!"
-        },
-        "messages":{
-          "title": "لا توجد رسائل بعد",
-           "description": "كن أول من يرسل رسالة في هذه المحادثة!"
+    "empty": {
+      "conv": {
+        "title": "لا توجد محادثات بعد",
+        "description": "ابدأ محادثة جديدة مع أحد الأصدقاء أو الزملاء!"
+      },
+      "messages": {
+        "title": "لا توجد رسائل بعد",
+        "description": "كن أول من يرسل رسالة في هذه المحادثة!"
       }
     }
   },
-    "analysis":{
-    "header":{
-      "title":"مستوى السكر في الدم",
-      "description":"تحليل شامل لبياناتك الصحية مع تقارير مفصلة ورؤية واضحة لحالتك الصحية",
+  "analysis": {
+    "header": {
+      "title": "مستوى السكر في الدم",
+      "description": "تحليل شامل لبياناتك الصحية مع تقارير مفصلة ورؤية واضحة لحالتك الصحية",
       "button": "كل القراءات",
       "report": "إنشاء تقرير",
-      "a1c":"A1C التقديري",
-      "readings":"قراءات"
+      "a1c": "A1C التقديري",
+      "readings": "قراءات"
     },
-    "weekly":"اسبوعي",
-    "monthly":"شهري",
-    "custom":"مخصص",
-    "from":"من",
-    "to":"إلى",
+    "weekly": "اسبوعي",
+    "monthly": "شهري",
+    "custom": "مخصص",
+    "from": "من",
+    "to": "إلى",
     "lowest": "أدنى قراءة جلوكوز",
     "highest": "أعلى قراءة جلوكوز",
     "avg": "متوسط قراءات السكر",
@@ -696,6 +707,44 @@
       "preMeal": "قبل الوجبة",
       "postMeal": "بعد الوجبة",
       "random": "عشوائي"
+    }
+  },
+  "notifications": {
+    "markAllAsRead": "تحديد الكل كمقروء",
+    "markAsRead": "تحديد كمقروء",
+    "deleteAll": "حذف الكل",
+    "delete": "حذف",
+    "friend_request": {
+      "title": "طلب صداقة",
+      "description": "أرسل لك {{name}} طلب صداقة."
+    },
+    "accept_request": {
+      "title": "تم قبول طلب الصداقة",
+      "description": "قبل {{name}} طلب الصداقة الذي أرسلته."
+    },
+    "message": {
+      "title": "رسالة جديدة",
+      "description": "أرسل لك {{name}} رسالة جديدة."
+    },
+    "like": {
+      "title": "إعجاب جديد",
+      "description": "أعجب {{name}} بمنشورك.",
+      "description_single": "أعجب {{name}} بمنشورك.",
+      "description_multiple": "أعجب {{name}} و{{count}} آخرون بمنشورك."
+    },
+    "comment": {
+      "title": "تعليق جديد",
+      "description": "علّق {{name}} على منشورك.",
+      "description_single": "علّق {{name}} على منشورك.",
+      "description_multiple": "علّق {{name}} و{{count}} آخرون على منشورك."
+    },
+    "reminder": {
+      "title": "تذكير {{type}}",
+      "description": "لديك تذكير جديد من نوع {{type}}: {{title}}."
+    },
+    "system": {
+      "title": "إشعار من النظام",
+      "description": "لديك إشعار جديد من النظام."
     }
   }
 }

@@ -177,7 +177,7 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
               className="px-6 py-3 cursor-pointer rounded-xl text-white bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695] bg-[length:200%_auto] bg-left transition-all duration-500 ease-out hover:bg-right active:scale-[0.98]"
             >
               <BsFillPersonPlusFill className="w-5 h-5" />
-              <p>Add Friend</p>
+              <p>{t("communityPage.requests.add")}</p>
             </Button>
           )}
 
@@ -188,14 +188,14 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
                 disabled
               >
                 <FaUserClock className="w-5 h-5" />
-                <p>Pending</p>
+                <p>{t("communityPage.requests.pending")}</p>
               </Button>
               <Button
                 onClick={handleCancel}
                 className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
               >
                 <BsFillPersonDashFill className="w-5 h-5" />
-                <p>Cancel</p>
+                <p>{t("communityPage.requests.cancel")}</p>
               </Button>
             </div>
           )}
@@ -207,14 +207,14 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
                 disabled
               >
                 <BsFillPersonCheckFill className="w-5 h-5" />
-                <p>Friends</p>
+                <p>{t("communityPage.requests.friends")}</p>
               </Button>
               <Button
                 onClick={removeModal}
                 className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
               >
                 <BsFillPersonDashFill className="w-5 h-5" />
-                <p>Remove</p>
+                <p>{t("communityPage.requests.remove")}</p>
               </Button>
             </div>
           )}
@@ -226,14 +226,14 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
                 className="px-6 py-3 w-full cursor-pointer rounded-xl text-white bg-gradient-to-r from-[#6976EB] via-[#4A55C3] to-[#2B3695] bg-[length:200%_auto] bg-left transition-all duration-500 ease-out hover:bg-right active:scale-[0.98]"
               >
                 <BsFillPersonCheckFill className="w-5 h-5" />
-                <p>Accept</p>
+                <p>{t("communityPage.requests.accept")}</p>
               </Button>
               <Button
                 onClick={handleReject}
                 className="px-6 py-3 w-full flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
               >
                 <BsFillPersonXFill className="w-5 h-5" />
-                <p>Reject</p>
+                <p>{t("communityPage.requests.reject")}</p>
               </Button>
             </div>
           )}
@@ -243,7 +243,7 @@ export default function ProfileHeader({ currentUser, userId, isOwnProfile, block
             className="px-6 py-3 flex justify-start items-center gap-2 cursor-pointer text-[#FF0404] bg-[#FF0404]/10 hover:bg-[#FF0404]/20 rounded-xl active:scale-[0.98] transition-all duration-500 ease-out"
           >
             <BsPersonFillSlash className="w-5 h-5" />
-            <p>Block</p>
+            <p>{t("communityPage.requests.block")}</p>
           </Button>
         </div>
       )}
