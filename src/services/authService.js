@@ -134,8 +134,14 @@ export function verifyOtp(email, otp){
   );
 }
 
+export function resetPassword(email, password){
+  return handleRequest(
+    api.post("/forgot-password/reset", { email, password })
+  );
+}
 
-// ─── Forget Password ─────────────────────────────────────────────
+
+// ─── Change Password ─────────────────────────────────────────────
 export function verifyPassword(current_password){
   return handleRequest(
     api.post("/password/verify", { current_password })
