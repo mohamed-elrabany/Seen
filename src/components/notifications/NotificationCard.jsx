@@ -78,7 +78,7 @@ export default function NotificationCard({
         name: extraData?.username,
       }),
     },
-    accept_request: {
+    accepted: {
       icon: BsFillPersonCheckFill,
       title: t("notifications.accept_request.title"),
       description: t("notifications.accept_request.description", {

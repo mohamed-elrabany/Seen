@@ -158,17 +158,7 @@ export default function Login() {
               <div className="w-full border-t border-[#D9D9D9] dark:border-[#D9D9D9]/20"></div>
             </div>
 
-            <Button
-              type="button"
-              className="bg-transparent text-[#161A41] dark:text-white dark:bg-white/10 
-    hover:bg-[#6976EB] hover:text-white hover:border-[#6976EB] 
-    border-2 border-[#D9D9D9]/40 dark:border-[#D9D9D9]/15 
-    w-full px-6 py-3 transition-all flex items-center justify-center gap-2 cursor-pointer group"
-            >
-              <FcGoogle className="w-8 h-8" />
-              {/* Using text-inherit allows the p tag to take the color from the button's hover state */}
-              <p className="text-inherit font-bold">{t("loginPage.google")}</p>
-            </Button>
+
 
             <p className="text-[#808080] dark:text-gray-400 text-center mt-4">
               {t("loginPage.noAccount")}{" "}

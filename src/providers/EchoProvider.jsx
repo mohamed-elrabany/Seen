@@ -1,39 +1,37 @@
-// src/contexts/EchoContext.jsx
-import { createContext, useContext, useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 import { useSelector } from "react-redux";
 
 window.Pusher = Pusher;
 
-const EchoContext = createContext(null);
+const EchoContext = createContext({ echo: null, isReady: false });
 
 export function EchoProvider({ children }) {
   const echoRef = useRef(null);
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // adjust to your slice
+  const [isReady, setIsReady] = useState(false);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const isSecure = import.meta.env.VITE_REVERB_SCHEME === "https";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!isAuthenticated || !token) {
-      if (echoRef.current) {
-        echoRef.current.disconnect();
-        echoRef.current = null;
-      }
+      echoRef.current?.disconnect();
+      echoRef.current = null;
+      setIsReady(false);
       return;
     }
 
-    echoRef.current = new Echo({
+    const echo = new Echo({
       broadcaster: "reverb",
       key: import.meta.env.VITE_REVERB_APP_KEY,
       wsHost: import.meta.env.VITE_REVERB_HOST,
       wsPort: import.meta.env.VITE_REVERB_PORT,
       wssPort: import.meta.env.VITE_REVERB_PORT,
       forceTLS: isSecure,
-      encrypted: true,
       enabledTransports: isSecure ? ["wss"] : ["ws"],
-      authEndpoint: import.meta.env.VITE_REVERB_AUTH_ENDPOINT, // ← your Laravel auth endpoint
+      authEndpoint: import.meta.env.VITE_REVERB_AUTH_ENDPOINT,
       auth: {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,20 +39,25 @@ export function EchoProvider({ children }) {
         },
       },
     });
-    echoRef.current.connector.pusher.connection.bind("state_change", (states) => {
-  console.log("🔌 Connection state:", states.previous, "→", states.current);
-});
+
+    echoRef.current = echo;
+
+    echo.connector.pusher.connection.bind("state_change", (states) => {
+      console.log("🔌 Connection state:", states.previous, "→", states.current);
+      setIsReady(states.current === "connected");
+    });
 
     return () => {
-      if (echoRef.current) {
-        echoRef.current.disconnect();
-        echoRef.current = null;
-      }
+      echo.disconnect();
+      echoRef.current = null;
+      setIsReady(false);
     };
   }, [isAuthenticated]);
 
   return (
-    <EchoContext.Provider value={echoRef}>{children}</EchoContext.Provider>
+    <EchoContext.Provider value={{ echo: echoRef.current, isReady }}>
+      {children}
+    </EchoContext.Provider>
   );
 }
 

@@ -50,9 +50,9 @@ export default function AnalysisHeader({ reportStatistics, generateReport }) {
         </div>
 
         {/* Action Button Label Updated */}
-        <Button className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap">
+        {/* <Button className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap">
           <p className="text-white w-full">{t("analysis.header.button")}</p>
-        </Button>
+        </Button> */}
         <Button
           onClick={generateReport}
           className="cursor-pointer border border-white/10 bg-white/10 w-full lg:w-auto text-white rounded-lg p-4 whitespace-nowrap"

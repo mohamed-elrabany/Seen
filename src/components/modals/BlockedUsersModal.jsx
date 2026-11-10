@@ -127,7 +127,7 @@ export default function BlockedUsersModal({ isOpen, onClose }) {
           className="flex flex-col gap-2 w-full p-4"
         >
           <p className="text-center uppercase text-gray-400 font-bold text-[10px] tracking-widest py-2">
-            {t("modals.blocked-users.total-blocked", { count: totalBlocked })}
+            {totalBlocked} {totalBlocked === 1 ? "blocked user" : "blocked users"}
           </p>
 
           {/* If blocked users has data, map it. If not and not loading, show empty state */}

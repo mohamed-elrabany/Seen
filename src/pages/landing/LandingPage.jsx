@@ -337,7 +337,7 @@ export default function LandingPage() {
       </section>
 
       {/* Donation Section */}
-      <section
+      {/* <section
         className="bg-gradient-to-br flex-col-center gap-8 
         bg-gradient-to-br from-[#F8F9FF] to-white 
       dark:from-[#1F1A5F] dark:to-[#161A41]"
@@ -355,7 +355,7 @@ export default function LandingPage() {
           <BiDollar className="text-white w-6 h-6" />
           <p>{t("landingPage.donation.button")}</p>
         </Button>
-      </section>
+      </section> */}
 
       {/* Testimonials Section */}
       <section id="testimonials" className="flex-col-center gap-8">

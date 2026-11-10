@@ -3,7 +3,7 @@ import api from "../api/axios";
 async function handleRequest(request) {
   try {
     const response = await request;
-    console.log("Notification Response:", response); // Log the entire response for debugging
+    // console.log("Notification Response:", response); // Log the entire response for debugging
     return response.data;
   } catch (error) {
     return {
@@ -21,7 +21,7 @@ export async function removeNotification(id) {
 }
 
 export async function deleteAllNotifications() {
-  return handleRequest(api.delete("/notifications"));
+  return handleRequest(api.delete("/notifications/delete-all"));
 }
 
 export async function markAsRead(id) {

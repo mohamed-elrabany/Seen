@@ -24,16 +24,23 @@ export function formatDisplayedDate(dateStr) {
 export function formatDisplayedTime(timeStr) {
   if (!timeStr) return "";
 
-  // 1. Remove 'Z' if present, and replace spaces with 'T'
-  // Removing 'Z' forces the browser to parse it as Local Time instead of UTC
-  const standardizedStr = timeStr.replace("Z", "").replace(" ", "T");
+  // If the backend already gave us a pre-formatted AM/PM string
+  if (timeStr.includes("AM") || timeStr.includes("PM")) {
+    // Extract just the time part: "02:04:36 PM" -> "02:04 PM"
+    const parts = timeStr.split(" "); // ["2026-06-21", "02:04:36", "PM"]
+    if (parts.length >= 3) {
+      const timeParts = parts[1].split(":"); // ["02", "04", "36"]
+      return `${timeParts[0]}:${timeParts[1]} ${parts[2]}`; // "02:04 PM"
+    }
+  }
 
+  // Fallback for standard ISO strings (e.g., 2026-06-21T14:04:36Z)
+  const standardizedStr = timeStr.replace("Z", "").replace(" ", "T");
   const date = new Date(standardizedStr);
 
-  // Fallback check to keep the UI from crashing if data is corrupted
   if (isNaN(date.getTime())) return "";
 
-  return date.toLocaleTimeString(i18n.language, {
+  return date.toLocaleTimeString(i18n.language || "en", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,

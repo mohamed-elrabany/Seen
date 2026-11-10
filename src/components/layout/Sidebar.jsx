@@ -101,11 +101,11 @@ export default function Sidebar() {
       to: "/chats",
       label: t("sidebar.nav.chats"),
       icon: <PiChatCircleTextBold className="w-5 h-5" />,
-      badge: unreadCount > 0 && (
-        <span className="bg-[#FB2C36] text-white text-xs rounded-full w-5 h-5 p-1 flex items-center justify-center">
-          {unreadCount}
-        </span>
-      ),
+      // badge: unreadCount > 0 && (
+      //   <span className="bg-[#FB2C36] text-white text-xs rounded-full w-5 h-5 p-1 flex items-center justify-center">
+      //     {unreadCount}
+      //   </span>
+      // ),
     },
     {
       to: "/assistant",

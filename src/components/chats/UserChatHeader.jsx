@@ -47,7 +47,7 @@ export default function UserChatHeader({ user, onBackClick }) {
       {/* 3. User Name Container */}
       <div className="min-w-0 flex-1">
         <h3 className="font-bold text-[#161A41] dark:text-white mb-0 text-lg truncate">
-          {user?.name || "منتصر إسماعيل"}
+          {user?.first_name ? `${user.first_name} ${user.last_name}` : "User"}
         </h3>
       </div>
     </div>

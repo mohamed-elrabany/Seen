@@ -30,7 +30,7 @@ export default function LogoutModal({ isOpen, onClose }) {
         dispatch(notificationActions.toggleEnabled(false));
         onClose();
         localStorage.removeItem("token");
-        localStorage.removeItem("seen-app-theme");
+        // localStorage.removeItem("seen-app-theme");
         navigate("/login");
       } else {
         toast.error("Failed to log out. Please try again.");

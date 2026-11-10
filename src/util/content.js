@@ -65,22 +65,22 @@ export const testimonials = [
 export const headerCardsContent = [
   {
     icon: PiPulseBold,
-    value: 128,
+    value: 0,
     label: "homePage.header.cards.currentReading",
   },
   {
     icon: IoBarChart,
-    value: 132,
+    value: 0,
     label: "homePage.header.cards.weeklyAverage",
   },
   {
     icon: SlEnergy,
-    value: 12,
+    value: 0,
     label: "homePage.header.cards.streak",
   },
   {
     icon: FaRegHeart,
-    value: "85%",
+    value: "-",
     label: "homePage.header.cards.timeInRange",
   },
 ];

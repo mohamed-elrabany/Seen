@@ -9,7 +9,7 @@ import NotificationListener from "../components/notifications/NotificationListen
 export default function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
   const theme = useSelector((state) => state.theme.theme);
-  const isDarkMode = theme === "dark";
+  const isDarkMode = theme ? theme === "dark" : localStorage.getItem("seen-app-theme") === "dark";
   const location = useLocation();
 
   if (isLoading) {
@@ -25,7 +25,7 @@ export default function ProtectedRoute() {
 
   return (
     <>
-    <NotificationListener />
+      <NotificationListener />
       <Toaster
         position="top-center"
         reverseOrder={false}

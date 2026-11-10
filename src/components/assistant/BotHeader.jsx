@@ -21,10 +21,10 @@ export default function BotChatHeader() {
       {/* 3. Assistant Name Container */}
       <div className="min-w-0 flex-1">
         <h3 className="font-bold text-[#161A41] dark:text-white mb-0 text-lg truncate">
-          المساعد الذكي
+          Smart Assistant
         </h3>
         <p className="text-xs text-[#6976EB] font-medium m-0">
-          نشط الآن
+          Your AI Assistant for Smart Solutions
         </p>
       </div>
     </div>

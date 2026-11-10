@@ -107,7 +107,7 @@ export default function FriendsModal({ isOpen, onClose }) {
           className="flex flex-col gap-2 w-full p-4"
         >
           <p className="text-center uppercase text-gray-400 font-bold text-[10px] tracking-widest py-2">
-            {t("modals.friends.total-friends", { count: totalFriends })} friends
+            {totalFriends} {totalFriends === 1 ? "friend" : "friends"}
           </p>
 
           {/* If friends has data, map it. If not and not loading, show empty state */}
